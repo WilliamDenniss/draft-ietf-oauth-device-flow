@@ -15,7 +15,7 @@
 <?rfc comments="yes"?>
 <?rfc inline="yes"?>
 
-<rfc ipr="trust200902" docName="draft-denniss-oauth-device-flow-00.txt" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-00" category="std">
 
   <front>
   <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow</title>   
@@ -86,7 +86,7 @@
     </author>
 
 
-    <date year="2015" month="November"/>
+    <date year="2016" month="February" day="17"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
