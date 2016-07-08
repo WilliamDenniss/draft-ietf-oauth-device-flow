@@ -16,7 +16,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-01" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-02" category="std">
 
   <front>
   <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow</title>   
@@ -87,7 +87,7 @@
     </author>
 
 
-    <date year="2016" month="March" day="3"/>
+    <date year="2016" month="July" day="8"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -140,8 +140,8 @@
    |  Device  |                                |                |
    |  Client  |         Client Identifier &    |                |
    |          |>---(E)-- Verification Code --->|                |
-   |          |    ...                         |                |
-   |          |>---(E)--->                     |                |
+   |          |    polling...                  |                |
+   |          |>---(E)-- Verification Code --->|                |
    |          |                                |  Authorization |
    |          |<---(F)-- Access Token --------<|     Server     |
    +----------+  (w/ Optional Refresh Token)   |                |
@@ -213,7 +213,7 @@
 
 	  <t hangText="End-User Verification Code:"><vspace blankLines="1"/>
 	  A short-lived token which the device displays to the end user,
-	  is entered by the end-user on the authorization sever, and is
+	  is entered by the end-user on the authorization server, and is
 	  thus used to bind the device to the end-user.
 	  </t> 
 	</list> 
@@ -223,7 +223,7 @@
 
     <section anchor="Specification" title="Specification"> 
 
-      <section anchor="AuthorizationRequest" title="Client Requests Authorization">
+      <section anchor="AuthorizationRequest" title="Device Authorization Request">
 
 	<t>The client initiates the flow by requesting a set of verification
 	codes from the authorization server by making an HTTP "POST" request
@@ -256,6 +256,10 @@
    response_type=device_code&client_id=s6BhdRkqt3
 ]]></artwork></figure>
 	</t> 
+
+</section>
+
+<section title="Device Authorization Response">
 
 	<t>
 	  In response, the authorization server generates a verification code
@@ -306,12 +310,17 @@
 ]]></artwork></figure>
 	</t> 
 
-	<t>
-	  The client displays the end-user code and the end-user verification
-	  URI to the end-user, and instructs the end-user to visit the URI
-	  using a user-agent and enter the end-user code.
-	</t>
+</section> 
 
+<section title="User Instruction">
+
+  <t>
+    After receiving a successful Authorization Response, 
+    the client displays the end-user code and the end-user verification
+    URI to the end-user, and instructs the end-user to visit the URI
+    using a user-agent and enter the end-user code.
+  </t>
+	
 	<t>
 	  The end-user manually types the provided verification URI and
 	  authenticates with the authorization server.  The authorization
@@ -321,57 +330,114 @@
 	  end-user to return to the device for further instructions.
 	</t> 
 
-      </section> 
+</section> 
 
 
-      <section anchor="TokenRequest" title="Client Requests Access Token"> 
+<section title="Device Token Request"> 
+  <t>As the user is authorizing the request on secondary device which may not
+    have a way to communicate to the original device, the client polls the
+    token endpoint until the end-user grants or denies the request, or the
+    device code expires.</t>
 
-	<t>
-	  Since the client is unable to receive incoming requests from the
-	  authorization server, it polls the authorization server repeatedly
-	  until the end-user grants or denies the request, or the verification
-	  code expires.
-	</t>
+  <t>The client polls at reasonable interval which MUST NOT exceed the
+    minimum interval provided by the authorization server via the "interval"
+    parameter (if provided).
+  </t>
 
-	<t>
-	  The client makes the following request at an arbitrary but reasonable
-	  interval which MUST NOT exceed the minimum interval rate provided by
-	  the authorization server (if present via the "interval" parameter).
-	  Alternatively, the client MAY provide a user interface for the end-
-	  user to manually inform it when authorization was granted.
-	</t>
+  <t>
+   The client makes a request to the token endpoint by sending the
+   following parameters using the "application/x-www-form-urlencoded"
+   format per Appendix B with a character encoding of UTF-8 in the HTTP
+   request entity-body:
 
-	<t>
-	  The client requests an access token by making an HTTP "POST" request
-	  to the token endpoint as described in Section 4.1.1 of
-	  <xref target="RFC6749"/> .  The "redirect_uri" parameter is NOT REQUIRED as
-	  part of this request.
-	</t>
+  <list style="hanging"> 
 
-      </section> 
+  <t hangText="grant_type"><vspace blankLines="1"/>
+   
+           REQUIRED.  Value MUST be set to "device_code".</t>
 
-      <section anchor="Errors" title="Additional Error Responses">
+  <t hangText="device_code"> <vspace blankLines="1"/>
+           REQUIRED.  The device verification code, "device_code" from the
+           Device Authorization Response, defined in Section 3.2.</t>
 
-	<t>
-	  The following error responses are defined in addition to those within
-	  Section 4.2.2.1. of <xref target="RFC6749"/>: 
+  <t hangText="client_id"> <vspace blankLines="1"/>
+           REQUIRED, if the client is not authenticating with the
+           authorization server as described in Section 3.2.1. of 
+           <xref target="RFC6749"/></t>
 
-	  <list style="hanging"> 
+  </list> 
+  </t> 
 
-	    <t hangText="authorization_pending"> <vspace blankLines="1"/>
+  <t>For example, the client makes the following HTTPS request (line
+     breaks are for display purposes only):
 
-	    The authorization request is still pending as the end-user
-	    hasn't yet visited the authorization server and entered their
-	    verification code.</t>
+  <figure><artwork><![CDATA[
 
-	    <t hangText="slow_down"> <vspace blankLines="1"/>
-	    The client is polling too quickly and should back off at a
-	    reasonable rate.</t>
+   POST /token HTTP/1.1
+   Host: server.example.com
+   Content-Type: application/x-www-form-urlencoded
 
-	  </list> 
-	</t>
+   grant_type=device_code&device_code=pxDoJ3Bt9WVMTXfDATLkxJ9u
+   &client_id=459691054427
 
-      </section> 
+]]></artwork></figure>
+  </t> 
+
+  <t>
+     Note that unlike the Access Token Request for the 
+     authorization_code grant type defined in Section 4.1.3 of <xref target="RFC6749"/>
+     the "redirect_uri" parameter is NOT REQUIRED as
+     part of this request.
+  </t>
+
+  <t>
+     If the client was issued client
+     credentials (or assigned other authentication requirements), the
+     client MUST authenticate with the authorization server as described
+     in Section 3.2.1 of <xref target="RFC6749"/>.
+  </t>
+
+</section> 
+
+<section title="Device Token Response"> 
+  <t>If the user has approved the grant, the token endpoint responds with
+  a success response defined in Section 5.1 of <xref target="RFC6749"/>
+  otherwise, it responds with an error, as defined in Section 5.2 of <xref target="RFC6749"/>.
+  </t>
+
+  <t> In addition to the error codes defined in Section 5.2 of
+    <xref target="RFC6749"/>, the following error codes
+    are specific for the device flow: 
+
+  <list style="hanging"> 
+
+  <t hangText="authorization_pending"> <vspace blankLines="1"/>
+
+           The authorization request is still pending as the end-user
+           hasn't yet visited the authorization server and entered their
+           verification code.</t>
+
+  <t hangText="slow_down"> <vspace blankLines="1"/>
+           The client is polling too quickly and should back off at a
+           reasonable rate.</t>
+
+  <t hangText="expired_token"> <vspace blankLines="1"/>
+           The device_code has expired. The client will need to make a new
+           Device Authorization Request.</t>
+
+  </list> 
+  </t>
+
+  <t>The error code "authorization_pending" and "slow_down" are considered
+    soft errors. The the client should continue to poll when
+    receiving "authorization_pending"
+    errors, reducing the interval if a "slow_down" error is received.
+    Other error codes are considered hard errors, the client should stop polling
+    and react accordingly, for example, by displaying an error to the user.
+  </t>
+
+  </section>
+
 
     </section> 
 
