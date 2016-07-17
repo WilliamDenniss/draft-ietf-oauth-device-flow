@@ -333,7 +333,7 @@
 </section> 
 
 
-<section title="Device Token Request"> 
+<section title="Device Token Request" > 
   <t>As the user is authorizing the request on secondary device which may not
     have a way to communicate to the original device, the client polls the
     token endpoint until the end-user grants or denies the request, or the
@@ -354,7 +354,8 @@
 
   <t hangText="grant_type"><vspace blankLines="1"/>
    
-           REQUIRED.  Value MUST be set to "device_code".</t>
+           REQUIRED.  Value MUST be set to
+           "urn:ietf:params:oauth:grant-type:device_code".</t>
 
   <t hangText="device_code"> <vspace blankLines="1"/>
            REQUIRED.  The device verification code, "device_code" from the
@@ -377,7 +378,7 @@
    Host: server.example.com
    Content-Type: application/x-www-form-urlencoded
 
-   grant_type=device_code&device_code=pxDoJ3Bt9WVMTXfDATLkxJ9u
+   grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Adevice_code&device_code=pxDoJ3Bt9WVMTXfDATLkxJ9u
    &client_id=459691054427
 
 ]]></artwork></figure>
@@ -399,7 +400,7 @@
 
 </section> 
 
-<section title="Device Token Response"> 
+<section title="Device Token Response" anchor="TokenResponse"> 
   <t>If the user has approved the grant, the token endpoint responds with
   a success response defined in Section 5.1 of <xref target="RFC6749"/>
   otherwise, it responds with an error, as defined in Section 5.2 of <xref target="RFC6749"/>.
@@ -441,6 +442,82 @@
 
     </section> 
 
+    <section anchor="IANA" title="IANA Considerations">
+
+      <section anchor="URIReg" title="OAuth URI Registration">
+
+        <t>
+          This specification registers the following values in the
+          IANA "OAuth URI" registry
+          <xref target="IANA.OAuth.Parameters"/>
+          established by <xref target="RFC6755"/>.
+        </t>
+
+        <section title="Registry Contents" anchor="URIContents">
+
+          <t>
+            <?rfc subcompact="yes"?>
+            <list style="symbols">
+              <t>URN: urn:ietf:params:oauth:grant-type:device_code</t>
+              <t>Common Name: Device flow grant type for OAuth 2.0</t>
+              <t>Change controller: IESG</t>
+              <t>Specification Document: <xref target="AuthorizationRequest"/> of [[ this specification ]]</t>
+            </list>
+          </t>
+
+          <?rfc subcompact="no"?>
+
+        </section>
+      </section>
+
+      <section anchor="ErrorReg" title="OAuth Extensions Error Registration">
+
+        <t>
+          This specification registers the following values in the
+          IANA "OAuth Extensions Error Registry" registry
+          <xref target="IANA.OAuth.Parameters"/>
+          established by <xref target="RFC6749"/>.
+        </t>
+
+        <section title="Registry Contents" anchor="ErrorContents">
+          <t>
+            <?rfc subcompact="yes"?>
+            <list style="symbols">
+              <t>Error name: authorization_pending</t>
+              <t>Error usage location: Token endpoint response</t>
+              <t>Related protocol extension: [[ this specification ]]</t>
+              <t>Change controller: IETF</t>
+              <t>Specification Document: <xref target="TokenResponse"/> of [[ this specification ]]</t>
+            </list>
+          </t>
+          <t>
+            <?rfc subcompact="yes"?>
+            <list style="symbols">
+              <t>Error name: slow_down</t>
+              <t>Error usage location: Token endpoint response </t>
+              <t>Related protocol extension: [[ this specification ]]</t>
+              <t>Change controller: IETF</t>
+              <t>Specification Document: <xref target="TokenResponse"/> of [[ this specification ]]</t>
+            </list>
+          </t>
+          <t>
+            <?rfc subcompact="yes"?>
+            <list style="symbols">
+              <t>Error name: expired_token</t>
+              <t>Error usage location: Token endpoint response </t>
+              <t>Related protocol extension: [[ this specification ]]</t>
+              <t>Change controller: IETF</t>
+              <t>Specification Document: <xref target="TokenResponse"/> of [[ this specification ]]</t>
+            </list>
+          </t>
+
+          <?rfc subcompact="no"?>
+
+        </section>
+      </section>
+
+    </section>
+
     <section anchor="Security" title="Security Considerations">
 
       <t>
@@ -454,8 +531,18 @@
   <back>
 
     <references title='Normative References'>
-      <?rfc include="reference.RFC.6749"?>
       <?rfc include="reference.RFC.2119"?>
+      <?rfc include="reference.RFC.6749"?>
+      <?rfc include="reference.RFC.6755"?>
+      <reference anchor="IANA.OAuth.Parameters" target="http://www.iana.org/assignments/oauth-parameters">
+        <front>
+          <title>OAuth Parameters</title>
+          <author>
+            <organization>IANA</organization>
+          </author>
+    <date/>
+        </front>
+      </reference>
     </references>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
