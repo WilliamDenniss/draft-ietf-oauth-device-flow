@@ -40,16 +40,16 @@
       </address>
     </author>
 
-    <author initials="S." surname="Myrseth" fullname="Stein Myrseth">
+    <author initials="S.P." surname="Moffatt" fullname="Simon P. Moffatt">
       <organization>ForgeRock</organization>
       <address>
         <postal>
-          <street>Lysaker torg 2</street>
-          <city>Lysaker</city>
-          <code>1366</code>
-          <country>NORWAY</country>
+          <street>4th Floor, Broad Quay House, Prince Street</street>
+          <city>Bristol</city>
+          <code>BS1 4DJ</code>
+          <country>UK</country>
         </postal>
-        <email>stein.myrseth@forgerock.com</email>
+        <email>simon.moffatt@forgerock.com</email>
       </address>
     </author>
 
