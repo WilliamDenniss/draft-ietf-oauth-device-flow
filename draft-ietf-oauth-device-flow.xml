@@ -19,7 +19,7 @@
 <rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-04" category="std">
 
   <front>
-  <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 for Browserless and Input Constrained Devices</title>   
+  <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow for Browserless and Input Constrained Devices</title>
 
    <author fullname="William Denniss" initials="W."
             surname="Denniss">
@@ -36,19 +36,6 @@
         <facsimile/>
         <email>wdenniss@google.com</email>
         <uri>http://wdenniss.com/device-flow</uri>
-      </address>
-    </author>
-
-    <author initials="S." surname="Myrseth" fullname="Stein Myrseth">
-      <organization>ForgeRock</organization>
-      <address>
-        <postal>
-          <street>Lysaker torg 2</street>
-          <city>Lysaker</city>
-          <code>1366</code>
-          <country>NORWAY</country>
-        </postal>
-        <email>stein.myrseth@forgerock.com</email>
       </address>
     </author>
 
@@ -84,17 +71,33 @@
       </address>
     </author>
 
+    <author initials="S.P." surname="Moffatt" fullname="Simon P. Moffatt">
+      <organization>ForgeRock</organization>
+      <address>
+        <postal>
+          <street>4th Floor, Broad Quay House, Prince Street</street>
+          <city>Bristol</city>
+          <code>BS1 4DJ</code>
+          <country>UK</country>
+        </postal>
+        <email>simon.moffatt@forgerock.com</email>
+      </address>
+    </author>
 
     <date year="2017" month="February" day="20"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
+
     <keyword>OAuth</keyword>
     <keyword>Security</keyword>
     <keyword>Authorization</keyword>
+    <keyword>Smart Objects</keyword>
     <keyword>IoT</keyword>
     <keyword>Internet of Things</keyword>
-    <keyword>Smart Objects</keyword>
+    <keyword>Internet of Things Security</keyword>
+    <keyword>OAuth for Constrained Devices</keyword>
+    <keyword>OAuth IoT Security</keyword>
 
     <abstract>
       <t>
@@ -104,8 +107,8 @@
         connection, but don't have an easy input method (such as a smart TV,
         media console, picture frame, or printer), or lack a suitable browser
         for a more traditional OAuth flow. This authorization flow instructs the
-        user to action the authorization request on a secondary device, such as
-        a smartphone. There is no requirement communication between the
+        user to perform the authorization request on a secondary device, such as
+        a smartphone. There is no requirement for communication between the
         constrained device and the user's secondary device.
       </t>
     </abstract>
@@ -122,13 +125,13 @@
         connection, but don't have an easy input method (such as a smart TV,
         media console, picture frame, or printer), or lack a suitable browser
         for a more traditional OAuth flow. This authorization flow instructs the
-        user to action the authorization request on a secondary device, such as
+        user to perform the authorization request on a secondary device, such as
         a smartphone.
       </t>
 
       <t>
         The device flow is not intended to replace browser-based OAuth in native
-        apps on capable devices (like smartphones), those apps should follow
+        apps on capable devices (like smartphones). Those apps should follow
         the practices specified in OAuth 2.0 for Native Apps
         <xref target="I-D.ietf-oauth-native-apps">OAuth 2.0 for Native Apps</xref>.
       </t>
@@ -137,9 +140,9 @@
         The only requirements to use this flow are that the device is connected
         to the internet, and able to make outbound HTTPS requests, be able to
         display or otherwise communicate a URI and code sequence to the user,
-        and that the user has a secondary device (e.g. personal computer or
+        and that the user has a secondary device (e.g., personal computer or
         smartphone) from which to process the request. There is no requirement
-        for two-way communication between the oauth client and the user-agent,
+        for two-way communication between the OAuth client and the user-agent,
         enabling a broad range of use-cases.
       </t>
 
@@ -224,15 +227,15 @@
       <t>
 	<list style="hanging"> 
 
-	  <t hangText="Device Endpoint:"><vspace blankLines="1"/>
+	  <t hangText="Device Endpoint:"><vspace/>
 	  The authorization server's endpoint capable of issuing
 	  verification codes, user codes, and verification URLs.
 	  </t> 
 
-	  <t hangText="Device Verification Code:"><vspace blankLines="1"/>
+	  <t hangText="Device Verification Code:"><vspace/>
 	  A short-lived token representing an authorization session.</t>
 
-	  <t hangText="End-User Verification Code:"><vspace blankLines="1"/>
+	  <t hangText="End-User Verification Code:"><vspace/>
 	  A short-lived token which the device displays to the end user,
 	  is entered by the end-user on the authorization server, and is
 	  thus used to bind the device to the end-user.
@@ -253,14 +256,14 @@
 
 	<t>
 	  <list style="hanging"> 
-	    <t hangText="response_type"><vspace blankLines="1"/>
+	    <t hangText="response_type"><vspace/>
 	    REQUIRED.  The parameter value MUST be set to "device_code".</t> 
 
-	    <t hangText="client_id"><vspace blankLines="1"/>
+	    <t hangText="client_id"><vspace/>
 	    REQUIRED.  The client identifier as described in Section 2.2 of
 	    <xref target="RFC6749"/>.</t> 
 
-	    <t hangText="scope"> <vspace blankLines="1"/>
+	    <t hangText="scope"> <vspace/>
 	    OPTIONAL.  The scope of the access request as described by
 	    Section 3.3 of <xref target="RFC6749"/>.</t> 
 	  </list> 
@@ -292,23 +295,22 @@
 	<t>
 	  <list style="hanging"> 
 
-	    <t hangText="device_code"><vspace blankLines="1"/>
-	    
+	    <t hangText="device_code"><vspace/>
 	    REQUIRED.  The verification code.</t>
 
-	    <t hangText="user_code"> <vspace blankLines="1"/>
+	    <t hangText="user_code"> <vspace/>
 	    REQUIRED.  The end-user verification code.</t>
 
-	    <t hangText="verification_uri"> <vspace blankLines="1"/>
+	    <t hangText="verification_uri"> <vspace/>
 	    REQUIRED.  The end-user verification URI on the authorization
 	    server.  The URI should be short and easy to remember as end-
 	    users will be asked to manually type it into their user-agent.</t>
 
-	    <t hangText="expires_in"> <vspace blankLines="1"/>
+	    <t hangText="expires_in"> <vspace/>
 	    OPTIONAL.  The duration in seconds of the verification code
 	    lifetime.</t>
 
-	    <t hangText="interval"> <vspace blankLines="1"/>
+	    <t hangText="interval"> <vspace/>
 	    OPTIONAL.  The minimum amount of time in seconds that the
 	    client SHOULD wait between polling requests to the token
 	    endpoint.</t> 
@@ -340,8 +342,8 @@
     After receiving a successful Authorization Response, the client displays or
     otherwise communicates the <spanx style="verb">user_code</spanx> and the
     <spanx style="verb">verification_uri</spanx> to the end-user, and instructs
-    the them to visit the URI in a user agent on a secondary device
-    (for example, in browser on their mobile phone), and enter the user code.
+    them to visit the URI in a user agent on a secondary device
+    (for example, in a browser on their mobile phone), and enter the user code.
   </t>
 	
 	<t>
@@ -349,7 +351,7 @@
     and authenticates with the authorization server.  The authorization server
     prompts the end-user to identify the device authorization session by
     entering the <spanx style="verb">user_code</spanx> provided by the client.
-    The authorization server SHOULD then inform the user about the action they
+    The authorization server should then inform the user about the action they
     are undertaking, and ask them to approve or deny the request. Once the user
     interaction is complete, the server informs the user to return to their
     device.
@@ -357,7 +359,7 @@
 
   <t>
     During this user interaction, the device continuously polls the token
-    endpoint, with the <spanx style="verb">device_code</spanx>, as detailed in
+    endpoint with the <spanx style="verb">device_code</spanx>, as detailed in
     <xref target="TokenRequest"/>, until the user completes the interaction,
     the code expires, or another error occurs.
   </t>
@@ -400,16 +402,16 @@
 
   <t>
   <list style="hanging"> 
-    <t hangText="grant_type"><vspace blankLines="1"/>
+    <t hangText="grant_type"><vspace/>
           REQUIRED.  Value MUST be set to
           <spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx>.</t>
 
-    <t hangText="device_code"> <vspace blankLines="1"/>
+    <t hangText="device_code"> <vspace/>
            REQUIRED.  The device verification code, <spanx style="verb">device_code</spanx> from the
-           Device Authorization Response, defined in Section 3.2.</t>
+           Device Authorization Response, defined in <xref target="AuthorizationResponse"/>.</t>
  
  
-  <t hangText="client_id"> <vspace blankLines="1"/>
+  <t hangText="client_id"> <vspace/>
            REQUIRED, if the client is not authenticating with the
            authorization server as described in Section 3.2.1. of 
            <xref target="RFC6749"/>.</t>
@@ -454,7 +456,7 @@
 <section title="Device Access Token Response" anchor="TokenResponse"> 
 
   <t>If the user has approved the grant, the token endpoint responds with
-  a success response defined in Section 5.1 of <xref target="RFC6749"/>,
+  a success response defined in Section 5.1 of <xref target="RFC6749"/>;
   otherwise it responds with an error, as defined in Section 5.2 of 
   <xref target="RFC6749"/>. 
   </t>
@@ -465,17 +467,17 @@
 
   <list style="hanging"> 
 
-  <t hangText="authorization_pending"> <vspace blankLines="1"/>
+  <t hangText="authorization_pending"> <vspace/>
 
            The authorization request is still pending as the end-user
-           hasn't yet completed the User Interaction steps (<xref target="UserInstruction" />). The client should repeat
+           hasn't yet completed the user interaction steps (<xref target="UserInstruction" />). The client should repeat
            the Access Token Request to the token endpoint.</t>
 
-  <t hangText="slow_down"> <vspace blankLines="1"/>
+  <t hangText="slow_down"> <vspace/>
            The client is polling too quickly and should back off at a
            reasonable rate.</t>
 
-  <t hangText="expired_token"> <vspace blankLines="1"/>
+  <t hangText="expired_token"> <vspace/>
            The <spanx style="verb">device_code</spanx> has expired. The client will need to make a new
            Device Authorization Request.</t>
 
@@ -486,8 +488,8 @@
     <spanx style="verb">slow_down</spanx> are considered soft errors. The client
     should continue to poll the token endpoint by repeating the Device
     Token Request (<xref target="TokenRequest" />) when receiving soft errors,
-    increasing the poll interval if a <spanx style="verb">slow_down</spanx> error
-    is received. Other error codes are considered hard errors, the client should
+    increasing the time between polls if a <spanx style="verb">slow_down</spanx> error
+    is received. Other error codes are considered hard errors; the client should
     stop polling and react accordingly, for example, by displaying an error to
     the user.
   </t>
@@ -501,12 +503,12 @@
   <t>
   The assumption of this specification is that the secondary device the
   user is authorizing the request on does not have a way to communicate back
-  to the OAuth client. That only a one-way channel is required makes this flow
-  useful in many scenarios such as a HTML application on TV that can only 
-  make outbound requests. If a return channel were to exist for the chosen user
+  to the OAuth client. Only a one-way channel is required to make this flow
+  useful in many scenarios. For example, an HTML application on a TV that can
+  only make outbound requests. If a return channel were to exist for the chosen user
   interaction interface, then the device MAY wait until notified on that channel
   that the user has completed the action before initiating the token request.
-  Such behavior however is outside the scope of this specification.
+  Such behavior is, however, outside the scope of this specification.
   </t>
 
   </section>
@@ -553,12 +555,12 @@
         <section title="Remote Phishing" anchor="RemotePhishing">
           <t>
           It is possible for the device flow to be initiated on a device in
-          an attacker's possession. For example, they might send an email
+          an attacker's possession. For example, the attacker they might send an email
           instructing the target user to visit the verification URL and
-          enter the user code. To mitigate such an attack it is RECOMMENDED
-          during the User Instruction (<xref target="UserInstruction"/>)
-          to inform the user that they are authorizing a device, and to confirm
-          that the device is in their possession.
+          enter the user code. To mitigate such an attack it is RECOMMENDED to
+          inform the user that they are authorizing a device during the user
+          interaction step (see <xref target="UserInstruction"/>), and to
+          confirm that the device is in their possession.
           </t>
           <t>
           The user code needs to have a long enough lifetime to be useable (allowing
@@ -584,8 +586,8 @@
           <t>
           There is no requirement that the user code be displayed by the
           device visually. Other methods of one-way communication can potentially be
-          used, such as text-to-speech audio, or Bluetooth LE. To mitigate an attack
-          where a malicious user can bootstrap their credentials on a device
+          used, such as text-to-speech audio, or Bluetooth Low Energy. To mitigate an attack
+          in which a malicious user can bootstrap their credentials on a device
           not in their control, it is RECOMMENDED that any chosen communication 
           channel only be accessible by people in close proximity. E.g., users
           who can see, or hear the device, or within range of a short-range
@@ -612,7 +614,7 @@
         <t>
           One way to improve input speed is to restrict the character set to
           case-insensitive A-Z characters, with no digits. These characters can
-          typically be input on a mobile keyboard without using modifier keys.
+          typically be entered on a mobile keyboard without using modifier keys.
           Further removing the I and O characters due to potential confusion
           with numbers results in the base-24 character set:
           <spanx style="verb">ABCDEFGHJKLMNPQRSTUVWXYZ</spanx>. Dashes or other
