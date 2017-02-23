@@ -103,7 +103,7 @@
       <t>
         This OAuth 2.0 authorization flow for browserless and input constrained
         devices, often referred to as the device flow, enables OAuth clients to
-        request user authorization from devices that have an internet
+        request user authorization from devices that have an Internet
         connection, but don't have an easy input method (such as a smart TV,
         media console, picture frame, or printer), or lack a suitable browser
         for a more traditional OAuth flow. This authorization flow instructs the
@@ -138,7 +138,7 @@
 
       <t>
         The only requirements to use this flow are that the device is connected
-        to the internet, and able to make outbound HTTPS requests, be able to
+        to the Internet, and able to make outbound HTTPS requests, be able to
         display or otherwise communicate a URI and code sequence to the user,
         and that the user has a secondary device (e.g., personal computer or
         smartphone) from which to process the request. There is no requirement
@@ -557,14 +557,14 @@
           It is possible for the device flow to be initiated on a device in
           an attacker's possession. For example, the attacker they might send an email
           instructing the target user to visit the verification URL and
-          enter the user code. To mitigate such an attack it is RECOMMENDED to
+          enter the user code. To mitigate such an attack, it is RECOMMENDED to
           inform the user that they are authorizing a device during the user
           interaction step (see <xref target="UserInstruction"/>), and to
           confirm that the device is in their possession.
           </t>
           <t>
           The user code needs to have a long enough lifetime to be useable (allowing
-          the user to retrieve their secondary device, navigate to the verification URI, login, etc),
+          the user to retrieve their secondary device, navigate to the verification URI, login, etc.),
           but should be sufficiently short to limit the
           usability of a code obtained for phishing. This doesn't prevent a
           phisher presenting a fresh token, particularly in the case they
@@ -604,7 +604,7 @@
       
       <section anchor="UserCodeRecommendations" title="User Code Recommendations">
         <t>
-          For many users, their nearest internet-connected device will be their
+          For many users, their nearest Internet-connected device will be their
           mobile phone, and typically these devices offer input methods that are
           more time consuming than a computer keyboard to change the case or
           input numbers. To improve usability (improving entry speed, and
