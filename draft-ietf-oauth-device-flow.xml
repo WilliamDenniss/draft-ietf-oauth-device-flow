@@ -71,19 +71,6 @@
       </address>
     </author>
 
-    <author initials="S.P." surname="Moffatt" fullname="Simon P. Moffatt">
-      <organization>ForgeRock</organization>
-      <address>
-        <postal>
-          <street>4th Floor, Broad Quay House, Prince Street</street>
-          <city>Bristol</city>
-          <code>BS1 4DJ</code>
-          <country>UK</country>
-        </postal>
-        <email>simon.moffatt@forgerock.com</email>
-      </address>
-    </author>
-
     <date year="2017" month="February" day="20"/>
 
     <area>Security Area</area>
@@ -768,6 +755,14 @@
 	work on the initial content of this specification through 2010.
       </t>
 
+      <t>
+        The following individuals contributed ideas, feedback, and wording
+        that shaped and formed the final specification:
+      </t>
+      <t>
+        Roshni Chandrashekhar, Marius Scurtescu, Breno de Medeiros,
+        Stein Myrseth, and Simon Moffatt.
+      </t>
     </section>
 
     <section anchor="History" title="Document History">
