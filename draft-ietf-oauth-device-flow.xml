@@ -71,7 +71,7 @@
       </address>
     </author>
 
-    <date year="2017" month="February" day="20"/>
+    <date year="2017" month="February" day="27"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -372,7 +372,6 @@
     <spanx style="verb">verification_uri</spanx> is outside the scope of this
     specification.
   </t>
-
 
 </section> 
 
