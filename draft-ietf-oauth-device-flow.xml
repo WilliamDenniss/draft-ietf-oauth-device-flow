@@ -71,7 +71,7 @@
       </address>
     </author>
 
-    <date year="2017" month="March" day="11"/>
+    <date year="2017" month="March" day="12"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -238,8 +238,9 @@
 
 	<t>The client initiates the flow by requesting a set of verification
 	codes from the authorization server by making an HTTP "POST" request
-	to the device authorization endpoint.  The client constructs a request URI by
-	adding the following parameters to the request:</t>
+	to the device authorization endpoint.  The client constructs the request
+  with the following parameters, encoded with the
+  <spanx style="verb">application/x-www-form-urlencoded</spanx> content type:</t>
 
 	<t>
 	  <list style="hanging"> 
@@ -256,6 +257,8 @@
 	<t>
 	  For example, the client makes the following HTTPS request (line
 	  breaks are for display purposes only):
+  </t>
+  <t>
 	  <figure><artwork><![CDATA[
    POST /device_authorization HTTP/1.1
    Host: server.example.com
@@ -304,6 +307,8 @@
 
 	<t>
 	  For example:
+  </t>
+  <t>
 	  <figure><artwork><![CDATA[
    HTTP/1.1 200 OK
    Content-Type: application/json
@@ -407,7 +412,8 @@
 
   <t>For example, the client makes the following HTTPS request (line
      breaks are for display purposes only):
-
+  </t>
+  <t>
   <figure><artwork><![CDATA[
 
    POST /token HTTP/1.1
@@ -789,6 +795,22 @@
       <?rfc subcompact="yes"?>
       <t>
 	[[ to be removed by the RFC Editor before publication as an RFC ]]
+      </t>
+
+      <t>
+        -05
+        <list style='symbols'>
+          <t>
+            response_type parameter removed from authorization request.
+          </t>
+          <t>
+            Added option for clients to include the user_code on the
+            verification URI.
+          </t>
+          <t>
+            Clarified token expiry, and other nits.
+          </t>
+        </list>
       </t>
 
       <t>
