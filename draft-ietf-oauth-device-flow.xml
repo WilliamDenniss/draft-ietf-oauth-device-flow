@@ -16,7 +16,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-04" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-05" category="std">
 
   <front>
   <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow for Browserless and Input Constrained Devices</title>
@@ -71,7 +71,7 @@
       </address>
     </author>
 
-    <date year="2017" month="February" day="27"/>
+    <date year="2017" month="March" day="11"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -243,9 +243,6 @@
 
 	<t>
 	  <list style="hanging"> 
-	    <t hangText="response_type"><vspace/>
-	    REQUIRED.  The parameter value MUST be set to "device_code".</t> 
-
 	    <t hangText="client_id"><vspace/>
 	    REQUIRED.  The client identifier as described in Section 2.2 of
 	    <xref target="RFC6749"/>.</t> 
@@ -264,7 +261,7 @@
    Host: server.example.com
    Content-Type: application/x-www-form-urlencoded
 
-   response_type=device_code&client_id=459691054427
+   client_id=459691054427
 ]]></artwork></figure>
 	</t> 
 
@@ -273,17 +270,17 @@
 <section anchor="AuthorizationResponse" title="Device Authorization Response">
 
 	<t>
-	  In response, the authorization server generates a verification code
-	  and an end-user code and includes them in the HTTP response body
-	  using the "application/json" format with a 200 (OK) status code.  The
-	  response contains the following parameters:
-	</t>
+	  In response, the authorization server generates a device verification code
+	  and an end-user code, that are valid for a limited time, and includes them
+    in the HTTP response body using the "application/json" format with a 200 (OK)
+	  status code. The response contains the following parameters:
+  </t>
 
 	<t>
 	  <list style="hanging"> 
 
 	    <t hangText="device_code"><vspace/>
-	    REQUIRED.  The verification code.</t>
+	    REQUIRED.  The device verification code.</t>
 
 	    <t hangText="user_code"> <vspace/>
 	    REQUIRED.  The end-user verification code.</t>
@@ -294,8 +291,9 @@
 	    users will be asked to manually type it into their user-agent.</t>
 
 	    <t hangText="expires_in"> <vspace/>
-	    OPTIONAL.  The duration in seconds of the verification code
-	    lifetime.</t>
+	    OPTIONAL.  The lifetime in seconds of the
+	    <spanx style="verb">device_code</spanx> and 
+	    <spanx style="verb">user_code</spanx>.</t>
 
 	    <t hangText="interval"> <vspace/>
 	    OPTIONAL.  The minimum amount of time in seconds that the
@@ -332,7 +330,7 @@
     them to visit the URI in a user agent on a secondary device
     (for example, in a browser on their mobile phone), and enter the user code.
   </t>
-	
+
 	<t>
 	  The end-user navigates to the <spanx style="verb">verification_uri</spanx>
     and authenticates with the authorization server.  The authorization server
@@ -480,6 +478,12 @@
     is received. Other error codes are considered hard errors; the client should
     stop polling and react accordingly, for example, by displaying an error to
     the user.
+  </t>
+
+  <t>
+    If the verification codes have expired, the server SHOULD respond with the
+    standard OAuth error <spanx style="verb">invalid_grant</spanx>. Clients
+    MAY then choose to start a new device authorization session.
   </t>
 
   <t>
@@ -777,7 +781,7 @@
       </t>
       <t>
         Roshni Chandrashekhar, Marius Scurtescu, Breno de Medeiros,
-        Stein Myrseth, Simon Moffatt, and Brian Campbell, and James Manger.
+        Stein Myrseth, Simon Moffatt, and Brian Campbell, James Manger, and Justin Richer.
       </t>
     </section>
 
