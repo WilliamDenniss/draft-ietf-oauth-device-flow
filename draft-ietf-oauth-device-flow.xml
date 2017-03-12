@@ -345,7 +345,21 @@
 	</t>
 
   <t>
-    During this user interaction, the device continuously polls the token
+    Clients MAY additionally present the verification URI in a non-textual
+    manner using any method that results in a the browser being opened with the URI,
+    like QR codes, or NFC, to save the user typing the URI.
+    For such shortcuts, the client MAY include the user code with the parameter
+    <spanx style="verb">user_code</spanx> on the verification URI, as a hint
+    for the authorization server.
+    The server MAY accept this hint, and skip
+    the user code input step, however the client MUST still display the user code
+    as the server MAY also ignore the hint or require
+    visual confirmation. Clients SHOULD still display the unmodified
+    verification URI for users not able to use such a shortcut.
+  </t>
+
+  <t>
+    During the user interaction, the device continuously polls the token
     endpoint with the <spanx style="verb">device_code</spanx>, as detailed in
     <xref target="TokenRequest"/>, until the user completes the interaction,
     the code expires, or another error occurs.
@@ -359,18 +373,6 @@
     the interaction. Other than that, the exact sequence and implementation of
     the user interaction is up to the authorization server, and is out of scope
     of this specification.
-  </t>
-  <t>
-    Devices and authorization servers MAY negotiate an alternative code
-    transmission and user interaction method in addition to the one described
-    here. Such an alternative user interaction flow could obviate the need for a
-    browser and manual input of the code, for example, by using Bluetooth to
-    transmit the code to the authorization server's companion app. Such
-    interaction methods can utilize this protocol, as ultimately, the user just
-    needs to identify the authorization session to the authorization server,
-    however user interaction other than via the
-    <spanx style="verb">verification_uri</spanx> is outside the scope of this
-    specification.
   </t>
 
 </section> 
@@ -616,6 +618,22 @@
           characters of different case, the comparison should be case insensitive.
         </t>
       </section>
+
+      <section anchor="AdvancedCommunication"
+        title="Non-Browser User Interaction">
+        <t>
+          Devices and authorization servers MAY negotiate an alternative code
+          transmission and user interaction method in addition to the one described
+          in <xref target="UserInstruction" />. Such an alternative user interaction flow could obviate the need for a
+          browser and manual input of the code, for example, by using Bluetooth to
+          transmit the code to the authorization server's companion app. Such
+          interaction methods can utilize this protocol, as ultimately, the user just
+          needs to identify the authorization session to the authorization server,
+          however user interaction other than via the
+          <spanx style="verb">verification_uri</spanx> is outside the scope of this
+          specification.
+        </t>
+      </section>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -759,7 +777,7 @@
       </t>
       <t>
         Roshni Chandrashekhar, Marius Scurtescu, Breno de Medeiros,
-        Stein Myrseth, Simon Moffatt, and Brian Campbell.
+        Stein Myrseth, Simon Moffatt, and Brian Campbell, and James Manger.
       </t>
     </section>
 
