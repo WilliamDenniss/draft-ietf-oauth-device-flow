@@ -266,7 +266,13 @@
 
    client_id=459691054427
 ]]></artwork></figure>
-	</t> 
+	</t>
+  <t>
+   Parameters sent without a value MUST be treated as if they were
+   omitted from the request.  The authorization server MUST ignore
+   unrecognized request parameters.  Request and response parameters
+   MUST NOT be included more than once.
+  </t>
 
 </section>
 
