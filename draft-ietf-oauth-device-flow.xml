@@ -214,8 +214,8 @@
       <t>
 	<list style="hanging"> 
 
-	  <t hangText="Device Endpoint:"><vspace/>
-	  The authorization server's endpoint capable of issuing
+	  <t hangText="Device Authorization Endpoint:"><vspace/>
+	  The authorization server's endpoint capable of issuing device
 	  verification codes, user codes, and verification URLs.
 	  </t> 
 
@@ -759,7 +759,7 @@
       </t>
       <t>
         Roshni Chandrashekhar, Marius Scurtescu, Breno de Medeiros,
-        Stein Myrseth, and Simon Moffatt.
+        Stein Myrseth, Simon Moffatt, and Brian Campbell.
       </t>
     </section>
 
