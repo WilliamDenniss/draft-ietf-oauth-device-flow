@@ -16,7 +16,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-04" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-05" category="std">
 
   <front>
   <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow for Browserless and Input Constrained Devices</title>
@@ -71,7 +71,7 @@
       </address>
     </author>
 
-    <date year="2017" month="February" day="27"/>
+    <date year="2017" month="March" day="13"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -214,8 +214,8 @@
       <t>
 	<list style="hanging"> 
 
-	  <t hangText="Device Endpoint:"><vspace/>
-	  The authorization server's endpoint capable of issuing
+	  <t hangText="Device Authorization Endpoint:"><vspace/>
+	  The authorization server's endpoint capable of issuing device
 	  verification codes, user codes, and verification URLs.
 	  </t> 
 
@@ -238,14 +238,12 @@
 
 	<t>The client initiates the flow by requesting a set of verification
 	codes from the authorization server by making an HTTP "POST" request
-	to the device endpoint.  The client constructs a request URI by
-	adding the following parameters to the request:</t>
+	to the device authorization endpoint.  The client constructs the request
+  with the following parameters, encoded with the
+  <spanx style="verb">application/x-www-form-urlencoded</spanx> content type:</t>
 
 	<t>
 	  <list style="hanging"> 
-	    <t hangText="response_type"><vspace/>
-	    REQUIRED.  The parameter value MUST be set to "device_code".</t> 
-
 	    <t hangText="client_id"><vspace/>
 	    REQUIRED.  The client identifier as described in Section 2.2 of
 	    <xref target="RFC6749"/>.</t> 
@@ -259,31 +257,39 @@
 	<t>
 	  For example, the client makes the following HTTPS request (line
 	  breaks are for display purposes only):
+  </t>
+  <t>
 	  <figure><artwork><![CDATA[
-   POST /token HTTP/1.1
+   POST /device_authorization HTTP/1.1
    Host: server.example.com
    Content-Type: application/x-www-form-urlencoded
 
-   response_type=device_code&client_id=459691054427
+   client_id=459691054427
 ]]></artwork></figure>
-	</t> 
+	</t>
+  <t>
+   Parameters sent without a value MUST be treated as if they were
+   omitted from the request.  The authorization server MUST ignore
+   unrecognized request parameters.  Request and response parameters
+   MUST NOT be included more than once.
+  </t>
 
 </section>
 
 <section anchor="AuthorizationResponse" title="Device Authorization Response">
 
 	<t>
-	  In response, the authorization server generates a verification code
-	  and an end-user code and includes them in the HTTP response body
-	  using the "application/json" format with a 200 (OK) status code.  The
-	  response contains the following parameters:
-	</t>
+	  In response, the authorization server generates a device verification code
+	  and an end-user code that are valid for a limited time, and includes them
+    in the HTTP response body using the "application/json" format with a 200 (OK)
+	  status code. The response contains the following parameters:
+  </t>
 
 	<t>
 	  <list style="hanging"> 
 
 	    <t hangText="device_code"><vspace/>
-	    REQUIRED.  The verification code.</t>
+	    REQUIRED.  The device verification code.</t>
 
 	    <t hangText="user_code"> <vspace/>
 	    REQUIRED.  The end-user verification code.</t>
@@ -294,8 +300,9 @@
 	    users will be asked to manually type it into their user-agent.</t>
 
 	    <t hangText="expires_in"> <vspace/>
-	    OPTIONAL.  The duration in seconds of the verification code
-	    lifetime.</t>
+	    OPTIONAL.  The lifetime in seconds of the
+	    <spanx style="verb">device_code</spanx> and 
+	    <spanx style="verb">user_code</spanx>.</t>
 
 	    <t hangText="interval"> <vspace/>
 	    OPTIONAL.  The minimum amount of time in seconds that the
@@ -306,6 +313,8 @@
 
 	<t>
 	  For example:
+  </t>
+  <t>
 	  <figure><artwork><![CDATA[
    HTTP/1.1 200 OK
    Content-Type: application/json
@@ -332,7 +341,7 @@
     them to visit the URI in a user agent on a secondary device
     (for example, in a browser on their mobile phone), and enter the user code.
   </t>
-	
+
 	<t>
 	  The end-user navigates to the <spanx style="verb">verification_uri</spanx>
     and authenticates with the authorization server.  The authorization server
@@ -345,7 +354,21 @@
 	</t>
 
   <t>
-    During this user interaction, the device continuously polls the token
+    Clients MAY additionally present the verification URI in a non-textual
+    manner using any method that results in a the browser being opened with the URI,
+    like QR codes, or NFC, to save the user typing the URI.
+    For such shortcuts, the client MAY include the user code with the parameter
+    <spanx style="verb">user_code</spanx> on the verification URI, as a hint
+    for the authorization server.
+    The server MAY accept this hint, and skip
+    the user code input step, however the client MUST still display the user
+    code, as the server MAY also ignore the hint or require
+    visual confirmation. Clients SHOULD still display the unmodified
+    verification URI for users not able to use such a shortcut.
+  </t>
+
+  <t>
+    During the user interaction, the device continuously polls the token
     endpoint with the <spanx style="verb">device_code</spanx>, as detailed in
     <xref target="TokenRequest"/>, until the user completes the interaction,
     the code expires, or another error occurs.
@@ -359,18 +382,6 @@
     the interaction. Other than that, the exact sequence and implementation of
     the user interaction is up to the authorization server, and is out of scope
     of this specification.
-  </t>
-  <t>
-    Devices and authorization servers MAY negotiate an alternative code
-    transmission and user interaction method in addition to the one described
-    here. Such an alternative user interaction flow could obviate the need for a
-    browser and manual input of the code, for example, by using Bluetooth to
-    transmit the code to the authorization server's companion app. Such
-    interaction methods can utilize this protocol, as ultimately, the user just
-    needs to identify the authorization session to the authorization server,
-    however user interaction other than via the
-    <spanx style="verb">verification_uri</spanx> is outside the scope of this
-    specification.
   </t>
 
 </section> 
@@ -407,7 +418,8 @@
 
   <t>For example, the client makes the following HTTPS request (line
      breaks are for display purposes only):
-
+  </t>
+  <t>
   <figure><artwork><![CDATA[
 
    POST /token HTTP/1.1
@@ -478,6 +490,12 @@
     is received. Other error codes are considered hard errors; the client should
     stop polling and react accordingly, for example, by displaying an error to
     the user.
+  </t>
+
+  <t>
+    If the verification codes have expired, the server SHOULD respond with the
+    standard OAuth error <spanx style="verb">invalid_grant</spanx>. Clients
+    MAY then choose to start a new device authorization session.
   </t>
 
   <t>
@@ -601,20 +619,35 @@
           One way to improve input speed is to restrict the character set to
           case-insensitive A-Z characters, with no digits. These characters can
           typically be entered on a mobile keyboard without using modifier keys.
-          Further removing the I and O characters due to potential confusion
-          with numbers results in the base-24 character set:
-          <spanx style="verb">ABCDEFGHJKLMNPQRSTUVWXYZ</spanx>. Dashes or other
+          Further removing vowels to avoid randomly creation valid words
+          results in the base-20 character set:
+          <spanx style="verb">BCDFGHJKLMNPQRSTVWXZ</spanx>. Dashes or other
           punctuation may be included for readability.
         </t>
         <t>
-          An example user code
-          following this guideline, with 24^8 bits of entropy,
-          is <spanx style="verb">WDJB-MJHT</spanx>.
+          An example user code following this guideline, with an entropy of
+          20^8, is <spanx style="verb">WDJB-MJHT</spanx>.
         </t>
         <t>
           The server should ignore any characters like punctuation that are
           not in the user-code character set. Provided that the character set doesn't include
           characters of different case, the comparison should be case insensitive.
+        </t>
+      </section>
+
+      <section anchor="AdvancedCommunication"
+        title="Non-Browser User Interaction">
+        <t>
+          Devices and authorization servers MAY negotiate an alternative code
+          transmission and user interaction method in addition to the one described
+          in <xref target="UserInstruction" />. Such an alternative user interaction flow could obviate the need for a
+          browser and manual input of the code, for example, by using Bluetooth to
+          transmit the code to the authorization server's companion app. Such
+          interaction methods can utilize this protocol, as ultimately, the user just
+          needs to identify the authorization session to the authorization server;
+          however, user interaction other than via the
+          <spanx style="verb">verification_uri</spanx> is outside the scope of this
+          specification.
         </t>
       </section>
     </section>
@@ -760,7 +793,8 @@
       </t>
       <t>
         Roshni Chandrashekhar, Marius Scurtescu, Breno de Medeiros,
-        Stein Myrseth, and Simon Moffatt.
+        Stein Myrseth, Simon Moffatt, Brian Campbell, James Manger,
+        and Justin Richer.
       </t>
     </section>
 
@@ -768,6 +802,22 @@
       <?rfc subcompact="yes"?>
       <t>
 	[[ to be removed by the RFC Editor before publication as an RFC ]]
+      </t>
+
+      <t>
+        -05
+        <list style='symbols'>
+          <t>
+            response_type parameter removed from authorization request.
+          </t>
+          <t>
+            Added option for clients to include the user_code on the
+            verification URI.
+          </t>
+          <t>
+            Clarified token expiry, and other nits.
+          </t>
+        </list>
       </t>
 
       <t>
