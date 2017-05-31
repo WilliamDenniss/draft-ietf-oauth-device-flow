@@ -16,7 +16,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-05" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-06" category="std">
 
   <front>
   <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow for Browserless and Input Constrained Devices</title>
@@ -71,7 +71,7 @@
       </address>
     </author>
 
-    <date year="2017" month="March" day="13"/>
+    <date year="2017" month="May" day="31"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -332,7 +332,7 @@
 
 </section> 
 
-<section title="User Instruction" anchor="UserInstruction">
+<section title="User Interaction" anchor="UserInteraction">
 
   <t>
     After receiving a successful Authorization Response, the client displays or
@@ -341,31 +341,33 @@
     them to visit the URI in a user agent on a secondary device
     (for example, in a browser on their mobile phone), and enter the user code.
   </t>
+        <t>
+              <figure anchor="figure_mobile_apps_overview"
+         title="Example User Instruction">
+               <artwork><![CDATA[
+               +-----------------------------------------------+
+               |                                               |
+               |  Using a browser on another device, visit:    |
+               |  https://example.com/device                   |
+               |                                               |
+               |  And enter the code:                          |
+               |  WDJB-MJHT                                    |
+               |                                               |
+               +-----------------------------------------------+
+]]></artwork>
+        </figure>
+      </t>
 
 	<t>
-	  The end-user navigates to the <spanx style="verb">verification_uri</spanx>
-    and authenticates with the authorization server.  The authorization server
-    prompts the end-user to identify the device authorization session by
+	  The authorizing user navigates to the <spanx style="verb">verification_uri</spanx>
+    and authenticates with the authorization server in a secure TLS-protected session.
+    The authorization server prompts the end-user to identify the device authorization session by
     entering the <spanx style="verb">user_code</spanx> provided by the client.
     The authorization server should then inform the user about the action they
     are undertaking, and ask them to approve or deny the request. Once the user
     interaction is complete, the server informs the user to return to their
     device.
 	</t>
-
-  <t>
-    Clients MAY additionally present the verification URI in a non-textual
-    manner using any method that results in a the browser being opened with the URI,
-    like QR codes, or NFC, to save the user typing the URI.
-    For such shortcuts, the client MAY include the user code with the parameter
-    <spanx style="verb">user_code</spanx> on the verification URI, as a hint
-    for the authorization server.
-    The server MAY accept this hint, and skip
-    the user code input step, however the client MUST still display the user
-    code, as the server MAY also ignore the hint or require
-    visual confirmation. Clients SHOULD still display the unmodified
-    verification URI for users not able to use such a shortcut.
-  </t>
 
   <t>
     During the user interaction, the device continuously polls the token
@@ -383,7 +385,44 @@
     the user interaction is up to the authorization server, and is out of scope
     of this specification.
   </t>
-
+  <section title="Optimization for Non-textual Verification URIs" anchor="verification-optimizations">
+  <t>
+    Clients MAY present the verification URI in a non-textual manner using
+    any method that results in the browser being opened with the URI, such as with
+    QR codes, or NFC, to save the user typing the URI. For usability reasons,
+    it is RECOMMENDED for clients to still display the unmodified
+    verification URI for users not able to use such a shortcut.
+  </t>
+  <t>
+    To optimize the user interaction for such non-textual verification URI
+    transmission, clients MAY include the user code as part of the verification
+    URI using the URI parameter <spanx style="verb">user_code</spanx>.
+  </t>
+  <t>
+    An example verification URI with the user code included:
+  </t>
+  <t>
+  <figure><artwork><![CDATA[
+  https://example.com/device?user_code=WDJB-MJHT
+]]></artwork></figure>
+  </t>
+  <t>
+    When the user code is included in the verification URI in this way, it is
+    considered as a hint to the authorization server to enable potential
+    optimizations. The authorization server MAY
+    use this hint to optimize the user interaction (such as by removing the need
+    for the user to type the code), it MAY also ignore it completely. The client
+    MUST still display the user code textually, for authorization servers that
+    require users to input the user code manually, or otherwise use the user
+    code as part of a visual confirmation step.
+  </t>
+  <t>
+    This optimization is intended for non-textual transmission of the
+    verification URI, it is NOT RECOMMENDED to include the user code in
+    verification URIs shown textually, as this increases the length and
+    complexity of the URI that the user must type.
+  </t>
+  </section>
 </section> 
 
 
@@ -468,7 +507,7 @@
   <t hangText="authorization_pending"> <vspace/>
 
            The authorization request is still pending as the end-user
-           hasn't yet completed the user interaction steps (<xref target="UserInstruction" />). The client should repeat
+           hasn't yet completed the user interaction steps (<xref target="UserInteraction" />). The client should repeat
            the Access Token Request to the token endpoint.</t>
 
   <t hangText="slow_down"> <vspace/>
@@ -559,12 +598,22 @@
         <section title="Remote Phishing" anchor="RemotePhishing">
           <t>
           It is possible for the device flow to be initiated on a device in
-          an attacker's possession. For example, the attacker they might send an email
+          an attacker's possession. For example, the attacker might send an email
           instructing the target user to visit the verification URL and
           enter the user code. To mitigate such an attack, it is RECOMMENDED to
           inform the user that they are authorizing a device during the user
-          interaction step (see <xref target="UserInstruction"/>), and to
+          interaction step (see <xref target="UserInteraction"/>), and to
           confirm that the device is in their possession.
+          </t>
+          <t>
+          For authorization servers that support the option specified in
+          <xref target="verification-optimizations" /> for the client to
+          append the user code to the authorization URI, it is particularly
+          important to confirm that the device is in the user's possession,
+          as the user no longer has to type the code manually.
+          One possibility is to display the code during the authorization flow,
+          and asking the user to verify that the same code is being displayed on
+          the device they are setting up. 
           </t>
           <t>
           The user code needs to have a long enough lifetime to be useable (allowing
@@ -640,7 +689,7 @@
         <t>
           Devices and authorization servers MAY negotiate an alternative code
           transmission and user interaction method in addition to the one described
-          in <xref target="UserInstruction" />. Such an alternative user interaction flow could obviate the need for a
+          in <xref target="UserInteraction" />. Such an alternative user interaction flow could obviate the need for a
           browser and manual input of the code, for example, by using Bluetooth to
           transmit the code to the authorization server's companion app. Such
           interaction methods can utilize this protocol, as ultimately, the user just
@@ -802,6 +851,16 @@
       <?rfc subcompact="yes"?>
       <t>
 	[[ to be removed by the RFC Editor before publication as an RFC ]]
+      </t>
+
+      <t>
+        -06
+        <list style='symbols'>
+          <t>
+            Clarified usage of the "user_code" URI parameter optimization following
+            the IETF98 working group discussion.
+          </t>
+        </list>
       </t>
 
       <t>
