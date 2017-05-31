@@ -71,7 +71,7 @@
       </address>
     </author>
 
-    <date year="2017" month="May" day="19"/>
+    <date year="2017" month="May" day="31"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -332,7 +332,7 @@
 
 </section> 
 
-<section title="User Interaction" anchor="UserInstruction">
+<section title="User Interaction" anchor="UserInteraction">
 
   <t>
     After receiving a successful Authorization Response, the client displays or
@@ -507,7 +507,7 @@
   <t hangText="authorization_pending"> <vspace/>
 
            The authorization request is still pending as the end-user
-           hasn't yet completed the user interaction steps (<xref target="UserInstruction" />). The client should repeat
+           hasn't yet completed the user interaction steps (<xref target="UserInteraction" />). The client should repeat
            the Access Token Request to the token endpoint.</t>
 
   <t hangText="slow_down"> <vspace/>
@@ -602,7 +602,7 @@
           instructing the target user to visit the verification URL and
           enter the user code. To mitigate such an attack, it is RECOMMENDED to
           inform the user that they are authorizing a device during the user
-          interaction step (see <xref target="UserInstruction"/>), and to
+          interaction step (see <xref target="UserInteraction"/>), and to
           confirm that the device is in their possession.
           </t>
           <t>
@@ -689,7 +689,7 @@
         <t>
           Devices and authorization servers MAY negotiate an alternative code
           transmission and user interaction method in addition to the one described
-          in <xref target="UserInstruction" />. Such an alternative user interaction flow could obviate the need for a
+          in <xref target="UserInteraction" />. Such an alternative user interaction flow could obviate the need for a
           browser and manual input of the code, for example, by using Bluetooth to
           transmit the code to the authorization server's companion app. Such
           interaction methods can utilize this protocol, as ultimately, the user just
