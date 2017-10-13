@@ -397,7 +397,7 @@
       It is NOT RECOMMENDED for authorization servers to include the user code in
       the verification URI (<spanx style="verb">verification_uri</spanx>), 
       as this increases the length and complexity of the URI that the user must type.
-      The next section documents user interaction with <spanx style="verb">verification_uri_complete</spanx>
+      The next section documents user interaction with <spanx style="verb">verification_uri_complete</spanx>,
       which is designed to carry this information.
   </t>
 
@@ -645,11 +645,11 @@
         </section>
         <section title="Session Spying" anchor="Spying">
           <t>
-            While the device is pending authorization it may be possible for a
+            While the device is pending authorization, it may be possible for a
             malicious user to spy on the device user interface and hijack the
             session by completing the authorization faster than the user that
             initiated it. Devices SHOULD take into account the operating
-            environment when considering how to communicate the code to the user, 
+            environment when considering how to communicate the code to the user 
             to reduce the chances it will be observed by a malicious user.
           </t>
         </section>
@@ -706,13 +706,13 @@
           20^8: <spanx style="verb">WDJB-MJHT</spanx>.
         </t>
         <t>
-          Pure numerical codes are also a good choice for usability, especially
+          Pure numeric codes are also a good choice for usability, especially
           for clients targeting locales where A-Z character keyboards are not
           used, through their length needs to be longer to maintain a high
           entropy.
         </t>
         <t>
-          An example numerical user code, with an entropy of
+          An example numeric user code, with an entropy of
           10^9: <spanx style="verb">020-161-023</spanx>.
         </t>
         <t>
@@ -899,7 +899,7 @@
             the IETF99 working group discussion.
           </t>
           <t>
-            Added security consideration around spying.
+            Added security consideration about spying.
           </t>
           <t>
             Required that device_code not be shown.
