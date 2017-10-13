@@ -118,7 +118,7 @@
         The device flow is not intended to replace browser-based OAuth in native
         apps on capable devices (like smartphones). Those apps should follow
         the practices specified in OAuth 2.0 for Native Apps
-        <xref target="I-D.ietf-oauth-native-apps">OAuth 2.0 for Native Apps</xref>.
+        <xref target="RFC8252">OAuth 2.0 for Native Apps</xref>.
       </t>
 
       <t>
@@ -190,7 +190,7 @@
 	  provided by the end-user.</t>
 
 	  <t>(E)  While the end-user authorizes (or denies) the client's request
-	  (D), the client repeatedly polls the authorization server to
+	  (step D), the client repeatedly polls the authorization server to
 	  find out if the end-user completed the end-user authorization
 	  step.  The client includes the verification code and its client
 	  identifier.</t>
@@ -660,7 +660,7 @@
           multiple users cannot be considered confidential.
           For such clients, the recommendations of 
           Section 5.3.1 of <xref target="RFC6819" /> and
-          Section 8.9 of <xref target="I-D.ietf-oauth-native-apps"/> apply.
+          Section 8.9 of <xref target="RFC8252"/> apply.
           </t>
         </section>
         <section title="Non-Visual Code Transmission" anchor="NonVisualCodeTransmission">
@@ -847,11 +847,12 @@
     <references title='Normative References'>
 
       <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-discovery-05.xml'?>
-      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-native-apps-07.xml'?>
       <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.6749"?>
       <?rfc include="reference.RFC.6755"?>
       <?rfc include="reference.RFC.6819"?>
+      <?rfc include='reference.RFC.8252'?>
+
       <reference anchor="IANA.OAuth.Parameters" target="http://www.iana.org/assignments/oauth-parameters">
         <front>
           <title>OAuth Parameters</title>
