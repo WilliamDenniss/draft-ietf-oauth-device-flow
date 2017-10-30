@@ -69,7 +69,7 @@
       </address>
     </author>
 
-    <date year="2017" month="October" day="12"/>
+    <date year="2017" month="October" day="30"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -713,7 +713,7 @@
         </t>
         <t>
           An example numeric user code, with an entropy of
-          10^9: <spanx style="verb">020-161-023</spanx>.
+          10^9: <spanx style="verb">019-450-730</spanx>.
         </t>
         <t>
           The server should ignore any characters like punctuation that are
@@ -881,7 +881,8 @@
       <t>
         Roshni Chandrashekhar, Marius Scurtescu, Breno de Medeiros,
         Stein Myrseth, Simon Moffatt, Brian Campbell, James Manger,
-        Justin Richer, Nat Sakimura, and Torsten Lodderstedt.
+        Justin Richer, Ken Wang, Steven E. Wright, Nat Sakimura, and
+        Torsten Lodderstedt.
       </t>
     </section>
 
