@@ -598,11 +598,35 @@
     <section anchor="Security" title="Security Considerations">
         <section title="User Code Brute Forcing" anchor="UserCodeBruteForce">
           <t>
-          Since the user code is typed by the user, the entropy is typically
-          less than would be used for the device code or other OAuth bearer token types.
-          It is therefore recommended that the server rate-limit user code
-          attempts. The user code SHOULD have enough entropy that when combined
-          with rate limiting makes a brute-force attack infeasible.
+          Since the user code is typed by the user, shorter codes are more
+          desirable for usability reasons. This means the entropy is typically
+          less than would be used for the device code or other OAuth bearer
+          token types where the code length does not impact usability.
+          It is therefore recommended that the server rate-limit
+          user code attempts. The user code SHOULD have enough entropy that when
+          combined with rate limiting and other mitigations makes
+          a brute-force attack infeasible.
+          </t>
+          <t>
+          A successful brute forcing of the user code would enable the attacker
+          to authenticate with their own credentials and make an authorization
+          grant to the device. This is the opposite scenario to an OAuth bearer
+          token being brute forced, whereby the attacker gains control of the
+          victim's authorization grant.  In some applications this attack may not
+          make much economic sense, for example for a video app, the owner of
+          the device may then be able to purchase movies with the attacker's
+          account, however there are still privacy considerations in that case
+          as well as other uses of the device flow whereby the granting
+          account may be able to perform sensitive actions such as controlling
+          the victim's device.
+          </t>
+          <t>
+          The precise length of the user code and the entropy contained within
+          is at the discretion of the authorization server, which needs to
+          consider the sensitivity of their specific protected resources,
+          the practicality of the code length from a usability standpoint, and
+          any mitigations that are in place such as rate-limiting, when
+          determining the user code format.
           </t>
         </section>
         <section title="Device Trustworthiness" anchor="DeviceTrustworthiness">
