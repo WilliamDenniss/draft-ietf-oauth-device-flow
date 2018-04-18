@@ -14,7 +14,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-07" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-08" category="std">
 
   <front>
   <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow for Browserless and Input Constrained Devices</title>
@@ -69,7 +69,7 @@
       </address>
     </author>
 
-    <date year="2017" month="October" day="30"/>
+    <date year="2018" month="March" day="19"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
