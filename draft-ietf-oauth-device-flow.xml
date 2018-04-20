@@ -14,7 +14,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-08" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-09" category="std">
 
   <front>
   <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow for Browserless and Input Constrained Devices</title>
@@ -69,7 +69,7 @@
       </address>
     </author>
 
-    <date year="2018" month="March" day="19"/>
+    <date year="2018" month="April" day="20"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -278,7 +278,7 @@
 
 	<t>
 	  In response, the authorization server generates a device verification code
-	  and an end-user code that are valid for a limited time, and includes them
+	  and an end-user code that are valid for a limited time and includes them
     in the HTTP response body using the "application/json" format with a 200 (OK)
 	  status code. The response contains the following parameters:
   </t>
@@ -342,7 +342,7 @@
   <t>
     After receiving a successful Authorization Response, the client displays or
     otherwise communicates the <spanx style="verb">user_code</spanx> and the
-    <spanx style="verb">verification_uri</spanx> to the end-user, and instructs
+    <spanx style="verb">verification_uri</spanx> to the end-user and instructs
     them to visit the URI in a user agent on a secondary device
     (for example, in a browser on their mobile phone), and enter the user code.
   </t>
@@ -369,7 +369,7 @@
     The authorization server prompts the end-user to identify the device authorization session by
     entering the <spanx style="verb">user_code</spanx> provided by the client.
     The authorization server should then inform the user about the action they
-    are undertaking, and ask them to approve or deny the request. Once the user
+    are undertaking and ask them to approve or deny the request. Once the user
     interaction is complete, the server informs the user to return to their
     device.
 	</t>
@@ -389,7 +389,7 @@
     <spanx style="verb">verification_uri</spanx> and continues with them
     supplying the <spanx style="verb">user_code</spanx> at some stage during
     the interaction. Other than that, the exact sequence and implementation of
-    the user interaction is up to the authorization server, and is out of scope
+    the user interaction is up to the authorization server and is out of scope
     of this specification.
   </t>
 
@@ -420,7 +420,7 @@
   </t>
         <t>
               <figure anchor="user_instruction_with_optimzation"
-         title="Example User Instruction With QR Code Representation of the Complete Verification URI">
+         title="Example User Instruction with QR Code Representation of the Complete Verification URI">
                <artwork><![CDATA[
                +-------------------------------------------------+
                |                                                 |
@@ -636,6 +636,14 @@
           from. Thus, signals from the approving user's session and device are
           not relevant to the trustworthiness of the client device.
           </t>
+	  <t>
+	    Note that if an authorization server used with this flow is malicious,
+	    then it could man-in-the middle the backchannel flow to another authorization server.
+	    For this to be possible, the device manufacturer must either be the attacker
+	    or be using an authorization server that is controlled by an attacker
+	    for this attack to be possible. In part,
+	    the person purchasing the device is counting on it and its business partners to be trustworthy.
+	  </t>
         </section>
         <section title="Remote Phishing" anchor="RemotePhishing">
           <t>
@@ -646,6 +654,9 @@
           inform the user that they are authorizing a device during the user
           interaction step (see <xref target="UserInteraction"/>), and to
           confirm that the device is in their possession.
+	  The authorization server SHOULD display information about the device
+	  so that the person would notice if a software client
+	  was attempting to impersonating a hardware device.
           </t>
           <t>
           For authorization servers that support the option specified in
@@ -653,7 +664,7 @@
           append the user code to the authorization URI, it is particularly
           important to confirm that the device is in the user's possession,
           as the user no longer has to type the code manually.
-          One possibility is to display the code during the authorization flow,
+          One possibility is to display the code during the authorization flow
           and asking the user to verify that the same code is being displayed on
           the device they are setting up. 
           </t>
@@ -870,7 +881,7 @@
 
     <references title='Normative References'>
 
-      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-discovery-05.xml'?>
+      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-discovery-10.xml'?>
       <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.6749"?>
       <?rfc include="reference.RFC.6755"?>
@@ -914,6 +925,25 @@
       <?rfc subcompact="yes"?>
       <t>
 	[[ to be removed by the RFC Editor before publication as an RFC ]]
+      </t>
+
+      <t>
+	-09
+	<list style="symbols">
+	  <t>
+	    Addressed review comments by Security Area Director Eric Rescorla
+	    about the potential of a confused deputy attack.
+	  </t>
+	</list>
+      </t>
+
+      <t>
+	-08
+	<list style="symbols">
+	  <t>
+	    Expanded the User Code Brute Forcing section to include more detail on this attack.
+	  </t>
+	</list>
       </t>
 
       <t>
