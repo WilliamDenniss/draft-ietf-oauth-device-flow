@@ -640,7 +640,7 @@
 	    Note that if an authorization server used with this flow is malicious,
 	    then it could man-in-the middle the backchannel flow to another authorization server.
 	    In this scenario, the man-in-the-middle is not completely hidden from sight,
-	    as the end-user would end up on the authorization page on of the wrong service,
+	    as the end-user would end up on the authorization page of the wrong service,
 	    giving them an opportunity to notice that the authorization being requested is wrong.
 	    For this to be possible, the device manufacturer must either directly be the attacker,
 	    shipping a device intended to perform the man-in-the-middle attack,
