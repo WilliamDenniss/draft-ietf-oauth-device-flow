@@ -700,7 +700,7 @@
           multiple users cannot be considered confidential.
           For such clients, the recommendations of 
           Section 5.3.1 of <xref target="RFC6819" /> and
-          Section 8.9 of <xref target="RFC8252"/> apply.
+          Section 8.5 of <xref target="RFC8252"/> apply.
           </t>
         </section>
         <section title="Non-Visual Code Transmission" anchor="NonVisualCodeTransmission">
