@@ -748,7 +748,7 @@
         <t>
           Pure numeric codes are also a good choice for usability, especially
           for clients targeting locales where A-Z character keyboards are not
-          used, through their length needs to be longer to maintain a high
+          used, though their length needs to be longer to maintain a high
           entropy.
         </t>
         <t>
@@ -921,8 +921,8 @@
       <t>
         Roshni Chandrashekhar, Marius Scurtescu, Breno de Medeiros,
         Stein Myrseth, Simon Moffatt, Brian Campbell, James Manger,
-        Justin Richer, Ken Wang, Steven E.&nbsp;Wright, Nat Sakimura, and
-        Torsten Lodderstedt.
+        Justin Richer, Ken Wang, Steven E.&nbsp;Wright, Nat Sakimura,
+        Torsten Lodderstedt, and Eric Fazendin.
       </t>
     </section>
 
