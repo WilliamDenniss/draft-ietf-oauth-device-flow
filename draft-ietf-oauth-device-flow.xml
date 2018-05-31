@@ -515,16 +515,18 @@
   </t>
 
   <t>In addition to the error codes defined in Section 5.2 of
-    <xref target="RFC6749"/>, the following error codes
-    are specific for the device flow: 
+    <xref target="RFC6749"/>, the following error codes are specified by the
+    device flow for use in token endpoint responses:
 
   <list style="hanging"> 
 
   <t hangText="authorization_pending"> <vspace/>
-
            The authorization request is still pending as the end-user
            hasn't yet completed the user interaction steps (<xref target="UserInteraction" />). The client should repeat
            the Access Token Request to the token endpoint.</t>
+
+  <t hangText="access_denied"> <vspace/>
+           The end-user denied the authorization request.</t>
 
   <t hangText="slow_down"> <vspace/>
            The client is polling too quickly and should back off at a
@@ -830,6 +832,16 @@
           <t>
             <?rfc subcompact="yes"?>
             <list style="symbols">
+              <t>Error name: access_denied</t>
+              <t>Error usage location: Token endpoint response</t>
+              <t>Related protocol extension: [[ this specification ]]</t>
+              <t>Change controller: IETF</t>
+              <t>Specification Document: <xref target="TokenResponse"/> of [[ this specification ]]</t>
+            </list>
+          </t>
+          <t>
+            <?rfc subcompact="yes"?>
+            <list style="symbols">
               <t>Error name: slow_down</t>
               <t>Error usage location: Token endpoint response </t>
               <t>Related protocol extension: [[ this specification ]]</t>
@@ -922,7 +934,7 @@
         Roshni Chandrashekhar, Marius Scurtescu, Breno de Medeiros,
         Stein Myrseth, Simon Moffatt, Brian Campbell, James Manger,
         Justin Richer, Ken Wang, Steven E.&nbsp;Wright, Nat Sakimura,
-        Torsten Lodderstedt, and Eric Fazendin.
+        Torsten Lodderstedt, Eric Fazendin, and Andrew Sciberras.
       </t>
     </section>
 
