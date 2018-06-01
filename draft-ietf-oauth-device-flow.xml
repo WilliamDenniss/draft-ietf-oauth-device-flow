@@ -14,7 +14,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-09" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-10" category="std">
 
   <front>
   <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow for Browserless and Input Constrained Devices</title>
@@ -69,7 +69,7 @@
       </address>
     </author>
 
-    <date year="2018" month="April" day="20"/>
+    <date year="2018" month="June" day="01"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -328,7 +328,8 @@
      "device_code":"GMMhmHCXhWEzkobqIHGG_EnNYYsAkukHspeYUk9E8",
      "user_code":"WDJB-MJHT",
      "verification_uri":"https://www.example.com/device",
-     "verification_uri_complete":"https://www.example.com/device?user_code=WDJB-MJHT",
+     "verification_uri_complete":
+          "https://www.example.com/device?user_code=WDJB-MJHT",
      "expires_in" : 1800,
      "interval": 5
    }
@@ -447,7 +448,7 @@
   <t>
     After displaying instructions to the user, the client makes an Access Token
     Request to the token endpoint with a <spanx style="verb">grant_type</spanx> 
-    of <spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx>.
+    of <vspace/><spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx>.
     This is an extension grant type (as defined by Section 4.5 of
     <xref target="RFC6749"/>) with the following parameters:
   </t>
@@ -456,7 +457,7 @@
   <list style="hanging"> 
     <t hangText="grant_type"><vspace/>
           REQUIRED.  Value MUST be set to
-          <spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx>.</t>
+          <vspace/><spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx>.</t>
 
     <t hangText="device_code"> <vspace/>
            REQUIRED.  The device verification code, <spanx style="verb">device_code</spanx> from the
@@ -515,16 +516,18 @@
   </t>
 
   <t>In addition to the error codes defined in Section 5.2 of
-    <xref target="RFC6749"/>, the following error codes
-    are specific for the device flow: 
+    <xref target="RFC6749"/>, the following error codes are specified by the
+    device flow for use in token endpoint responses:
 
   <list style="hanging"> 
 
   <t hangText="authorization_pending"> <vspace/>
-
            The authorization request is still pending as the end-user
            hasn't yet completed the user interaction steps (<xref target="UserInteraction" />). The client should repeat
            the Access Token Request to the token endpoint.</t>
+
+  <t hangText="access_denied"> <vspace/>
+           The end-user denied the authorization request.</t>
 
   <t hangText="slow_down"> <vspace/>
            The client is polling too quickly and should back off at a
@@ -549,7 +552,7 @@
 
   <t>
     If the verification codes have expired, the server SHOULD respond with the
-    standard OAuth error <spanx style="verb">invalid_grant</spanx>. Clients
+    error code <spanx style="verb">expired_token</spanx>. Clients
     MAY then choose to start a new device authorization session.
   </t>
 
@@ -700,7 +703,7 @@
           multiple users cannot be considered confidential.
           For such clients, the recommendations of 
           Section 5.3.1 of <xref target="RFC6819" /> and
-          Section 8.9 of <xref target="RFC8252"/> apply.
+          Section 8.5 of <xref target="RFC8252"/> apply.
           </t>
         </section>
         <section title="Non-Visual Code Transmission" anchor="NonVisualCodeTransmission">
@@ -748,7 +751,7 @@
         <t>
           Pure numeric codes are also a good choice for usability, especially
           for clients targeting locales where A-Z character keyboards are not
-          used, through their length needs to be longer to maintain a high
+          used, though their length needs to be longer to maintain a high
           entropy.
         </t>
         <t>
@@ -821,6 +824,16 @@
             <?rfc subcompact="yes"?>
             <list style="symbols">
               <t>Error name: authorization_pending</t>
+              <t>Error usage location: Token endpoint response</t>
+              <t>Related protocol extension: [[ this specification ]]</t>
+              <t>Change controller: IETF</t>
+              <t>Specification Document: <xref target="TokenResponse"/> of [[ this specification ]]</t>
+            </list>
+          </t>
+          <t>
+            <?rfc subcompact="yes"?>
+            <list style="symbols">
+              <t>Error name: access_denied</t>
               <t>Error usage location: Token endpoint response</t>
               <t>Related protocol extension: [[ this specification ]]</t>
               <t>Change controller: IETF</t>
@@ -911,18 +924,34 @@
   draft-recordon-oauth-v2-device, authored by David Recordon and Brent Goldman,
   which itself was based on content in draft versions of the OAuth 2.0 protocol specification
   removed prior to publication due to a then lack of sufficient deployment expertise.
-  Thank you to the OAuth working group members who worked on this specification through 2010.
+  Thank you to the OAuth working group members who contributed to those earlier drafts.
       </t>
 
+      <t>
+      This document was produced in the OAuth working group under the
+      chairpersonship of Rifaat Shekh-Yusef and Hannes Tschofenig with
+      Benjamin Kaduk, Kathleen Moriarty, and Eric Rescorla serving as Security
+      Area Directors.
+      </t>
       <t>
         The following individuals contributed ideas, feedback, and wording
         that shaped and formed the final specification:
       </t>
       <t>
-        Roshni Chandrashekhar, Marius Scurtescu, Breno de Medeiros,
-        Stein Myrseth, Simon Moffatt, Brian Campbell, James Manger,
-        Justin Richer, Ken Wang, Steven E.&nbsp;Wright, Nat Sakimura, and
-        Torsten Lodderstedt.
+        Brian Campbell, 
+        Roshni Chandrashekhar, 
+        Eric Fazendin,
+        Torsten Lodderstedt, 
+        James Manger,
+        Breno de Medeiros,
+        Simon Moffatt, 
+        Stein Myrseth, 
+        Justin Richer, 
+        Nat Sakimura,
+        Andrew Sciberras,
+        Marius Scurtescu, 
+        Ken Wang, and
+        Steven E.&nbsp;Wright.
       </t>
     </section>
 
@@ -931,6 +960,31 @@
       <t>
 	[[ to be removed by the RFC Editor before publication as an RFC ]]
       </t>
+
+      <t>
+	-10
+	<list style="symbols">
+	  <t>
+      Added a missing definition of access_denied for use on the token endpoint.
+    </t>
+    <t>
+      Corrected text documenting which error code should be returned for expired tokens
+      (it's "expired_token", not "invalid_grant"). 
+    </t>
+    <t>
+       Corrected section reference to RFC 8252 (the section numbers had changed after the initial reference was made).
+	  </t>
+	  <t>
+      Fixed line length of one diagram (was causing xml2rfc warnings).
+	  </t>
+	  <t>
+      Added line breaks so the URN grant_type is presented on an unbroken line.
+	  </t>
+	  <t>
+      Typos fixed and other stylistic improvements.
+	  </t>
+	</list>
+  </t>
 
       <t>
 	-09
