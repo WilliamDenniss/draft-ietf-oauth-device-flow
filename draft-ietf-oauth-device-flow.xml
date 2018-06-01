@@ -14,7 +14,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-09" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-10" category="std">
 
   <front>
   <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow for Browserless and Input Constrained Devices</title>
@@ -69,7 +69,7 @@
       </address>
     </author>
 
-    <date year="2018" month="April" day="20"/>
+    <date year="2018" month="June" day="01"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -960,6 +960,31 @@
       <t>
 	[[ to be removed by the RFC Editor before publication as an RFC ]]
       </t>
+
+      <t>
+	-10
+	<list style="symbols">
+	  <t>
+      Added a missing definition of access_denied for use on the token endpoint.
+    </t>
+    <t>
+      Corrected text documenting which error code should be returned for expired tokens
+      (it's "expired_token", not "invalid_grant"). 
+    </t>
+    <t>
+       Corrected section reference to RFC 8252 (the section numbers had changed after the initial reference was made).
+	  </t>
+	  <t>
+      Fixed line length of one diagram (was causing xml2rfc warnings).
+	  </t>
+	  <t>
+      Added line breaks so the URN grant_type is presented on an unbroken line.
+	  </t>
+	  <t>
+      Typos fixed and other stylistic improvements.
+	  </t>
+	</list>
+  </t>
 
       <t>
 	-09
