@@ -447,7 +447,7 @@
   <t>
     After displaying instructions to the user, the client makes an Access Token
     Request to the token endpoint with a <spanx style="verb">grant_type</spanx> 
-    of <spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx>.
+    of <vspace/><spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx>.
     This is an extension grant type (as defined by Section 4.5 of
     <xref target="RFC6749"/>) with the following parameters:
   </t>
@@ -456,7 +456,7 @@
   <list style="hanging"> 
     <t hangText="grant_type"><vspace/>
           REQUIRED.  Value MUST be set to
-          <spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx>.</t>
+          <vspace/><spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx>.</t>
 
     <t hangText="device_code"> <vspace/>
            REQUIRED.  The device verification code, <spanx style="verb">device_code</spanx> from the
