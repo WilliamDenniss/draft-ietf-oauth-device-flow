@@ -551,7 +551,7 @@
 
   <t>
     If the verification codes have expired, the server SHOULD respond with the
-    standard OAuth error <spanx style="verb">invalid_grant</spanx>. Clients
+    error code <spanx style="verb">expired_token</spanx>. Clients
     MAY then choose to start a new device authorization session.
   </t>
 
