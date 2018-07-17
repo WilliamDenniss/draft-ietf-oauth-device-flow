@@ -14,7 +14,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-10" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-11" category="std">
 
   <front>
   <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow for Browserless and Input Constrained Devices</title>
@@ -69,7 +69,7 @@
       </address>
     </author>
 
-    <date year="2018" month="June" day="01"/>
+    <date year="2018" month="July" day="17"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -583,7 +583,7 @@
     <section anchor="Discovery" title="Discovery Metadata">
       <t>
         Support for the device flow MAY be declared in the OAuth 2.0
-        Authorization Server Metadata <xref target="I-D.ietf-oauth-discovery"/>
+        Authorization Server Metadata <xref target="RFC8414"/>
         with the following metadata:
       </t>
       <t>
@@ -872,7 +872,7 @@
           This specification registers the following values in the
           IANA "OAuth 2.0 Authorization Server Metadata" registry
           <xref target="IANA.OAuth.Parameters"/>
-          established by <xref target="I-D.ietf-oauth-discovery"/>.
+          established by <xref target="RFC8414"/>.
         </t>
 
         <section title="Registry Contents" anchor="MetadataContents">
@@ -899,12 +899,12 @@
 
     <references title='Normative References'>
 
-      <?rfc include='http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-discovery-10.xml'?>
       <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.6749"?>
       <?rfc include="reference.RFC.6755"?>
       <?rfc include="reference.RFC.6819"?>
       <?rfc include='reference.RFC.8252'?>
+      <?rfc include="reference.RFC.8414"?>
 
       <reference anchor="IANA.OAuth.Parameters" target="http://www.iana.org/assignments/oauth-parameters">
         <front>
@@ -959,6 +959,15 @@
       <?rfc subcompact="yes"?>
       <t>
 	[[ to be removed by the RFC Editor before publication as an RFC ]]
+      </t>
+
+      <t>
+	-11
+	<list style="symbols">
+	  <t>
+	    Updated reference to OAuth 2.0 Authorization Server Metadata.
+	  </t>
+	</list>
       </t>
 
       <t>
