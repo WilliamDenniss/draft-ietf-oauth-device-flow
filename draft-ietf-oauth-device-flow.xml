@@ -323,7 +323,7 @@
       non-textual transmission.</t>
 
 	    <t hangText="expires_in"> <vspace/>
-	    OPTIONAL.  The lifetime in seconds of the
+	    REQUIRED.  The lifetime in seconds of the
 	    <spanx style="verb">device_code</spanx> and 
 	    <spanx style="verb">user_code</spanx>.</t>
 
