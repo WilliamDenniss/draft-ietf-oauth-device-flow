@@ -239,8 +239,9 @@
 
   <t>This specification defines a new OAuth endpoint, the device
   authorization endpoint. This is separate from the OAuth authorization
-  endpoint with which the user interacts with via a user-agent (i.e. a browser). In the
-  case of the device authorization endpoint, the client on the device
+  endpoint defined in <xref target="RFC6749"/> with which the user interacts
+  with via a user-agent (i.e. a browser). With the device authorization
+  endpoint, the OAuth client on the device
   interacts with it directly without presenting the request in a user-agent. This
   interaction is defined as follows.</t>
 
@@ -330,7 +331,7 @@
 	    <t hangText="interval"> <vspace/>
 	    OPTIONAL.  The minimum amount of time in seconds that the
 	    client SHOULD wait between polling requests to the token
-	    endpoint. If no value provided, clients should use 5 as the default.</t> 
+	    endpoint. If no value provided, clients MUST use 5 as the default.</t> 
 	  </list> 
 	</t> 
 
@@ -543,15 +544,16 @@
   <list style="hanging"> 
 
   <t hangText="authorization_pending"> <vspace/>
-           The authorization request is still pending as the end-user
-           hasn't yet completed the user interaction steps (<xref target="UserInteraction" />).
-           The client SHOULD repeat the Access Token Request to the
-    token endpoint (a process known as polling). Before each new request the client MUST wait at least the number
-    of seconds specified by the
-    <spanx style="verb">interval</spanx> parameter of the Device Authorization
-    Response (see <xref target="AuthorizationResponse"/>), or 5 seconds
-    if none was provided, and respect any increase in the polling interval required by the
-    <spanx style="verb">slow_down</spanx> error.</t>
+          The authorization request is still pending as the end-user hasn't
+          yet completed the user interaction steps (<xref target="UserInteraction" />).
+          The client SHOULD repeat the Access Token Request to the token
+          endpoint (a process known as polling). Before each new request the
+          client MUST wait at least the number of seconds specified by the
+          <spanx style="verb">interval</spanx> parameter of the Device
+          Authorization Response (see <xref target="AuthorizationResponse"/>),
+          or 5 seconds if none was provided, and respect any increase in the
+          polling interval required by the
+          <spanx style="verb">slow_down</spanx> error.</t>
 
   <t hangText="slow_down"> <vspace/>
            A variant of <spanx style="verb">authorization_pending</spanx>,
@@ -785,7 +787,7 @@
           For codes using only characters in the A-Z range as
           with the base-20 charset defined above, the user's input
           should be upper-cased before comparison to account for the fact
-          they may input the equivalent lower-case characters.
+          that the user may input the equivalent lower-case characters.
           Further stripping of all characters outside the user_code charset
           is recommended to reduce instances where an errantly typed
           character (like a space character) invalidates otherwise valid
@@ -989,6 +991,15 @@
       <?rfc subcompact="yes"?>
       <t>
 	[[ to be removed by the RFC Editor before publication as an RFC ]]
+      </t>
+
+      <t>
+	-12
+	<list style="symbols">
+	  <t>
+	    Updated reference to OAuth 2.0 Authorization Server Metadata.
+	  </t>
+	</list>
       </t>
 
       <t>
