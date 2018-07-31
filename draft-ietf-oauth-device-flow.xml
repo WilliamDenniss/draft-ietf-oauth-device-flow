@@ -205,9 +205,12 @@
 
     <section anchor="Terminology" title="Terminology">
 
-      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-      "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-      "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
+      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+      NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+      "MAY", and "OPTIONAL" in this document are to be interpreted as
+      described in BCP 14 [RFC2119] [RFC8174] when, and only when, they
+      appear in all capitals, as shown here.
+      </t>
 
       <t>
 	<list style="hanging"> 
@@ -234,9 +237,25 @@
 
       <section anchor="AuthorizationRequest" title="Device Authorization Request">
 
+  <t>This specification defines a new OAuth endpoint, the device
+  authorization endpoint. This is separate from the OAuth authorization
+  endpoint with which the user interacts with via a user-agent (i.e. a browser). In the
+  case of the device authorization endpoint, the client on the device
+  interacts with it directly without presenting the request in a user-agent. This
+  interaction is defined as follows.</t>
+
 	<t>The client initiates the flow by requesting a set of verification
 	codes from the authorization server by making an HTTP "POST" request
-	to the device authorization endpoint.  The client constructs the request
+	to the device authorization endpoint.  
+  </t>
+
+  <t>All requests from the device MUST use the Transport Layer Security (TLS)
+  <xref target="RFC5246"/> protocol and
+  implement the best practices of <xref target="RFC7525"/>.
+  </t>
+
+  <t>
+  The client constructs the request
   with the following parameters, encoded with the
   <spanx style="verb">application/x-www-form-urlencoded</spanx> content type:</t>
 
@@ -311,7 +330,7 @@
 	    <t hangText="interval"> <vspace/>
 	    OPTIONAL.  The minimum amount of time in seconds that the
 	    client SHOULD wait between polling requests to the token
-	    endpoint.</t> 
+	    endpoint. If no value provided, clients should use 5 as the default.</t> 
 	  </list> 
 	</t> 
 
@@ -366,12 +385,13 @@
 
 	<t>
 	  The authorizing user navigates to the <spanx style="verb">verification_uri</spanx>
-    and authenticates with the authorization server in a secure TLS-protected session.
+    and authenticates with the authorization server in a secure TLS-protected 
+    (<xref target="RFC5246"/>) session.
     The authorization server prompts the end-user to identify the device authorization session by
     entering the <spanx style="verb">user_code</spanx> provided by the client.
     The authorization server should then inform the user about the action they
     are undertaking and ask them to approve or deny the request. Once the user
-    interaction is complete, the server informs the user to return to their
+    interaction is complete, the server MAY inform the user to return to their
     device.
 	</t>
 
@@ -380,8 +400,9 @@
     endpoint with the <spanx style="verb">device_code</spanx>, as detailed in
     <xref target="TokenRequest"/>, until the user completes the interaction,
     the code expires, or another error occurs. The
-    <spanx style="verb">device_code</spanx> is not intended for the end-user
-    and MUST NOT be displayed or communicated.
+    <spanx style="verb">device_code</spanx> is not intended for
+    the end-user directly, and thus should not be displayed during
+    the interaction to avoid confusing the end-user.
   </t>
 
   <t>
@@ -408,7 +429,7 @@
     in the Authorization Response (<xref target="AuthorizationResponse"/>),
     clients MAY present this URI in a non-textual manner using
     any method that results in the browser being opened with the URI, such as with
-    QR codes or NFC, to save the user typing the URI.
+    QR (Quick Response) codes or NFC (Near Field Communication), to save the user typing the URI.
   </t>
   <t>
     For usability reasons,
@@ -523,45 +544,40 @@
 
   <t hangText="authorization_pending"> <vspace/>
            The authorization request is still pending as the end-user
-           hasn't yet completed the user interaction steps (<xref target="UserInteraction" />). The client should repeat
-           the Access Token Request to the token endpoint.</t>
+           hasn't yet completed the user interaction steps (<xref target="UserInteraction" />).
+           The client SHOULD repeat the Access Token Request to the
+    token endpoint (a process known as polling). Before each new request the client MUST wait at least the number
+    of seconds specified by the
+    <spanx style="verb">interval</spanx> parameter of the Device Authorization
+    Response (see <xref target="AuthorizationResponse"/>), or 5 seconds
+    if none was provided, and respect any increase in the polling interval required by the
+    <spanx style="verb">slow_down</spanx> error.</t>
 
+  <t hangText="slow_down"> <vspace/>
+           A variant of <spanx style="verb">authorization_pending</spanx>,
+           the authorization request is still pending and polling should
+           continue, but the interval MUST be increased by 5 seconds
+           for subsequent requests.</t>
+           
   <t hangText="access_denied"> <vspace/>
            The end-user denied the authorization request.</t>
 
-  <t hangText="slow_down"> <vspace/>
-           The client is polling too quickly and should back off at a
-           reasonable rate.</t>
-
   <t hangText="expired_token"> <vspace/>
-           The <spanx style="verb">device_code</spanx> has expired. The client will need to make a new
-           Device Authorization Request.</t>
-
+           The <spanx style="verb">device_code</spanx> has expired and
+           the device flow authorization session has concluded.
+           The client MAY commence a new Device Authorization Request
+           but SHOULD wait for user interaction before restarting
+           to avoid unnecessary polling.</t>
   </list> 
   </t>
 
-  <t>The error codes <spanx style="verb">authorization_pending</spanx> and
-    <spanx style="verb">slow_down</spanx> are considered soft errors. The client
-    should continue to poll the token endpoint by repeating the Device
-    Token Request (<xref target="TokenRequest" />) when receiving soft errors,
-    increasing the time between polls if a <spanx style="verb">slow_down</spanx> error
-    is received. Other error codes are considered hard errors; the client should
-    stop polling and react accordingly, for example, by displaying an error to
-    the user.
-  </t>
-
   <t>
-    If the verification codes have expired, the server SHOULD respond with the
-    error code <spanx style="verb">expired_token</spanx>. Clients
-    MAY then choose to start a new device authorization session.
-  </t>
-
-  <t>
-    The interval at which the client polls MUST NOT be more frequent than the
-    <spanx style="verb">interval</spanx> parameter returned in the Device Authorization
-    Response (see <xref target="AuthorizationResponse"/>). 
-    If no interval was provided, the client MUST use a reasonable default
-    polling interval. 
+    A client receiving an error response as defined in Section 5.2 of 
+    <xref target="RFC6749"/> MUST stop polling and SHOULD react accordingly,
+    for example, by displaying an error to the user, except for the error
+    codes <spanx style="verb">authorization_pending</spanx> and 
+    <spanx style="verb">slow_down</spanx> which are be processed as
+    described above.
   </t>
 
   <t>
@@ -571,7 +587,8 @@
   useful in many scenarios. For example, an HTML application on a TV that can
   only make outbound requests. If a return channel were to exist for the chosen user
   interaction interface, then the device MAY wait until notified on that channel
-  that the user has completed the action before initiating the token request.
+  that the user has completed the action before initiating the token request
+  (as an alternative to polling).
   Such behavior is, however, outside the scope of this specification.
   </t>
 
@@ -656,7 +673,7 @@
         <section title="Remote Phishing" anchor="RemotePhishing">
           <t>
           It is possible for the device flow to be initiated on a device in
-          an attacker's possession. For example, the attacker might send an email
+          an attacker's possession. For example, an attacker might send an email
           instructing the target user to visit the verification URL and
           enter the user code. To mitigate such an attack, it is RECOMMENDED to
           inform the user that they are authorizing a device during the user
@@ -714,8 +731,7 @@
           in which a malicious user can bootstrap their credentials on a device
           not in their control, it is RECOMMENDED that any chosen communication 
           channel only be accessible by people in close proximity. E.g., users
-          who can see, or hear the device, or within range of a short-range
-          wireless signal.
+          who can see, or hear the device.
           </t>
         </section>
 
@@ -745,8 +761,10 @@
           punctuation may be included for readability.
         </t>
         <t>
-          An example user code following this guideline, with an entropy of
-          20^8: <spanx style="verb">WDJB-MJHT</spanx>.
+          An example user code following this guideline containing 8 significant
+          characters and dashes added for end-user readability, with a
+          resulting entropy of 20^8:
+          <spanx style="verb">WDJB-MJHT</spanx>.
         </t>
         <t>
           Pure numeric codes are also a good choice for usability, especially
@@ -755,13 +773,23 @@
           entropy.
         </t>
         <t>
-          An example numeric user code, with an entropy of
+          An example numeric user code
+          containing 9 significant digits and dashes added for end-user readability,
+          with an entropy of
           10^9: <spanx style="verb">019-450-730</spanx>.
         </t>
         <t>
-          The server should ignore any characters like punctuation that are
-          not in the user-code character set. Provided that the character set doesn't include
-          characters of different case, the comparison should be case insensitive.
+          When processing the inputted user code, the server should strip dashes and
+          other punctuation it added for readability (making the inclusion
+          of that punctuation by the user optional).
+          For codes using only characters in the A-Z range as
+          with the base-20 charset defined above, the user's input
+          should be upper-cased before comparison to account for the fact
+          they may input the equivalent lower-case characters.
+          Further stripping of all characters outside the user_code charset
+          is recommended to reduce instances where an errantly typed
+          character (like a space character) invalidates otherwise valid
+          input.
         </t>
       </section>
 
@@ -899,12 +927,14 @@
 
     <references title='Normative References'>
 
-      <?rfc include="reference.RFC.2119"?>
+      <?rfc include="reference.RFC.5246"?>
       <?rfc include="reference.RFC.6749"?>
       <?rfc include="reference.RFC.6755"?>
+      <?rfc include="reference.RFC.7525"?>
       <?rfc include="reference.RFC.6819"?>
       <?rfc include='reference.RFC.8252'?>
       <?rfc include="reference.RFC.8414"?>
+      <?rfc include="reference.RFC.8174"?>
 
       <reference anchor="IANA.OAuth.Parameters" target="http://www.iana.org/assignments/oauth-parameters">
         <front>
