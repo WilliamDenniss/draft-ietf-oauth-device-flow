@@ -240,7 +240,7 @@
   <t>This specification defines a new OAuth endpoint, the device
   authorization endpoint. This is separate from the OAuth authorization
   endpoint defined in <xref target="RFC6749"/> with which the user interacts
-  with via a user-agent (i.e. a browser). With the device authorization
+  with via a user-agent (i.e., a browser). With the device authorization
   endpoint, the OAuth client on the device
   interacts with it directly without presenting the request in a user-agent. This
   interaction is defined as follows.</t>
@@ -299,7 +299,8 @@
 	<t>
 	  In response, the authorization server generates a device verification code
 	  and an end-user code that are valid for a limited time and includes them
-    in the HTTP response body using the "application/json" format with a 200 (OK)
+    in the HTTP response body using the "application/json" format
+    <xref target="RFC8259"/> with a 200 (OK)
 	  status code. The response contains the following parameters:
   </t>
 
@@ -331,7 +332,7 @@
 	    <t hangText="interval"> <vspace/>
 	    OPTIONAL.  The minimum amount of time in seconds that the
 	    client SHOULD wait between polling requests to the token
-	    endpoint. If no value provided, clients MUST use 5 as the default.</t> 
+	    endpoint. If no value is provided, clients MUST use 5 as the default.</t> 
 	  </list> 
 	</t> 
 
@@ -935,6 +936,7 @@
       <?rfc include="reference.RFC.7525"?>
       <?rfc include="reference.RFC.6819"?>
       <?rfc include='reference.RFC.8252'?>
+      <?rfc include='reference.RFC.8259'?>
       <?rfc include="reference.RFC.8414"?>
       <?rfc include="reference.RFC.8174"?>
 
@@ -997,7 +999,17 @@
 	-12
 	<list style="symbols">
 	  <t>
-	    Updated reference to OAuth 2.0 Authorization Server Metadata.
+      Set a default polling interval to 5s explicitely.
+	  </t>
+	  <t>
+      Defined the slow_down behavior that it should
+      increase the current interval by 5s.
+	  </t>
+	  <t>
+      expires_in now REQUIRED
+	  </t>
+	  <t>
+      Other changes in response to review feedback.
 	  </t>
 	</list>
       </t>
