@@ -240,10 +240,11 @@
   <t>This specification defines a new OAuth endpoint, the device
   authorization endpoint. This is separate from the OAuth authorization
   endpoint defined in <xref target="RFC6749"/> with which the user interacts
-  with via a user-agent (i.e., a browser). With the device authorization
-  endpoint, the OAuth client on the device
-  interacts with it directly without presenting the request in a user-agent. This
-  interaction is defined as follows.</t>
+  with via a user-agent (i.e., a browser). By comparison, when using the
+  device authorization endpoint, the OAuth client on the device interacts
+  with the authorization server directly without presenting the request
+  in a user-agent, and the end user authorizes the request on a separate
+  device. This interaction is defined as follows.</t>
 
 	<t>The client initiates the flow by requesting a set of verification
 	codes from the authorization server by making an HTTP "POST" request
@@ -290,6 +291,13 @@
    omitted from the request.  The authorization server MUST ignore
    unrecognized request parameters.  Request and response parameters
    MUST NOT be included more than once.
+  </t>
+
+  <t>
+  Due to the polling nature of this protocol, to avoid unneeded requests
+  on the token endpoint, the client SHOULD only commence a device
+  authorization request when prompted by the user, and not automatically
+  such as when the app starts.
   </t>
 
 </section>
@@ -448,8 +456,8 @@
                <artwork><![CDATA[
                +-------------------------------------------------+
                |                                                 |
-               |  Scan the QR code, or in        +------------+  |
-               |  a browser on another device    |[_]..  . [_]|  |
+               |  Scan the QR code, or using     +------------+  |
+               |  a browser on another device,   |[_]..  . [_]|  |
                |  visit:                         | .  ..   . .|  |
                |  https://example.com/device     | . .  . ....|  |
                |                                 |.   . . .   |  |
@@ -560,7 +568,7 @@
            A variant of <spanx style="verb">authorization_pending</spanx>,
            the authorization request is still pending and polling should
            continue, but the interval MUST be increased by 5 seconds
-           for subsequent requests.</t>
+           for this and all subsequent requests.</t>
            
   <t hangText="access_denied"> <vspace/>
            The end user denied the authorization request.</t>
@@ -999,7 +1007,7 @@
 	-12
 	<list style="symbols">
 	  <t>
-      Set a default polling interval to 5s explicitely.
+      Set a default polling interval to 5s explicitly.
 	  </t>
 	  <t>
       Defined the slow_down behavior that it should
