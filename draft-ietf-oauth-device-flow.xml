@@ -14,7 +14,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-11" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-12" category="std">
 
   <front>
   <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow for Browserless and Input Constrained Devices</title>
@@ -69,7 +69,7 @@
       </address>
     </author>
 
-    <date year="2018" month="July" day="17"/>
+    <date year="2018" month="August" day="1"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -86,7 +86,7 @@
 
     <abstract>
       <t>
-        This OAuth 2.0 authorization flow for browserless and input constrained
+        This OAuth 2.0 authorization flow for browserless and input-constrained
         devices, often referred to as the device flow, enables OAuth clients to
         request user authorization from devices that have an Internet
         connection, but don't have an easy input method (such as a smart TV,
@@ -104,7 +104,7 @@
     <section anchor="Introduction" title="Introduction">
 
       <t>
-        This OAuth 2.0 protocol flow for browserless and input constrained
+        This <xref target="RFC6749">OAuth 2.0</xref> protocol flow for browserless and input-constrained
         devices, often referred to as the device flow, enables OAuth clients to
         request user authorization from devices that have an internet
         connection, but don't have an easy input method (such as a smart TV,
@@ -117,7 +117,7 @@
       <t>
         The device flow is not intended to replace browser-based OAuth in native
         apps on capable devices (like smartphones). Those apps should follow
-        the practices specified in OAuth 2.0 for Native Apps
+        the practices specified in
         <xref target="RFC8252">OAuth 2.0 for Native Apps</xref>.
       </t>
 
@@ -132,11 +132,11 @@
       </t>
 
       <t>
-        Instead of interacting with the end-user's user-agent, the client
-        instructs the end-user to use another computer or device and connect
+        Instead of interacting with the end user's user agent, the client
+        instructs the end user to use another computer or device and connect
         to the authorization server to approve the access request.  Since the
         client cannot receive incoming requests, it polls the authorization
-        server repeatedly until the end-user completes the approval process.
+        server repeatedly until the end user completes the approval process.
       </t> 
 
       <t><figure title="Device Flow." anchor="Overview"><artwork><![CDATA[
@@ -160,7 +160,7 @@
          :                                     |                |
          v                                     |                |
    +----------+                                |                |
-   | End-user |                                |                |
+   | End user |                                |                |
    |    at    |<---(D)-- User authenticates -->|                |
    |  Browser |                                |                |
    +----------+                                +----------------+
@@ -177,25 +177,25 @@
 	  <t>(B)  The authorization server issues a verification code, an end-user
 	  code, and provides the end-user verification URI.</t>
 
-	  <t>(C)  The client instructs the end-user to use its user-agent
+	  <t>(C)  The client instructs the end user to use its user agent
 	  (elsewhere) and visit the provided end-user verification URI.
-	  The client provides the end-user with the end-user code to enter
+	  The client provides the user with the end-user code to enter
 	  in order to grant access.</t>
 
-	  <t>(D)  The authorization server authenticates the end-user (via the
-	  user-agent) and prompts the end-user to grant the client's
-	  access request.  If the end-user agrees to the client's access
-	  request, the end-user enters the end-user code provided by the
-	  client.  The authorization server validates the end-user code
-	  provided by the end-user.</t>
+	  <t>(D)  The authorization server authenticates the end user (via the
+	  user agent) and prompts the user to grant the client's
+	  access request.  If the user agrees to the client's access
+	  request, the user enters the user code provided by the
+	  client.  The authorization server validates the user code
+	  provided by the user.</t>
 
-	  <t>(E)  While the end-user authorizes (or denies) the client's request
+	  <t>(E)  While the end user authorizes (or denies) the client's request
 	  (step D), the client repeatedly polls the authorization server to
-	  find out if the end-user completed the end-user authorization
+	  find out if the user completed the user authorization
 	  step.  The client includes the verification code and its client
 	  identifier.</t>
 
-	  <t>(F)  Assuming the end-user granted access, the authorization server
+	  <t>(F)  Assuming the end user granted access, the authorization server
 	  validates the verification code provided by the client and
 	  responds back with the access token.</t>
 	</list> 
@@ -225,8 +225,8 @@
 
 	  <t hangText="End-User Verification Code:"><vspace/>
 	  A short-lived token which the device displays to the end user,
-	  is entered by the end-user on the authorization server, and is
-	  thus used to bind the device to the end-user.
+	  is entered by the user on the authorization server, and is
+	  thus used to bind the device to the user.
 	  </t> 
 	</list> 
       </t> 
@@ -315,7 +315,7 @@
 
 	    <t hangText="verification_uri"> <vspace/>
 	    REQUIRED.  The end-user verification URI on the authorization
-	    server.  The URI should be short and easy to remember as end-users
+	    server.  The URI should be short and easy to remember as end users
       will be asked to manually type it into their user-agent.</t>
 
 	    <t hangText="verification_uri_complete"> <vspace/>
@@ -364,7 +364,7 @@
   <t>
     After receiving a successful Authorization Response, the client displays or
     otherwise communicates the <spanx style="verb">user_code</spanx> and the
-    <spanx style="verb">verification_uri</spanx> to the end-user and instructs
+    <spanx style="verb">verification_uri</spanx> to the end user and instructs
     them to visit the URI in a user agent on a secondary device
     (for example, in a browser on their mobile phone), and enter the user code.
   </t>
@@ -389,7 +389,7 @@
 	  The authorizing user navigates to the <spanx style="verb">verification_uri</spanx>
     and authenticates with the authorization server in a secure TLS-protected 
     (<xref target="RFC5246"/>) session.
-    The authorization server prompts the end-user to identify the device authorization session by
+    The authorization server prompts the end user to identify the device authorization session by
     entering the <spanx style="verb">user_code</spanx> provided by the client.
     The authorization server should then inform the user about the action they
     are undertaking and ask them to approve or deny the request. Once the user
@@ -403,8 +403,8 @@
     <xref target="TokenRequest"/>, until the user completes the interaction,
     the code expires, or another error occurs. The
     <spanx style="verb">device_code</spanx> is not intended for
-    the end-user directly, and thus should not be displayed during
-    the interaction to avoid confusing the end-user.
+    the end user directly, and thus should not be displayed during
+    the interaction to avoid confusing the end user.
   </t>
 
   <t>
@@ -448,10 +448,10 @@
                <artwork><![CDATA[
                +-------------------------------------------------+
                |                                                 |
-               |  Using a browser on another     +------------+  |
-               |  device, visit:                 |[_]..  . [_]|  |
-               |  https://example.com/device     | .  ..   . .|  |
-               |                                 | . .  . ....|  |
+               |  Scan the QR code, or in        +------------+  |
+               |  a browser on another device    |[_]..  . [_]|  |
+               |  visit:                         | .  ..   . .|  |
+               |  https://example.com/device     | . .  . ....|  |
                |                                 |.   . . .   |  |
                |  And enter the code:            |[_]. ... .  |  |
                |  WDJB-MJHT                      +------------+  |
@@ -545,7 +545,7 @@
   <list style="hanging"> 
 
   <t hangText="authorization_pending"> <vspace/>
-          The authorization request is still pending as the end-user hasn't
+          The authorization request is still pending as the end user hasn't
           yet completed the user interaction steps (<xref target="UserInteraction" />).
           The client SHOULD repeat the Access Token Request to the token
           endpoint (a process known as polling). Before each new request the
@@ -563,7 +563,7 @@
            for subsequent requests.</t>
            
   <t hangText="access_denied"> <vspace/>
-           The end-user denied the authorization request.</t>
+           The end user denied the authorization request.</t>
 
   <t hangText="expired_token"> <vspace/>
            The <spanx style="verb">device_code</spanx> has expired and
@@ -635,13 +635,13 @@
           to authenticate with their own credentials and make an authorization
           grant to the device. This is the opposite scenario to an OAuth bearer
           token being brute forced, whereby the attacker gains control of the
-          victim's authorization grant.  In some applications this attack may not
-          make much economic sense, for example for a video app, the owner of
-          the device may then be able to purchase movies with the attacker's
-          account, however there are still privacy considerations in that case
-          as well as other uses of the device flow whereby the granting
-          account may be able to perform sensitive actions such as controlling
-          the victim's device.
+          victim's authorization grant. Such attacks may not always make
+          economic sense, for example for a video app the device owner may
+          then be able to purchase movies using the attacker's account, though
+          a privacy risk would still remain and thus is important to protect
+          against. Furthermore, some uses of the device flow give
+          the granting account the ability to perform actions such as controlling
+          the device, which needs to be protected.
           </t>
           <t>
           The precise length of the user code and the entropy contained within
@@ -661,9 +661,9 @@
           </t>
 	  <t>
 	    Note that if an authorization server used with this flow is malicious,
-	    then it could man-in-the middle the backchannel flow to another authorization server.
+	    then it could man-in-the-middle the backchannel flow to another authorization server.
 	    In this scenario, the man-in-the-middle is not completely hidden from sight,
-	    as the end-user would end up on the authorization page of the wrong service,
+	    as the end user would end up on the authorization page of the wrong service,
 	    giving them an opportunity to notice that the authorization being requested is wrong.
 	    For this to be possible, the device manufacturer must either directly be the attacker,
 	    shipping a device intended to perform the man-in-the-middle attack,
