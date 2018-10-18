@@ -14,7 +14,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-12" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-13" category="std">
 
   <front>
   <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow for Browserless and Input Constrained Devices</title>
@@ -822,6 +822,32 @@
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
+
+      <section anchor="ParameterReg" title="OAuth Parameters Registration">
+
+        <t>
+          This specification registers the following values in the
+          IANA "OAuth Parameters" registry
+          <xref target="IANA.OAuth.Parameters"/>
+          established by <xref target="RFC6749"/>.
+        </t>
+
+        <section title="Registry Contents" anchor="ParameterContents">
+
+          <t>
+            <?rfc subcompact="yes"?>
+            <list style="symbols">
+              <t>Parameter name: device_code</t>
+              <t>Parameter usage location: token request</t>
+              <t>Change controller: IESG</t>
+              <t>Specification Document: <xref target="AuthorizationRequest"/> of [[ this specification ]]</t>
+            </list>
+          </t>
+
+          <?rfc subcompact="no"?>
+
+        </section>
+      </section>
 
       <section anchor="URIReg" title="OAuth URI Registration">
 
