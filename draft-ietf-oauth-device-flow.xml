@@ -681,9 +681,21 @@
           less than would be used for the device code or other OAuth bearer
           token types where the code length does not impact usability.
           It is therefore recommended that the server rate-limit
-          user code attempts. The user code SHOULD have enough entropy that when
+          user code attempts.
+          </t>
+          <t>
+          The user code SHOULD have enough entropy that when
           combined with rate limiting and other mitigations makes
-          a brute-force attack infeasible.
+          a brute-force attack infeasible. It's generally held that
+          128-bit symmetric keys for encryption are seen as good enough today
+          because an attacker has to put in 2^96 work to have a 2^-32 chance
+          of guessing correctly via brute force. The rate limiting and finite
+          lifetime on the user code places an artificial limit on the amount
+          of work an attacker can "do", so if one uses a 8-character base-20
+          user code (with roughly 34.5 bits of entropy), the rate-limiting
+          interval and validity period would need to only allow 5
+          attempts in order to get the same 2^-32 probability of success
+          by random guessing.
           </t>
           <t>
           A successful brute forcing of the user code would enable the attacker
