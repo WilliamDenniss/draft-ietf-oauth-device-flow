@@ -488,7 +488,7 @@
   </t>
   <t>
     If the user starts the user interaction by browsing to <spanx style="verb">verification_uri_complete</spanx>,
-    then the user interaction described in <xref target="UserInteraction"> 
+    then the user interaction described in <xref target="UserInteraction"></xref>
     is still followed, but with the optimization that the user does not need to type the <spanx style="verb">user_code</spanx>.
     The server SHOULD display the <spanx style="verb">user_code</spanx> to the user
     and ask them to verify that it matches the <spanx style="verb">user_code</spanx> being
