@@ -686,12 +686,12 @@
           <t>
           The user code SHOULD have enough entropy that when
           combined with rate limiting and other mitigations makes
-          a brute-force attack infeasible. It's generally held that
+          a brute-force attack infeasible. For example, it's generally held that
           128-bit symmetric keys for encryption are seen as good enough today
           because an attacker has to put in 2^96 work to have a 2^-32 chance
           of guessing correctly via brute force. The rate limiting and finite
           lifetime on the user code places an artificial limit on the amount
-          of work an attacker can "do", so if one uses a 8-character base-20
+          of work an attacker can "do", so if, for instance, one uses a 8-character base-20
           user code (with roughly 34.5 bits of entropy), the rate-limiting
           interval and validity period would need to only allow 5
           attempts in order to get the same 2^-32 probability of success
@@ -1128,22 +1128,22 @@
 	-13
 	<list style="symbols">
 	  <t>
-      Added a longer discussion about entropy, proposed by Benjamin Kaduk
+      Added a longer discussion about entropy, proposed by Benjamin Kaduk.
 	  </t>
 	  <t>
-    Added device_code to OAuth IANA registry
+    Added device_code to OAuth IANA registry.
 	  </t>
 	  <t>
-    Expanded explanation of "case insensitive"
+    Expanded explanation of "case insensitive".
 	  </t>
 	  <t>
-    Added security section on Device Code Brute Forcing
+    Added security section on Device Code Brute Forcing.
 	  </t>
     <t>
-    application/x-www-form-urlencoded normativly referenced
+    application/x-www-form-urlencoded normativly referenced.
     </t>
     <t>
-    Editatorial improvements
+    Editatorial improvements.
     </t>
 	</list>
       </t>
