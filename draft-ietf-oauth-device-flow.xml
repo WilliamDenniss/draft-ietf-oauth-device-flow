@@ -1125,6 +1125,30 @@
       </t>
 
       <t>
+	-13
+	<list style="symbols">
+	  <t>
+      Added a longer discussion about entropy, proposed by Benjamin Kaduk
+	  </t>
+	  <t>
+    Added device_code to OAuth IANA registry
+	  </t>
+	  <t>
+    Expanded explanation of "case insensitive"
+	  </t>
+	  <t>
+    Added security section on Device Code Brute Forcing
+	  </t>
+    <t>
+    application/x-www-form-urlencoded normativly referenced
+    </t>
+    <t>
+    Editatorial improvements
+    </t>
+	</list>
+      </t>
+
+      <t>
 	-12
 	<list style="symbols">
 	  <t>
