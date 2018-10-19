@@ -95,7 +95,7 @@
         media consoles, digital picture frames, and
         printers) to obtain user authorization to access protected
         resources without using an on-device user-agent, provided
-        that they have an internet connection.
+        that they have an Internet connection.
       </t>
     </abstract>
 
@@ -107,7 +107,7 @@
       <t>
         This <xref target="RFC6749">OAuth 2.0</xref> protocol flow for browserless and input-constrained
         devices, often referred to as the device flow, enables OAuth clients to
-        request user authorization from applications on devices that have an internet
+        request user authorization from applications on devices that have an Internet
         connection, but don't have an easy input method (such as a smart TV,
         media console, picture frame, or printer), or lack a suitable browser
         for a more traditional OAuth flow. This authorization flow instructs the
@@ -126,7 +126,7 @@
         flow are:
 	    <list style="format (%d)"> 
         <t>
-          The device is already connected to the internet.
+          The device is already connected to the Internet.
         </t>
         <t>
           The device is able to make outbound HTTPS requests.
@@ -144,7 +144,7 @@
       <t>
         As the device flow does not require two-way communication
         between the OAuth client and the user-agent (unlike other
-        OAuth 2 flows), it supports several use-cases that cannot be
+        OAuth 2 flows), it supports several use cases that cannot be
         served by those other approaches.
       </t>
 
@@ -158,7 +158,7 @@
 
       <t>
         The device typically chooses the set of authorization servers to
-        support (i.e. its own authorization server, or those by providers
+        support (i.e., its own authorization server, or those by providers
         it has relationships with). It is not uncommon for the device application to support
         only a single authorization server, such as with a TV application for
         a specific media provider that supports only that media provider's
@@ -450,8 +450,8 @@
     <spanx style="verb">verification_uri</spanx> and continues with them
     supplying the <spanx style="verb">user_code</spanx> at some stage during
     the interaction. Other than that, the exact sequence and implementation of
-    the user interaction is up to the authorization server, for example 
-    the authorization server may enable new users to sign-up for an account
+    the user interaction is up to the authorization server, for example, 
+    the authorization server may enable new users to sign up for an account
     during the authorization flow, or add additional security verification steps.
   </t>
 
