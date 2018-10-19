@@ -14,7 +14,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-12" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-13" category="std">
 
   <front>
   <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow for Browserless and Input Constrained Devices</title>
@@ -69,7 +69,7 @@
       </address>
     </author>
 
-    <date year="2018" month="August" day="1"/>
+    <date year="2018" month="October" day="19"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -86,15 +86,16 @@
 
     <abstract>
       <t>
-        This OAuth 2.0 authorization flow for browserless and input-constrained
-        devices, often referred to as the device flow, enables OAuth clients to
-        request user authorization from devices that have an Internet
-        connection, but don't have an easy input method (such as a smart TV,
-        media console, picture frame, or printer), or lack a suitable browser
-        for a more traditional OAuth flow. This authorization flow instructs the
-        user to perform the authorization request on a secondary device, such as
-        a smartphone. There is no requirement for communication between the
-        constrained device and the user's secondary device.
+        This OAuth 2.0 authorization flow is designed for devices
+        that either lack a browser to perform a user-agent based OAuth
+        flow, or are input-constrained to the extent that requiring the user to
+        input a lot of text (like their credentials to authenticate with the
+        authorization server) is impractical.
+        It enables OAuth clients on such devices (like smart TVs,
+        media consoles, digital picture frames, and
+        printers) to obtain user authorization to access protected
+        resources without using an on-device user-agent, provided
+        that they have an Internet connection.
       </t>
     </abstract>
 
@@ -106,7 +107,7 @@
       <t>
         This <xref target="RFC6749">OAuth 2.0</xref> protocol flow for browserless and input-constrained
         devices, often referred to as the device flow, enables OAuth clients to
-        request user authorization from devices that have an internet
+        request user authorization from applications on devices that have an Internet
         connection, but don't have an easy input method (such as a smart TV,
         media console, picture frame, or printer), or lack a suitable browser
         for a more traditional OAuth flow. This authorization flow instructs the
@@ -121,14 +122,30 @@
         <xref target="RFC8252">OAuth 2.0 for Native Apps</xref>.
       </t>
 
+        <t>The operating requirements to be able to use this authorization
+        flow are:
+	    <list style="format (%d)"> 
+        <t>
+          The device is already connected to the Internet.
+        </t>
+        <t>
+          The device is able to make outbound HTTPS requests.
+        </t>
+        <t>
+          The device is able to display or otherwise communicate a URI
+          and code sequence to the user.
+        </t>
+        <t>
+          The user has a secondary device (e.g., personal computer or smartphone)
+        from which they can process the request.
+        </t>      
+      </list>
+        </t>
       <t>
-        The only requirements to use this flow are that the device is connected
-        to the Internet, and able to make outbound HTTPS requests, be able to
-        display or otherwise communicate a URI and code sequence to the user,
-        and that the user has a secondary device (e.g., personal computer or
-        smartphone) from which to process the request. There is no requirement
-        for two-way communication between the OAuth client and the user-agent,
-        enabling a broad range of use-cases.
+        As the device flow does not require two-way communication
+        between the OAuth client and the user-agent (unlike other
+        OAuth 2 flows), it supports several use cases that cannot be
+        served by those other approaches.
       </t>
 
       <t>
@@ -137,7 +154,18 @@
         to the authorization server to approve the access request.  Since the
         client cannot receive incoming requests, it polls the authorization
         server repeatedly until the end user completes the approval process.
-      </t> 
+      </t>
+
+      <t>
+        The device typically chooses the set of authorization servers to
+        support (i.e., its own authorization server, or those by providers
+        it has relationships with). It is not uncommon for the device application to support
+        only a single authorization server, such as with a TV application for
+        a specific media provider that supports only that media provider's
+        authorization server. The user may not have an established relationship yet
+        with that authorization provider, though one can potentially be
+        set up during the authorization flow.
+      </t>
 
       <t><figure title="Device Flow." anchor="Overview"><artwork><![CDATA[
    +----------+                                +----------------+
@@ -246,20 +274,16 @@
   in a user-agent, and the end user authorizes the request on a separate
   device. This interaction is defined as follows.</t>
 
-	<t>The client initiates the flow by requesting a set of verification
+	<t>The client initiates the authorization flow by requesting a set of verification
 	codes from the authorization server by making an HTTP "POST" request
 	to the device authorization endpoint.  
   </t>
 
-  <t>All requests from the device MUST use the Transport Layer Security (TLS)
-  <xref target="RFC5246"/> protocol and
-  implement the best practices of <xref target="RFC7525"/>.
-  </t>
-
   <t>
-  The client constructs the request
-  with the following parameters, encoded with the
-  <spanx style="verb">application/x-www-form-urlencoded</spanx> content type:</t>
+  The client constructs the request with the following parameters,
+  sent as the body of the request, encoded with the
+  <spanx style="verb">application/x-www-form-urlencoded</spanx> 
+  encoding algorithm defined by Section 4.10.22.6 of <xref target="HTML5"/>:</t>
 
 	<t>
 	  <list style="hanging"> 
@@ -274,8 +298,7 @@
 	</t> 
 
 	<t>
-	  For example, the client makes the following HTTPS request (line
-	  breaks are for display purposes only):
+	  For example, the client makes the following HTTPS request:
   </t>
   <t>
 	  <figure><artwork><![CDATA[
@@ -286,6 +309,12 @@
    client_id=459691054427
 ]]></artwork></figure>
 	</t>
+ 
+  <t>All requests from the device MUST use the Transport Layer Security (TLS)
+  <xref target="RFC8446"/> protocol and
+  implement the best practices of BCP 195 <xref target="RFC7525"/>.
+  </t>
+
   <t>
    Parameters sent without a value MUST be treated as if they were
    omitted from the request.  The authorization server MUST ignore
@@ -305,7 +334,7 @@
 <section anchor="AuthorizationResponse" title="Device Authorization Response">
 
 	<t>
-	  In response, the authorization server generates a device verification code
+	  In response, the authorization server generates a unique device verification code
 	  and an end-user code that are valid for a limited time and includes them
     in the HTTP response body using the "application/json" format
     <xref target="RFC8259"/> with a 200 (OK)
@@ -354,12 +383,12 @@
    Cache-Control: no-store
 
    {
-     "device_code":"GMMhmHCXhWEzkobqIHGG_EnNYYsAkukHspeYUk9E8",
-     "user_code":"WDJB-MJHT",
-     "verification_uri":"https://www.example.com/device",
+     "device_code": "GmRhmhcxhwAzkoEqiMEg_DnyEysNkuNhszIySk9eS",
+     "user_code": "WDJB-MJHT",
+     "verification_uri": "https://example.com/device",
      "verification_uri_complete":
-          "https://www.example.com/device?user_code=WDJB-MJHT",
-     "expires_in" : 1800,
+         "https://example.com/device?user_code=WDJB-MJHT",
+     "expires_in": 1800,
      "interval": 5
    }
 ]]></artwork></figure>
@@ -396,7 +425,7 @@
 	<t>
 	  The authorizing user navigates to the <spanx style="verb">verification_uri</spanx>
     and authenticates with the authorization server in a secure TLS-protected 
-    (<xref target="RFC5246"/>) session.
+    (<xref target="RFC8446"/>) session.
     The authorization server prompts the end user to identify the device authorization session by
     entering the <spanx style="verb">user_code</spanx> provided by the client.
     The authorization server should then inform the user about the action they
@@ -421,16 +450,23 @@
     <spanx style="verb">verification_uri</spanx> and continues with them
     supplying the <spanx style="verb">user_code</spanx> at some stage during
     the interaction. Other than that, the exact sequence and implementation of
-    the user interaction is up to the authorization server and is out of scope
-    of this specification.
+    the user interaction is up to the authorization server, for example, 
+    the authorization server may enable new users to sign up for an account
+    during the authorization flow, or add additional security verification steps.
   </t>
 
   <t>
       It is NOT RECOMMENDED for authorization servers to include the user code in
       the verification URI (<spanx style="verb">verification_uri</spanx>), 
       as this increases the length and complexity of the URI that the user must type.
+      While the user must still type the same number of characters with
+      the user_code separated, once they successfully navigate to the
+      verification_uri, any errors in entering
+      the code can be highlighted by the authorization server to improve the
+      user experience.
+
       The next section documents user interaction with <spanx style="verb">verification_uri_complete</spanx>,
-      which is designed to carry this information.
+      which is designed to carry both pieces of information. 
   </t>
 
   <section title="Non-textual Verification URI Optimization" anchor="verification-optimizations">
@@ -447,8 +483,18 @@
     textual verification URI (<spanx style="verb">verification_uri</spanx>) for
     users not able to use such a shortcut. Clients MUST
     still display the <spanx style="verb">user_code</spanx>, as the authorization
-    server may still require the user to confirm it to disambiguate devices,
+    server will require the user to confirm it to disambiguate devices,
     or as a remote phishing mitigation (See <xref target="RemotePhishing"/>).
+  </t>
+  <t>
+    If the user starts the user interaction by browsing to <spanx style="verb">verification_uri_complete</spanx>,
+    then the user interaction described in <xref target="UserInteraction"></xref>
+    is still followed, but with the optimization that the user does not need to type the <spanx style="verb">user_code</spanx>.
+    The server SHOULD display the <spanx style="verb">user_code</spanx> to the user
+    and ask them to verify that it matches the <spanx style="verb">user_code</spanx> being
+    displayed on the device, to confirm they are authorizing the correct device.
+    As before, in addition to taking steps to confirm the identity of the device,
+    the user should also be afforded the choice to approve or deny the authorization request.
   </t>
         <t>
               <figure anchor="user_instruction_with_optimzation"
@@ -478,10 +524,11 @@
   
   <t>
     After displaying instructions to the user, the client makes an Access Token
-    Request to the token endpoint with a <spanx style="verb">grant_type</spanx> 
+    Request to the token endpoint (as defined by Section 3.2 of <xref target="RFC6749"/>)
+    with a <spanx style="verb">grant_type</spanx> 
     of <vspace/><spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx>.
     This is an extension grant type (as defined by Section 4.5 of
-    <xref target="RFC6749"/>) with the following parameters:
+    <xref target="RFC6749"/>) created by this specification, with the following parameters:
   </t>
 
   <t>
@@ -514,7 +561,7 @@
    Content-Type: application/x-www-form-urlencoded
 
    grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Adevice_code
-   &device_code=GMMhmHCXhWEzkobqIHGG_EnNYYsAkukHspeYUk9E8
+   &device_code=GmRhmhcxhwAzkoEqiMEg_DnyEysNkuNhszIySk9eS
    &client_id=459691054427
 
 ]]></artwork></figure>
@@ -587,7 +634,7 @@
     <xref target="RFC6749"/> MUST stop polling and SHOULD react accordingly,
     for example, by displaying an error to the user, except for the error
     codes <spanx style="verb">authorization_pending</spanx> and 
-    <spanx style="verb">slow_down</spanx> which are be processed as
+    <spanx style="verb">slow_down</spanx> which are processed as
     described above.
   </t>
 
@@ -634,9 +681,21 @@
           less than would be used for the device code or other OAuth bearer
           token types where the code length does not impact usability.
           It is therefore recommended that the server rate-limit
-          user code attempts. The user code SHOULD have enough entropy that when
+          user code attempts.
+          </t>
+          <t>
+          The user code SHOULD have enough entropy that when
           combined with rate limiting and other mitigations makes
-          a brute-force attack infeasible.
+          a brute-force attack infeasible. For example, it's generally held that
+          128-bit symmetric keys for encryption are seen as good enough today
+          because an attacker has to put in 2^96 work to have a 2^-32 chance
+          of guessing correctly via brute force. The rate limiting and finite
+          lifetime on the user code places an artificial limit on the amount
+          of work an attacker can "do", so if, for instance, one uses a 8-character base-20
+          user code (with roughly 34.5 bits of entropy), the rate-limiting
+          interval and validity period would need to only allow 5
+          attempts in order to get the same 2^-32 probability of success
+          by random guessing.
           </t>
           <t>
           A successful brute forcing of the user code would enable the attacker
@@ -660,6 +719,16 @@
           determining the user code format.
           </t>
         </section>
+        <section title="Device Code Brute Forcing" anchor="DeviceCodeBruteForce">
+          <t>
+          An attacker who guesses the device code would be able to potentially
+          obtain the authorization code once the user completes the flow.
+          As the device code is not displayed to the user and thus there
+          are usability considerations on the length, a very high entropy
+          code SHOULD be used.
+          </t>
+        </section>
+
         <section title="Device Trustworthiness" anchor="DeviceTrustworthiness">
           <t>
           Unlike other native application OAuth 2.0 flows, the device requesting the
@@ -672,7 +741,7 @@
 	    then it could man-in-the-middle the backchannel flow to another authorization server.
 	    In this scenario, the man-in-the-middle is not completely hidden from sight,
 	    as the end user would end up on the authorization page of the wrong service,
-	    giving them an opportunity to notice that the authorization being requested is wrong.
+	    giving them an opportunity to notice that the URL in the browser's address bar is wrong.
 	    For this to be possible, the device manufacturer must either directly be the attacker,
 	    shipping a device intended to perform the man-in-the-middle attack,
 	    or be using an authorization server that is controlled by an attacker,
@@ -802,6 +871,16 @@
           character (like a space character) invalidates otherwise valid
           input.
         </t>
+        <t>
+          It is RECOMMENDED to avoid character sets that contain two
+          or more characters that can easily be confused with each other
+           like "0" and "O", or "1", "l" and "I".
+          Furthermore, the extent practical, where a character set contains one
+          character that may be confused with characters outside the character set
+          the character outside the set MAY be substituted with the one
+          in the character set that it is commonly confused with
+          (for example, "O" for "0" when using a numerical 0-9 character set).
+                  </t>
       </section>
 
       <section anchor="AdvancedCommunication"
@@ -819,9 +898,36 @@
           specification.
         </t>
       </section>
+
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
+
+      <section anchor="ParameterReg" title="OAuth Parameters Registration">
+
+        <t>
+          This specification registers the following values in the
+          IANA "OAuth Parameters" registry
+          <xref target="IANA.OAuth.Parameters"/>
+          established by <xref target="RFC6749"/>.
+        </t>
+
+        <section title="Registry Contents" anchor="ParameterContents">
+
+          <t>
+            <?rfc subcompact="yes"?>
+            <list style="symbols">
+              <t>Parameter name: device_code</t>
+              <t>Parameter usage location: token request</t>
+              <t>Change controller: IESG</t>
+              <t>Specification Document: <xref target="AuthorizationRequest"/> of [[ this specification ]]</t>
+            </list>
+          </t>
+
+          <?rfc subcompact="no"?>
+
+        </section>
+      </section>
 
       <section anchor="URIReg" title="OAuth URI Registration">
 
@@ -938,7 +1044,7 @@
 
     <references title='Normative References'>
 
-      <?rfc include="reference.RFC.5246"?>
+      <?rfc include="reference.RFC.8446"?>
       <?rfc include="reference.RFC.6749"?>
       <?rfc include="reference.RFC.6755"?>
       <?rfc include="reference.RFC.7525"?>
@@ -954,9 +1060,20 @@
           <author>
             <organization>IANA</organization>
           </author>
-    <date/>
+          <date/>
         </front>
       </reference>
+
+      <reference anchor="HTML5" target="https://www.w3.org/TR/2014/REC-html5-20141028/">
+        <front>
+          <title>HTML5</title>
+          <author>
+            <organization>IANA</organization>
+          </author>
+          <date/>
+        </front>
+      </reference>
+
     </references>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
@@ -980,7 +1097,11 @@
         that shaped and formed the final specification:
       </t>
       <t>
+        Adam Roach,
+        Alissa Cooper,
+        Ben Campbell,
         Brian Campbell, 
+        Benjamin Kaduk,
         Roshni Chandrashekhar, 
         Eric Fazendin,
         Torsten Lodderstedt, 
@@ -1001,6 +1122,30 @@
       <?rfc subcompact="yes"?>
       <t>
 	[[ to be removed by the RFC Editor before publication as an RFC ]]
+      </t>
+
+      <t>
+	-13
+	<list style="symbols">
+	  <t>
+      Added a longer discussion about entropy, proposed by Benjamin Kaduk.
+	  </t>
+	  <t>
+    Added device_code to OAuth IANA registry.
+	  </t>
+	  <t>
+    Expanded explanation of "case insensitive".
+	  </t>
+	  <t>
+    Added security section on Device Code Brute Forcing.
+	  </t>
+    <t>
+    application/x-www-form-urlencoded normativly referenced.
+    </t>
+    <t>
+    Editatorial improvements.
+    </t>
+	</list>
       </t>
 
       <t>
