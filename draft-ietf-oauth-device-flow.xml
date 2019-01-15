@@ -105,14 +105,16 @@
     <section anchor="Introduction" title="Introduction">
 
       <t>
-        This <xref target="RFC6749">OAuth 2.0</xref> protocol flow for browserless and input-constrained
-        devices, often referred to as the device flow, enables OAuth clients to
-        request user authorization from applications on devices that have an Internet
-        connection, but don't have an easy input method (such as a smart TV,
-        media console, picture frame, or printer), or lack a suitable browser
-        for a more traditional OAuth flow. This authorization flow instructs the
+        This <xref target="RFC6749">OAuth 2.0</xref> protocol extension
+        known as the "device flow" enables OAuth clients to request user
+        authorization from applications on devices that have limited
+        input capabilities or lack a suitable browser. Such devices include
+        those smart TVs, media console, picture frames and printers which
+        lack an easy input method or suitable browser required for a 
+        more traditional OAuth flow. This authorization flow instructs the
         user to perform the authorization request on a secondary device, such as
-        a smartphone.
+        a smartphone which does have the requisite input and browser capabilities
+        for an OAuth flow.
       </t>
 
       <t>
