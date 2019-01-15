@@ -786,7 +786,8 @@
         <section title="Session Spying" anchor="Spying">
           <t>
             While the device is pending authorization, it may be possible for a
-            malicious user to spy on the device user interface and hijack the
+            malicious user to physically spy on the device user interface
+            (by viewing the screen on which it's displayed, for example) and hijack the
             session by completing the authorization faster than the user that
             initiated it. Devices SHOULD take into account the operating
             environment when considering how to communicate the code to the user 
