@@ -325,10 +325,12 @@
   </t>
 
   <t>
-  Due to the polling nature of this protocol, to avoid unneeded requests
+  Due to the polling nature of this protocol, care is needed to avoid
+  overloading the capacity of the token endpoint. To avoid unneeded requests
   on the token endpoint, the client SHOULD only commence a device
   authorization request when prompted by the user, and not automatically
-  such as when the app starts.
+  such as when the app starts or when the previous authorization session
+  expires or fails.
   </t>
 
 </section>
@@ -638,6 +640,12 @@
     codes <spanx style="verb">authorization_pending</spanx> and 
     <spanx style="verb">slow_down</spanx> which are processed as
     described above.
+  </t>
+  <t>
+  Clients on encountering a connection timeout MUST unilaterally reduce
+  their polling frequency before retrying. The use of an exponential
+  backoff algorithm to achieve this, such as by doubling the polling
+  interval on each such connection timeout is RECOMMENDED.
   </t>
 
   <t>
