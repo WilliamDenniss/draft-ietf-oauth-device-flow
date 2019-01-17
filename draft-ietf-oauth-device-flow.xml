@@ -817,10 +817,10 @@
           </t>
           <t>
           The user may also be able to obtain the device_code and/or other OAuth
-          bearer tokens issued to their client, which would allow them use their
+          bearer tokens issued to their client, which would allow them to use their
           own authorization grant directly by impersonating the client. Given
           that the user in possession of the client credentials can already
-          impersonate the client and create a new a authorization grant (with
+          impersonate the client and create a new authorization grant (with
           a new device_code), this doesn't represent a separate impersonation
           vector.
           </t>
