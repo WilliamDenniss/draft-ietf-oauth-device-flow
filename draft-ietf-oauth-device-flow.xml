@@ -642,10 +642,10 @@
     described above.
   </t>
   <t>
-  Clients on encountering a connection timeout MUST unilaterally reduce
+  On encountering a connection timeout, clients MUST unilaterally reduce
   their polling frequency before retrying. The use of an exponential
   backoff algorithm to achieve this, such as by doubling the polling
-  interval on each such connection timeout is RECOMMENDED.
+  interval on each such connection timeout, is RECOMMENDED.
   </t>
 
   <t>
@@ -816,13 +816,13 @@
           Sections 8.5 and 8.6 of <xref target="RFC8252"/> apply to such clients.
           </t>
           <t>
-          The user may also be able to obtain their own device_code, refresh_token
-          and/or access token which would
-          allow them to gain access to the authorization grant by
-          impersonating the client. Given that the user in possession of the
-          client credentials can already impersonate the client and create a new
-          a authorization grant (with a new device_code), this doesn't
-          represent a separate impersonation vector.
+          The user may also be able to obtain the device_code and/or other OAuth
+          bearer tokens issued to their client, which would allow them use their
+          own authorization grant directly by impersonating the client. Given
+          that the user in possession of the client credentials can already
+          impersonate the client and create a new a authorization grant (with
+          a new device_code), this doesn't represent a separate impersonation
+          vector.
           </t>
         </section>
 
