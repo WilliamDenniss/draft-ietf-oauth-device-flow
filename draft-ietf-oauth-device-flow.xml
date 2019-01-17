@@ -69,7 +69,7 @@
       </address>
     </author>
 
-    <date year="2018" month="October" day="19"/>
+    <date year="2019" month="January" day="16"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -1148,6 +1148,22 @@
       </t>
 
       <t>
+	-14
+	<list style="symbols">
+	  <t>
+      Added more normative text on polling behavior.
+	  </t>
+    <t>
+    Added discussion on risk of user retrieving their own device_code.
+    </t>
+    <t>
+    Editorial improvements.
+    </t>
+	</list>
+      </t>
+
+
+      <t>
 	-13
 	<list style="symbols">
 	  <t>
@@ -1166,7 +1182,7 @@
     application/x-www-form-urlencoded normativly referenced.
     </t>
     <t>
-    Editatorial improvements.
+    Editorial improvements.
     </t>
 	</list>
       </t>
