@@ -14,7 +14,7 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-13" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-14" category="std">
 
   <front>
   <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow for Browserless and Input Constrained Devices</title>
@@ -69,7 +69,7 @@
       </address>
     </author>
 
-    <date year="2018" month="October" day="19"/>
+    <date year="2019" month="January" day="16"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -105,14 +105,16 @@
     <section anchor="Introduction" title="Introduction">
 
       <t>
-        This <xref target="RFC6749">OAuth 2.0</xref> protocol flow for browserless and input-constrained
-        devices, often referred to as the device flow, enables OAuth clients to
-        request user authorization from applications on devices that have an Internet
-        connection, but don't have an easy input method (such as a smart TV,
-        media console, picture frame, or printer), or lack a suitable browser
-        for a more traditional OAuth flow. This authorization flow instructs the
+        This <xref target="RFC6749">OAuth 2.0</xref> protocol extension
+        known as the "device flow" enables OAuth clients to request user
+        authorization from applications on devices that have limited
+        input capabilities or lack a suitable browser. Such devices include
+        those smart TVs, media console, picture frames and printers which
+        lack an easy input method or suitable browser required for a 
+        more traditional OAuth flow. This authorization flow instructs the
         user to perform the authorization request on a secondary device, such as
-        a smartphone.
+        a smartphone which does have the requisite input and browser capabilities
+        for an OAuth flow.
       </t>
 
       <t>
@@ -323,10 +325,12 @@
   </t>
 
   <t>
-  Due to the polling nature of this protocol, to avoid unneeded requests
+  Due to the polling nature of this protocol, care is needed to avoid
+  overloading the capacity of the token endpoint. To avoid unneeded requests
   on the token endpoint, the client SHOULD only commence a device
   authorization request when prompted by the user, and not automatically
-  such as when the app starts.
+  such as when the app starts or when the previous authorization session
+  expires or fails.
   </t>
 
 </section>
@@ -637,6 +641,12 @@
     <spanx style="verb">slow_down</spanx> which are processed as
     described above.
   </t>
+  <t>
+  On encountering a connection timeout, clients MUST unilaterally reduce
+  their polling frequency before retrying. The use of an exponential
+  backoff algorithm to achieve this, such as by doubling the polling
+  interval on each such connection timeout, is RECOMMENDED.
+  </t>
 
   <t>
   The assumption of this specification is that the secondary device the
@@ -786,7 +796,8 @@
         <section title="Session Spying" anchor="Spying">
           <t>
             While the device is pending authorization, it may be possible for a
-            malicious user to spy on the device user interface and hijack the
+            malicious user to physically spy on the device user interface
+            (by viewing the screen on which it's displayed, for example) and hijack the
             session by completing the authorization faster than the user that
             initiated it. Devices SHOULD take into account the operating
             environment when considering how to communicate the code to the user 
@@ -795,14 +806,26 @@
         </section>
         <section title="Non-confidential Clients" anchor="NonConfidentialClient">
           <t>
-          Most device clients are incapable of being confidential clients, as secrets
-          that are statically included as part of an app distributed to
-          multiple users cannot be considered confidential.
-          For such clients, the recommendations of 
+          Device clients are generally incapable of maintaining the confidentiality
+          of their credentials, as users in possession of the device can reverse
+          engineer it and extract the credentials. Therefore, unless additional
+          measures are taken, they should be treated as public clients
+          (as defined by Section 2.1 of OAuth 2.0)
+          susceptible to impersonation. The security considerations of
           Section 5.3.1 of <xref target="RFC6819" /> and
-          Section 8.5 of <xref target="RFC8252"/> apply.
+          Sections 8.5 and 8.6 of <xref target="RFC8252"/> apply to such clients.
+          </t>
+          <t>
+          The user may also be able to obtain the device_code and/or other OAuth
+          bearer tokens issued to their client, which would allow them to use their
+          own authorization grant directly by impersonating the client. Given
+          that the user in possession of the client credentials can already
+          impersonate the client and create a new authorization grant (with
+          a new device_code), this doesn't represent a separate impersonation
+          vector.
           </t>
         </section>
+
         <section title="Non-Visual Code Transmission" anchor="NonVisualCodeTransmission">
           <t>
           There is no requirement that the user code be displayed by the
@@ -1125,6 +1148,22 @@
       </t>
 
       <t>
+	-14
+	<list style="symbols">
+	  <t>
+      Added more normative text on polling behavior.
+	  </t>
+    <t>
+    Added discussion on risk of user retrieving their own device_code.
+    </t>
+    <t>
+    Editorial improvements.
+    </t>
+	</list>
+      </t>
+
+
+      <t>
 	-13
 	<list style="symbols">
 	  <t>
@@ -1143,7 +1182,7 @@
     application/x-www-form-urlencoded normativly referenced.
     </t>
     <t>
-    Editatorial improvements.
+    Editorial improvements.
     </t>
 	</list>
       </t>
