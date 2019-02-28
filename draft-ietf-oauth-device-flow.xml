@@ -69,7 +69,7 @@
       </address>
     </author>
 
-    <date year="2019" month="January" day="16"/>
+    <date year="2019" month="March" day="1"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -637,11 +637,11 @@
 
   <t>
     The <spanx style="verb">authorization_pending</spanx> and 
-    <spanx style="verb">slow_down</spanx> error codes are particularly unique
-    to this specification, as they indicate that the OAuth client SHOULD
-    continue to poll the token endpoint, by repeating the token request (following
-    defined behavior for the specific error code receieved).  If the client recieves an error
-    response (as defined in Section 5.2 of <xref target="RFC6749"/>) with any other error code,
+    <spanx style="verb">slow_down</spanx> error codes define particularly unique
+    behavior, as they indicate that the OAuth client should
+    continue to poll the token endpoint by repeating the token request
+    (implementing the precise behavior defined above).
+    If the client recieves an error response with any other error code,
     it MUST stop polling and SHOULD react accordingly,
     for example, by displaying an error to the user.
   </t>
