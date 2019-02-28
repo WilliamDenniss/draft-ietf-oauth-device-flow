@@ -17,7 +17,7 @@
 <rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-15" category="std">
 
   <front>
-  <title abbrev="OAuth 2.0 Device Flow">OAuth 2.0 Device Flow for Browserless and Input Constrained Devices</title>
+  <title abbrev="OAuth 2.0 Device Grant">OAuth 2.0 Device Authorization Grant</title>
 
    <author fullname="William Denniss" initials="W."
             surname="Denniss">
@@ -86,11 +86,11 @@
 
     <abstract>
       <t>
-        This OAuth 2.0 authorization flow is designed for devices
-        that either lack a browser to perform a user-agent based OAuth
-        flow, or are input-constrained to the extent that requiring the user to
-        input a lot of text (like their credentials to authenticate with the
-        authorization server) is impractical.
+        This OAuth 2.0 authorization grant is designed for devices
+        that either lack a browser to perform a user-agent based authorization,
+        or are input-constrained to the extent that requiring the user to
+        input text in order to authenticate during the authorization flow
+        is impractical.
         It enables OAuth clients on such devices (like smart TVs,
         media consoles, digital picture frames, and
         printers) to obtain user authorization to access protected
@@ -105,27 +105,27 @@
     <section anchor="Introduction" title="Introduction">
 
       <t>
-        This <xref target="RFC6749">OAuth 2.0</xref> protocol extension
-        known as the "device flow" enables OAuth clients to request user
+        This <xref target="RFC6749">OAuth 2.0</xref> protocol extension,
+        sometimes referred to as "device flow", enables OAuth clients to request user
         authorization from applications on devices that have limited
         input capabilities or lack a suitable browser. Such devices include
         those smart TVs, media console, picture frames and printers which
         lack an easy input method or suitable browser required for a 
-        more traditional OAuth flow. This authorization flow instructs the
+        more traditional OAuth flow. The authorization flow defined by this specification instructs the
         user to perform the authorization request on a secondary device, such as
         a smartphone which does have the requisite input and browser capabilities
-        for an OAuth flow.
+        to complete the user interaction.
       </t>
 
       <t>
-        The device flow is not intended to replace browser-based OAuth in native
-        apps on capable devices (like smartphones). Those apps should follow
+        The device authorization grant is not intended to replace browser-based OAuth in native
+        apps on capable devices like smartphones. Those apps should follow
         the practices specified in
         <xref target="RFC8252">OAuth 2.0 for Native Apps</xref>.
       </t>
 
         <t>The operating requirements to be able to use this authorization
-        flow are:
+        grant type are:
 	    <list style="format (%d)"> 
         <t>
           The device is already connected to the Internet.
@@ -144,9 +144,10 @@
       </list>
         </t>
       <t>
-        As the device flow does not require two-way communication
+        As the device authorization grant does not require two-way communication
         between the OAuth client and the user-agent (unlike other
-        OAuth 2 flows), it supports several use cases that cannot be
+        OAuth 2 grant types such as the Authorization Code and Implicit Grants),
+        it supports several use cases that cannot be
         served by those other approaches.
       </t>
 
@@ -198,7 +199,7 @@
       </t>
 
       <t>
-	The device flow illustrated in <xref target="Overview"/> includes the following steps:
+	The device authorization flow illustrated in <xref target="Overview"/> includes the following steps:
 	<list style="empty"> 
 
 	  <t>(A) The client requests access from the authorization server and
@@ -325,7 +326,8 @@
   </t>
 
   <t>
-  Due to the polling nature of this protocol, care is needed to avoid
+  Due to the polling nature of this protocol (as specified in <xref target="TokenRequest" />),
+  care is needed to avoid
   overloading the capacity of the token endpoint. To avoid unneeded requests
   on the token endpoint, the client SHOULD only commence a device
   authorization request when prompted by the user, and not automatically
@@ -464,8 +466,8 @@
       the verification URI (<spanx style="verb">verification_uri</spanx>), 
       as this increases the length and complexity of the URI that the user must type.
       While the user must still type the same number of characters with
-      the user_code separated, once they successfully navigate to the
-      verification_uri, any errors in entering
+      the <spanx style="verb">user_code</spanx> separated, once they successfully navigate to the
+      <spanx style="verb">verification_uri</spanx>, any errors in entering
       the code can be highlighted by the authorization server to improve the
       user experience.
 
@@ -598,8 +600,8 @@
   </t>
 
   <t>In addition to the error codes defined in Section 5.2 of
-    <xref target="RFC6749"/>, the following error codes are specified by the
-    device flow for use in token endpoint responses:
+    <xref target="RFC6749"/>, the following error codes are specified 
+    for use with the device authorization grant in token endpoint responses:
 
   <list style="hanging"> 
 
@@ -626,7 +628,7 @@
 
   <t hangText="expired_token"> <vspace/>
            The <spanx style="verb">device_code</spanx> has expired and
-           the device flow authorization session has concluded.
+           the device authorization session has concluded.
            The client MAY commence a new Device Authorization Request
            but SHOULD wait for user interaction before restarting
            to avoid unnecessary polling.</t>
@@ -634,13 +636,16 @@
   </t>
 
   <t>
-    A client receiving an error response as defined in Section 5.2 of 
-    <xref target="RFC6749"/> MUST stop polling and SHOULD react accordingly,
-    for example, by displaying an error to the user, except for the error
-    codes <spanx style="verb">authorization_pending</spanx> and 
-    <spanx style="verb">slow_down</spanx> which are processed as
-    described above.
+    The <spanx style="verb">authorization_pending</spanx> and 
+    <spanx style="verb">slow_down</spanx> error codes are particularly unique
+    to this specification, as they indicate that the OAuth client SHOULD
+    continue to poll the token endpoint, by repeating the token request (following
+    defined behavior for the specific error code receieved).  If the client recieves an error
+    response (as defined in Section 5.2 of <xref target="RFC6749"/>) with any other error code,
+    it MUST stop polling and SHOULD react accordingly,
+    for example, by displaying an error to the user.
   </t>
+
   <t>
   On encountering a connection timeout, clients MUST unilaterally reduce
   their polling frequency before retrying. The use of an exponential
@@ -649,11 +654,12 @@
   </t>
 
   <t>
-  The assumption of this specification is that the secondary device the
+  The assumption of this specification is that the separate device the
   user is authorizing the request on does not have a way to communicate back
-  to the OAuth client. Only a one-way channel is required to make this flow
-  useful in many scenarios. For example, an HTML application on a TV that can
-  only make outbound requests. If a return channel were to exist for the chosen user
+  to device with the OAuth client. This protocol only requires a one-way
+  channel in order to maximise the viability of the protocol in restricted
+  environments, like an application running on a TV that is only capable of
+  outbound requests. If a return channel were to exist for the chosen user
   interaction interface, then the device MAY wait until notified on that channel
   that the user has completed the action before initiating the token request
   (as an alternative to polling).
@@ -667,9 +673,11 @@
 
     <section anchor="Discovery" title="Discovery Metadata">
       <t>
-        Support for the device flow MAY be declared in the OAuth 2.0
-        Authorization Server Metadata <xref target="RFC8414"/>
-        with the following metadata:
+        Support for this specification MAY be declared in the OAuth 2.0
+        Authorization Server Metadata <xref target="RFC8414"/> by
+        including the value <spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx> in the
+        <spanx style="verb">grant_types_supported</spanx> parameter, and by adding the following
+        new parameter:
       </t>
       <t>
       <list style="hanging"> 
