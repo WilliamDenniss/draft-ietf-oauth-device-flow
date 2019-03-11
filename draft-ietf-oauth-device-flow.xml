@@ -410,6 +410,12 @@
 ]]></artwork></figure>
 	</t> 
 
+  <t>
+    In the event of an error (such as an invalidly configured client),
+    the authorization server responds in the same way as the token endpoint
+    specified in Section 5.2 of <xref target="RFC6749"/>.
+  </t>
+
 </section> 
 
 <section title="User Interaction" anchor="UserInteraction">
@@ -753,7 +759,7 @@
           An attacker who guesses the device code would be able to potentially
           obtain the authorization code once the user completes the flow.
           As the device code is not displayed to the user and thus there
-          are usability considerations on the length, a very high entropy
+          are no usability considerations on the length, a very high entropy
           code SHOULD be used.
           </t>
         </section>
@@ -1152,6 +1158,7 @@
         Breno de Medeiros,
         Simon Moffatt, 
         Stein Myrseth, 
+        Emond Papegaaij, 
         Justin Richer, 
         Adam Roach,
         Nat Sakimura,
