@@ -1183,10 +1183,10 @@
       Renamed and dropped most usage of the term "flow"
 	  </t>
     <t>
-      Documented error responses on the authorizatoin endpoint
+      Documented error responses on the authorization endpoint
     </t>
     <t>
-      Documented client authentication for the authorizatoin endpoint
+      Documented client authentication for the authorization endpoint
     </t>
 	</list>
       </t>
