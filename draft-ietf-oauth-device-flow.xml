@@ -170,19 +170,19 @@
         set up during the authorization flow.
       </t>
 
-      <t><figure title="Device Flow." anchor="Overview"><artwork><![CDATA[
+      <t><figure title="Device Authorization Flow" anchor="Overview"><artwork><![CDATA[
    +----------+                                +----------------+
    |          |>---(A)-- Client Identifier --->|                |
    |          |                                |                |
-   |          |<---(B)-- Device Code, --------<|                |
+   |          |<---(B)-- Device Code,      ---<|                |
    |          |          User Code,            |                |
-   |          |          & Verification URI    |                |
-   |  Device  |                                |                |
-   |  Client  |>---(E)-- Device Code, -------->|                |
+   |  Device  |          & Verification URI    |                |
+   |  Client  |                                |                |
+   |          |  [polling]                     |                |
+   |          |>---(E)-- Device Code,      --->|                |
    |          |          & Client Identifier   |                |
-   |          |          (polls...)            |                |
    |          |                                |  Authorization |
-   |          |<---(F)-- Access Token --------<|     Server     |
+   |          |<---(F)-- Access Token      ---<|     Server     |
    +----------+   (& Optional Refresh Token)   |                |
          v                                     |                |
          :                                     |                |
@@ -191,8 +191,8 @@
          v                                     |                |
    +----------+                                |                |
    | End user |                                |                |
-   |    at    |<---(D)-- User authenticates -->|                |
-   |  Browser |                                |                |
+   |    at    |<---(D)-- End user reviews  --->|                |
+   |  Browser |          authorization request |                |
    +----------+                                +----------------+
 ]]></artwork></figure>
       </t>
