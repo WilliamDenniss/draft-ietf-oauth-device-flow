@@ -290,9 +290,11 @@
 
 	<t>
 	  <list style="hanging"> 
-	    <t hangText="client_id"><vspace/>
-	    REQUIRED.  The client identifier as described in Section 2.2 of
-	    <xref target="RFC6749"/>.</t> 
+      <t hangText="client_id"> <vspace/>
+           REQUIRED, if the client is not authenticating with the
+           authorization server as described in Section 3.2.1. of 
+           <xref target="RFC6749"/>. The client identifier as
+           described in Section 2.2 of <xref target="RFC6749"/>.</t>
 
 	    <t hangText="scope"> <vspace/>
 	    OPTIONAL.  The scope of the access request as described by
@@ -323,6 +325,14 @@
    omitted from the request.  The authorization server MUST ignore
    unrecognized request parameters.  Request and response parameters
    MUST NOT be included more than once.
+  </t>
+
+  <t>
+  The client authentication requirements of Section 3.2.1 of <xref target="RFC6749"/>
+  apply to requests on this endpoint, which means that confidential
+  clients (those that have established client credentials) authenticate
+  in the same manner as when making requests to the token endpoint, and
+  public clients provide the "client_id" parameter to identify themselves.
   </t>
 
   <t>
@@ -551,7 +561,8 @@
   <t hangText="client_id"> <vspace/>
            REQUIRED, if the client is not authenticating with the
            authorization server as described in Section 3.2.1. of 
-           <xref target="RFC6749"/>.</t>
+           <xref target="RFC6749"/>. The client identifier as
+           described in Section 2.2 of <xref target="RFC6749"/>.</t>
 
   </list> 
   </t> 
@@ -1128,19 +1139,21 @@
         that shaped and formed the final specification:
       </t>
       <t>
-        Adam Roach,
         Alissa Cooper,
         Ben Campbell,
         Brian Campbell, 
-        Benjamin Kaduk,
         Roshni Chandrashekhar, 
-        Eric Fazendin,
+        Eric Fazendin,        
+        Benjamin Kaduk,
+        Jamshid Khosravian, 
         Torsten Lodderstedt, 
         James Manger,
+        Dan McNulty, 
         Breno de Medeiros,
         Simon Moffatt, 
         Stein Myrseth, 
         Justin Richer, 
+        Adam Roach,
         Nat Sakimura,
         Andrew Sciberras,
         Marius Scurtescu, 
