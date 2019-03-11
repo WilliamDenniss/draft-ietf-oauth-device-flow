@@ -69,7 +69,7 @@
       </address>
     </author>
 
-    <date year="2019" month="March" day="1"/>
+    <date year="2019" month="March" day="11"/>
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -86,7 +86,7 @@
 
     <abstract>
       <t>
-        This OAuth 2.0 authorization grant is designed for devices
+        The OAuth 2.0 Device Authorization Grant is designed for internet-connected devices
         that either lack a browser to perform a user-agent based authorization,
         or are input-constrained to the extent that requiring the user to
         input text in order to authenticate during the authorization flow
@@ -94,8 +94,7 @@
         It enables OAuth clients on such devices (like smart TVs,
         media consoles, digital picture frames, and
         printers) to obtain user authorization to access protected
-        resources without using an on-device user-agent, provided
-        that they have an Internet connection.
+        resources without using an on-device user-agent.
       </t>
     </abstract>
 
@@ -110,15 +109,15 @@
         authorization from applications on devices that have limited
         input capabilities or lack a suitable browser. Such devices include
         those smart TVs, media console, picture frames and printers which
-        lack an easy input method or suitable browser required for a 
-        more traditional OAuth flow. The authorization flow defined by this specification instructs the
-        user to perform the authorization request on a secondary device, such as
+        lack an easy input method or suitable browser required for 
+        traditional OAuth interactions. The authorization flow defined by this specification instructs the
+        user to review the authorization request on a secondary device, such as
         a smartphone which does have the requisite input and browser capabilities
         to complete the user interaction.
       </t>
 
       <t>
-        The device authorization grant is not intended to replace browser-based OAuth in native
+        The Device Authorization Grant is not intended to replace browser-based OAuth in native
         apps on capable devices like smartphones. Those apps should follow
         the practices specified in
         <xref target="RFC8252">OAuth 2.0 for Native Apps</xref>.
@@ -146,7 +145,7 @@
       <t>
         As the device authorization grant does not require two-way communication
         between the OAuth client and the user-agent (unlike other
-        OAuth 2 grant types such as the Authorization Code and Implicit Grants),
+        OAuth 2 grant types such as the Authorization Code and Implicit grant types),
         it supports several use cases that cannot be
         served by those other approaches.
       </t>
@@ -155,7 +154,8 @@
         Instead of interacting with the end user's user agent, the client
         instructs the end user to use another computer or device and connect
         to the authorization server to approve the access request.  Since the
-        client cannot receive incoming requests, it polls the authorization
+        protocol supports clients that can't receive incoming requests,
+        clients poll the authorization
         server repeatedly until the end user completes the approval process.
       </t>
 
@@ -174,17 +174,16 @@
    +----------+                                +----------------+
    |          |>---(A)-- Client Identifier --->|                |
    |          |                                |                |
-   |          |<---(B)-- Verification Code, --<|                |
-   |          |              User Code,        |                |
-   |          |         & Verification URI     |                |
+   |          |<---(B)-- Device Code, --------<|                |
+   |          |          User Code,            |                |
+   |          |          & Verification URI    |                |
    |  Device  |                                |                |
-   |  Client  |         Client Identifier &    |                |
-   |          |>---(E)-- Verification Code --->|                |
-   |          |    polling...                  |                |
-   |          |>---(E)-- Verification Code --->|                |
+   |  Client  |>---(E)-- Device Code, -------->|                |
+   |          |          & Client Identifier   |                |
+   |          |          (polls...)            |                |
    |          |                                |  Authorization |
    |          |<---(F)-- Access Token --------<|     Server     |
-   +----------+  (w/ Optional Refresh Token)   |                |
+   +----------+   (& Optional Refresh Token)   |                |
          v                                     |                |
          :                                     |                |
         (C) User Code & Verification URI       |                |
@@ -205,13 +204,13 @@
 	  <t>(A) The client requests access from the authorization server and
 	  includes its client identifier in the request.</t>
 
-	  <t>(B)  The authorization server issues a verification code, an end-user
+	  <t>(B)  The authorization server issues a device code, an end-user
 	  code, and provides the end-user verification URI.</t>
 
 	  <t>(C)  The client instructs the end user to use its user agent
-	  (elsewhere) and visit the provided end-user verification URI.
+	  (on another device) and visit the provided end-user verification URI.
 	  The client provides the user with the end-user code to enter
-	  in order to grant access.</t>
+	  in order to review the authorization request.</t>
 
 	  <t>(D)  The authorization server authenticates the end user (via the
 	  user agent) and prompts the user to grant the client's
@@ -220,15 +219,16 @@
 	  client.  The authorization server validates the user code
 	  provided by the user.</t>
 
-	  <t>(E)  While the end user authorizes (or denies) the client's request
+	  <t>(E)  While the end user reviews the client's request
 	  (step D), the client repeatedly polls the authorization server to
 	  find out if the user completed the user authorization
 	  step.  The client includes the verification code and its client
 	  identifier.</t>
 
-	  <t>(F)  Assuming the end user granted access, the authorization server
+	  <t>(F)  The authorization server
 	  validates the verification code provided by the client and
-	  responds back with the access token.</t>
+	  responds back with the access token if the user granted access,
+    an error if they denied access, or indicates that the client should continue to poll.</t>
 	</list> 
       </t> 
 
@@ -340,7 +340,7 @@
   care is needed to avoid
   overloading the capacity of the token endpoint. To avoid unneeded requests
   on the token endpoint, the client SHOULD only commence a device
-  authorization request when prompted by the user, and not automatically
+  authorization request when prompted by the user, and not automatically,
   such as when the app starts or when the previous authorization session
   expires or fails.
   </t>
@@ -658,7 +658,7 @@
     behavior, as they indicate that the OAuth client should
     continue to poll the token endpoint by repeating the token request
     (implementing the precise behavior defined above).
-    If the client recieves an error response with any other error code,
+    If the client receives an error response with any other error code,
     it MUST stop polling and SHOULD react accordingly,
     for example, by displaying an error to the user.
   </t>
@@ -1174,6 +1174,22 @@
       <t>
 	[[ to be removed by the RFC Editor before publication as an RFC ]]
       </t>
+
+      <t>
+	-15
+	<list style="symbols">
+	  <t>
+      Renamed and dropped most usage of the term "flow"
+	  </t>
+    <t>
+      Documented error responses on the authorizatoin endpoint
+    </t>
+    <t>
+      Documented client authentication for the authorizatoin endpoint
+    </t>
+	</list>
+      </t>
+
 
       <t>
 	-14
