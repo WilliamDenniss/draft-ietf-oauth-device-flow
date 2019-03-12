@@ -673,7 +673,7 @@
   <t>
   The assumption of this specification is that the separate device the
   user is authorizing the request on does not have a way to communicate back
-  to device with the OAuth client. This protocol only requires a one-way
+  to the device with the OAuth client. This protocol only requires a one-way
   channel in order to maximise the viability of the protocol in restricted
   environments, like an application running on a TV that is only capable of
   outbound requests. If a return channel were to exist for the chosen user
