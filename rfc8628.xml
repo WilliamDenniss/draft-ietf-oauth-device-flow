@@ -14,7 +14,8 @@
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-oauth-device-flow-15" category="std">
+<rfc ipr="trust200902" category="std" consensus="yes" submissionType="IETF"
+     number="8628">
 
   <front>
   <title abbrev="OAuth 2.0 Device Grant">OAuth 2.0 Device Authorization Grant</title>
@@ -29,7 +30,7 @@
           <city>Mountain View</city>
           <region>CA</region>
           <code>94043</code>
-          <country>USA</country>
+          <country>United States of America</country>
         </postal>
         <facsimile/>
         <email>wdenniss@google.com</email>
@@ -69,7 +70,7 @@
       </address>
     </author>
 
-    <date year="2019" month="March" day="11"/>
+    <date year="2019" month="July" />
 
     <area>Security Area</area>
     <workgroup>OAuth</workgroup>
@@ -86,15 +87,15 @@
 
     <abstract>
       <t>
-        The OAuth 2.0 Device Authorization Grant is designed for internet-connected devices
-        that either lack a browser to perform a user-agent based authorization,
-        or are input-constrained to the extent that requiring the user to
+        The OAuth 2.0 device authorization grant is designed for Internet-connected devices
+        that either lack a browser to perform a user-agent-based authorization
+        or are input constrained to the extent that requiring the user to
         input text in order to authenticate during the authorization flow
         is impractical.
         It enables OAuth clients on such devices (like smart TVs,
         media consoles, digital picture frames, and
         printers) to obtain user authorization to access protected
-        resources without using an on-device user-agent.
+        resources without using an on-device user agent.
       </t>
     </abstract>
 
@@ -104,27 +105,28 @@
     <section anchor="Introduction" title="Introduction">
 
       <t>
-        This <xref target="RFC6749">OAuth 2.0</xref> protocol extension,
-        sometimes referred to as "device flow", enables OAuth clients to request user
-        authorization from applications on devices that have limited
-        input capabilities or lack a suitable browser. Such devices include
-        those smart TVs, media console, picture frames and printers which
-        lack an easy input method or suitable browser required for 
-        traditional OAuth interactions. The authorization flow defined by this specification instructs the
-        user to review the authorization request on a secondary device, such as
-        a smartphone which does have the requisite input and browser capabilities
-        to complete the user interaction.
+        This <xref target="RFC6749">OAuth 2.0 protocol
+        extension</xref>, sometimes referred to as "device flow",
+        enables OAuth clients to request user authorization from
+        applications on devices that have limited input capabilities
+        or lack a suitable browser. Such devices include smart TVs,
+        media consoles, picture frames, and printers that lack an easy
+        input method or a suitable browser required for traditional
+        OAuth interactions. The authorization flow defined by this
+        specification instructs the user to review the authorization
+        request on a secondary device, such as a smartphone, which
+        does have the requisite input and browser capabilities to
+        complete the user interaction.
       </t>
 
       <t>
-        The Device Authorization Grant is not intended to replace browser-based OAuth in native
-        apps on capable devices like smartphones. Those apps should follow
-        the practices specified in
-        <xref target="RFC8252">OAuth 2.0 for Native Apps</xref>.
+        The device authorization grant is not intended to replace
+        browser-based OAuth in native apps on capable devices like
+        smartphones. Those apps should follow the practices specified
+        in <xref target="RFC8252">"OAuth 2.0 for Native Apps"</xref>.
       </t>
 
-        <t>The operating requirements to be able to use this authorization
-        grant type are:
+        <t>The operating requirements for using this authorization grant type are:
 	    <list style="format (%d)"> 
         <t>
           The device is already connected to the Internet.
@@ -144,8 +146,8 @@
         </t>
       <t>
         As the device authorization grant does not require two-way communication
-        between the OAuth client and the user-agent (unlike other
-        OAuth 2 grant types such as the Authorization Code and Implicit grant types),
+        between the OAuth client and the user agent (unlike other
+        OAuth 2 grant types, such as the authorization code and implicit grant types),
         it supports several use cases that cannot be
         served by those other approaches.
       </t>
@@ -161,13 +163,13 @@
 
       <t>
         The device typically chooses the set of authorization servers to
-        support (i.e., its own authorization server, or those by providers
-        it has relationships with). It is not uncommon for the device application to support
-        only a single authorization server, such as with a TV application for
+        support (i.e., its own authorization server or those of providers with
+	which it has relationships). It is not uncommon for the device application to support
+        only one authorization server, for example, a TV application for
         a specific media provider that supports only that media provider's
-        authorization server. The user may not have an established relationship yet
-        with that authorization provider, though one can potentially be
-        set up during the authorization flow.
+        authorization server. The user may not yet have an established
+	relationship with that authorization provider, though one can
+	potentially be set up during the authorization flow.
       </t>
 
       <t><figure title="Device Authorization Flow" anchor="Overview"><artwork><![CDATA[
@@ -179,7 +181,7 @@
    |  Device  |          & Verification URI    |                |
    |  Client  |                                |                |
    |          |  [polling]                     |                |
-   |          |>---(E)-- Device Code,      --->|                |
+   |          |>---(E)-- Device Code       --->|                |
    |          |          & Client Identifier   |                |
    |          |                                |  Authorization |
    |          |<---(F)-- Access Token      ---<|     Server     |
@@ -190,7 +192,7 @@
          :                                     |                |
          v                                     |                |
    +----------+                                |                |
-   | End user |                                |                |
+   | End User |                                |                |
    |    at    |<---(D)-- End user reviews  --->|                |
    |  Browser |          authorization request |                |
    +----------+                                +----------------+
@@ -199,49 +201,49 @@
 
       <t>
 	The device authorization flow illustrated in <xref target="Overview"/> includes the following steps:
-	<list style="empty"> 
+	<list style="format (%C)"> 
 
-	  <t>(A) The client requests access from the authorization server and
+	  <t>The client requests access from the authorization server and
 	  includes its client identifier in the request.</t>
 
-	  <t>(B)  The authorization server issues a device code, an end-user
-	  code, and provides the end-user verification URI.</t>
+	  <t>The authorization server issues a device code and an end-user
+	  code and provides the end-user verification URI.</t>
 
-	  <t>(C)  The client instructs the end user to use its user agent
+	  <t>The client instructs the end user to use its user agent
 	  (on another device) and visit the provided end-user verification URI.
 	  The client provides the user with the end-user code to enter
 	  in order to review the authorization request.</t>
 
-	  <t>(D)  The authorization server authenticates the end user (via the
+	  <t>The authorization server authenticates the end user (via the
 	  user agent) and prompts the user to grant the client's
 	  access request.  If the user agrees to the client's access
 	  request, the user enters the user code provided by the
 	  client.  The authorization server validates the user code
 	  provided by the user.</t>
 
-	  <t>(E)  While the end user reviews the client's request
+	  <t>While the end user reviews the client's request
 	  (step D), the client repeatedly polls the authorization server to
 	  find out if the user completed the user authorization
 	  step.  The client includes the verification code and its client
 	  identifier.</t>
 
-	  <t>(F)  The authorization server
+	  <t>The authorization server
 	  validates the verification code provided by the client and
-	  responds back with the access token if the user granted access,
-    an error if they denied access, or indicates that the client should continue to poll.</t>
+	  responds with the access token if the user is granted access,
+    an error if they are denied access, or an indication that the client should continue to poll.</t>
 	</list> 
       </t> 
 
     </section>
 
     <section anchor="Terminology" title="Terminology">
-
-      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
-      NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
-      "MAY", and "OPTIONAL" in this document are to be interpreted as
-      described in BCP 14 [RFC2119] [RFC8174] when, and only when, they
-      appear in all capitals, as shown here.
-      </t>
+        <t>
+    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+    NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+    "MAY", and "OPTIONAL" in this document are to be interpreted as
+    described in BCP&nbsp;14 <xref target="RFC2119"/> <xref target="RFC8174"/> 
+    when, and only when, they appear in all capitals, as shown here.
+        </t>
 
       <t>
 	<list style="hanging"> 
@@ -255,7 +257,7 @@
 	  A short-lived token representing an authorization session.</t>
 
 	  <t hangText="End-User Verification Code:"><vspace/>
-	  A short-lived token which the device displays to the end user,
+	  A short-lived token that the device displays to the end user,
 	  is entered by the user on the authorization server, and is
 	  thus used to bind the device to the user.
 	  </t> 
@@ -268,13 +270,13 @@
 
       <section anchor="AuthorizationRequest" title="Device Authorization Request">
 
-  <t>This specification defines a new OAuth endpoint, the device
+  <t>This specification defines a new OAuth endpoint: the device
   authorization endpoint. This is separate from the OAuth authorization
   endpoint defined in <xref target="RFC6749"/> with which the user interacts
-  with via a user-agent (i.e., a browser). By comparison, when using the
+  via a user agent (i.e., a browser). By comparison, when using the
   device authorization endpoint, the OAuth client on the device interacts
   with the authorization server directly without presenting the request
-  in a user-agent, and the end user authorizes the request on a separate
+  in a user agent, and the end user authorizes the request on a separate
   device. This interaction is defined as follows.</t>
 
 	<t>The client initiates the authorization flow by requesting a set of verification
@@ -283,15 +285,15 @@
   </t>
 
   <t>
-  The client constructs the request with the following parameters,
-  sent as the body of the request, encoded with the
+  The client constructs the request with the following parameters; it is sent
+  as the body of the request and encoded with the
   <spanx style="verb">application/x-www-form-urlencoded</spanx> 
   encoding algorithm defined by Section 4.10.22.6 of <xref target="HTML5"/>:</t>
 
 	<t>
 	  <list style="hanging"> 
       <t hangText="client_id"> <vspace/>
-           REQUIRED, if the client is not authenticating with the
+           REQUIRED if the client is not authenticating with the
            authorization server as described in Section 3.2.1. of 
            <xref target="RFC6749"/>. The client identifier as
            described in Section 2.2 of <xref target="RFC6749"/>.</t>
@@ -315,8 +317,8 @@
 ]]></artwork></figure>
 	</t>
  
-  <t>All requests from the device MUST use the Transport Layer Security (TLS)
-  <xref target="RFC8446"/> protocol and
+  <t>All requests from the device MUST use the Transport Layer Security (TLS) protocol
+  <xref target="RFC8446"/> and
   implement the best practices of BCP 195 <xref target="RFC7525"/>.
   </t>
 
@@ -340,7 +342,7 @@
   care is needed to avoid
   overloading the capacity of the token endpoint. To avoid unneeded requests
   on the token endpoint, the client SHOULD only commence a device
-  authorization request when prompted by the user, and not automatically,
+  authorization request when prompted by the user and not automatically,
   such as when the app starts or when the previous authorization session
   expires or fails.
   </t>
@@ -369,12 +371,12 @@
 	    <t hangText="verification_uri"> <vspace/>
 	    REQUIRED.  The end-user verification URI on the authorization
 	    server.  The URI should be short and easy to remember as end users
-      will be asked to manually type it into their user-agent.</t>
+	    will be asked to manually type it into their user agent.</t>
 
 	    <t hangText="verification_uri_complete"> <vspace/>
 	    OPTIONAL.  A verification URI that includes the
       <spanx style="verb">user_code</spanx> (or other information with the same
-      function as the <spanx style="verb">user_code</spanx>), designed for
+      function as the <spanx style="verb">user_code</spanx>), which is designed for
       non-textual transmission.</t>
 
 	    <t hangText="expires_in"> <vspace/>
@@ -421,11 +423,11 @@
 <section title="User Interaction" anchor="UserInteraction">
 
   <t>
-    After receiving a successful Authorization Response, the client displays or
+    After receiving a successful authorization response, the client displays or
     otherwise communicates the <spanx style="verb">user_code</spanx> and the
     <spanx style="verb">verification_uri</spanx> to the end user and instructs
     them to visit the URI in a user agent on a secondary device
-    (for example, in a browser on their mobile phone), and enter the user code.
+    (for example, in a browser on their mobile phone) and enter the user code.
   </t>
         <t>
               <figure anchor="user_instruction"
@@ -446,13 +448,13 @@
 
 	<t>
 	  The authorizing user navigates to the <spanx style="verb">verification_uri</spanx>
-    and authenticates with the authorization server in a secure TLS-protected 
-    (<xref target="RFC8446"/>) session.
+    and authenticates with the authorization server in a secure TLS-protected
+   <xref target="RFC8446"/> session.
     The authorization server prompts the end user to identify the device authorization session by
     entering the <spanx style="verb">user_code</spanx> provided by the client.
     The authorization server should then inform the user about the action they
     are undertaking and ask them to approve or deny the request. Once the user
-    interaction is complete, the server MAY inform the user to return to their
+    interaction is complete, the server MAY instruct the user to return to their
     device.
 	</t>
 
@@ -462,19 +464,18 @@
     <xref target="TokenRequest"/>, until the user completes the interaction,
     the code expires, or another error occurs. The
     <spanx style="verb">device_code</spanx> is not intended for
-    the end user directly, and thus should not be displayed during
+    the end user directly; thus, it should not be displayed during
     the interaction to avoid confusing the end user.
   </t>
 
   <t>
-    Authorization servers supporting this specification MUST implement a user
-    interaction sequence that starts with the user navigating to
+    Authorization servers supporting this specification MUST implement a user-interaction sequence that starts with the user navigating to
     <spanx style="verb">verification_uri</spanx> and continues with them
     supplying the <spanx style="verb">user_code</spanx> at some stage during
     the interaction. Other than that, the exact sequence and implementation of
-    the user interaction is up to the authorization server, for example, 
+    the user interaction is up to the authorization server; for example, 
     the authorization server may enable new users to sign up for an account
-    during the authorization flow, or add additional security verification steps.
+    during the authorization flow or add additional security verification steps.
   </t>
 
   <t>
@@ -487,34 +488,35 @@
       the code can be highlighted by the authorization server to improve the
       user experience.
 
-      The next section documents user interaction with <spanx style="verb">verification_uri_complete</spanx>,
+      The next section documents the user interaction with <spanx style="verb">verification_uri_complete</spanx>,
       which is designed to carry both pieces of information. 
   </t>
 
   <section title="Non-textual Verification URI Optimization" anchor="verification-optimizations">
   <t>
     When <spanx style="verb">verification_uri_complete</spanx> is included
-    in the Authorization Response (<xref target="AuthorizationResponse"/>),
+    in the authorization response (<xref target="AuthorizationResponse"/>),
     clients MAY present this URI in a non-textual manner using
     any method that results in the browser being opened with the URI, such as with
-    QR (Quick Response) codes or NFC (Near Field Communication), to save the user typing the URI.
+    QR (Quick Response) codes or NFC (Near Field Communication), to save the
+    user from typing the URI.
   </t>
   <t>
     For usability reasons,
     it is RECOMMENDED for clients to still display the
     textual verification URI (<spanx style="verb">verification_uri</spanx>) for
-    users not able to use such a shortcut. Clients MUST
+    users who are not able to use such a shortcut. Clients MUST
     still display the <spanx style="verb">user_code</spanx>, as the authorization
-    server will require the user to confirm it to disambiguate devices,
-    or as a remote phishing mitigation (See <xref target="RemotePhishing"/>).
+    server will require the user to confirm it to disambiguate devices or as remote phishing mitigation (see <xref target="RemotePhishing"/>).
   </t>
   <t>
-    If the user starts the user interaction by browsing to <spanx style="verb">verification_uri_complete</spanx>,
+    If the user starts the user interaction by navigating to <spanx style="verb">verification_uri_complete</spanx>,
     then the user interaction described in <xref target="UserInteraction"></xref>
-    is still followed, but with the optimization that the user does not need to type the <spanx style="verb">user_code</spanx>.
+    is still followed, with the optimization that the user does not need to
+    type in the <spanx style="verb">user_code</spanx>.
     The server SHOULD display the <spanx style="verb">user_code</spanx> to the user
     and ask them to verify that it matches the <spanx style="verb">user_code</spanx> being
-    displayed on the device, to confirm they are authorizing the correct device.
+    displayed on the device to confirm they are authorizing the correct device.
     As before, in addition to taking steps to confirm the identity of the device,
     the user should also be afforded the choice to approve or deny the authorization request.
   </t>
@@ -524,7 +526,7 @@
                <artwork><![CDATA[
                +-------------------------------------------------+
                |                                                 |
-               |  Scan the QR code, or using     +------------+  |
+               |  Scan the QR code  or, using    +------------+  |
                |  a browser on another device,   |[_]..  . [_]|  |
                |  visit:                         | .  ..   . .|  |
                |  https://example.com/device     | . .  . ....|  |
@@ -545,8 +547,8 @@
 <section title="Device Access Token Request" anchor="TokenRequest"> 
   
   <t>
-    After displaying instructions to the user, the client makes an Access Token
-    Request to the token endpoint (as defined by Section 3.2 of <xref target="RFC6749"/>)
+    After displaying instructions to the user, the client creates an access token
+    request and sends it to the token endpoint (as defined by Section 3.2 of <xref target="RFC6749"/>)
     with a <spanx style="verb">grant_type</spanx> 
     of <vspace/><spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx>.
     This is an extension grant type (as defined by Section 4.5 of
@@ -561,11 +563,11 @@
 
     <t hangText="device_code"> <vspace/>
            REQUIRED.  The device verification code, <spanx style="verb">device_code</spanx> from the
-           Device Authorization Response, defined in <xref target="AuthorizationResponse"/>.</t>
+           device authorization response, defined in <xref target="AuthorizationResponse"/>.</t>
  
  
   <t hangText="client_id"> <vspace/>
-           REQUIRED, if the client is not authenticating with the
+           REQUIRED if the client is not authenticating with the
            authorization server as described in Section 3.2.1. of 
            <xref target="RFC6749"/>. The client identifier as
            described in Section 2.2 of <xref target="RFC6749"/>.</t>
@@ -595,14 +597,14 @@
     credentials (or assigned other authentication requirements), the
     client MUST authenticate with the authorization server as described
     in Section 3.2.1 of <xref target="RFC6749"/>. Note that there are security
-    implications of statically distributed client credentials, see
+    implications of statically distributed client credentials; see
     <xref target="NonConfidentialClient" />.
   </t>
 
   <t>
     The response to this request is defined in <xref target="TokenResponse" />.
     Unlike other OAuth grant types, it is expected for the client to try the
-    Access Token Request repeatedly in a polling fashion, based on the error
+    access token request repeatedly in a polling fashion based on the error
     code in the response.
   </t>
 
@@ -612,7 +614,7 @@
 
   <t>If the user has approved the grant, the token endpoint responds with
   a success response defined in Section 5.1 of <xref target="RFC6749"/>;
-  otherwise it responds with an error, as defined in Section 5.2 of 
+  otherwise, it responds with an error, as defined in Section 5.2 of 
   <xref target="RFC6749"/>. 
   </t>
 
@@ -621,15 +623,14 @@
     for use with the device authorization grant in token endpoint responses:
 
   <list style="hanging"> 
-
   <t hangText="authorization_pending"> <vspace/>
           The authorization request is still pending as the end user hasn't
-          yet completed the user interaction steps (<xref target="UserInteraction" />).
-          The client SHOULD repeat the Access Token Request to the token
-          endpoint (a process known as polling). Before each new request the
+          yet completed the user-interaction steps (<xref target="UserInteraction" />).
+          The client SHOULD repeat the access token request at the token
+          endpoint (a process known as polling). Before each new request, the
           client MUST wait at least the number of seconds specified by the
-          <spanx style="verb">interval</spanx> parameter of the Device
-          Authorization Response (see <xref target="AuthorizationResponse"/>),
+          <spanx style="verb">interval</spanx> parameter of the device
+          authorization response (see <xref target="AuthorizationResponse"/>),
           or 5 seconds if none was provided, and respect any increase in the
           polling interval required by the
           <spanx style="verb">slow_down</spanx> error.</t>
@@ -641,12 +642,12 @@
            for this and all subsequent requests.</t>
            
   <t hangText="access_denied"> <vspace/>
-           The end user denied the authorization request.</t>
+           The end user is denied the authorization request.</t>
 
   <t hangText="expired_token"> <vspace/>
-           The <spanx style="verb">device_code</spanx> has expired and
+           The <spanx style="verb">device_code</spanx> has expired, and
            the device authorization session has concluded.
-           The client MAY commence a new Device Authorization Request
+           The client MAY commence a new device authorization request
            but SHOULD wait for user interaction before restarting
            to avoid unnecessary polling.</t>
   </list> 
@@ -659,25 +660,24 @@
     continue to poll the token endpoint by repeating the token request
     (implementing the precise behavior defined above).
     If the client receives an error response with any other error code,
-    it MUST stop polling and SHOULD react accordingly,
-    for example, by displaying an error to the user.
+    it MUST stop polling and SHOULD react accordingly, for example, by
+    displaying an error to the user.
   </t>
 
   <t>
   On encountering a connection timeout, clients MUST unilaterally reduce
   their polling frequency before retrying. The use of an exponential
-  backoff algorithm to achieve this, such as by doubling the polling
+  backoff algorithm to achieve this, such as doubling the polling
   interval on each such connection timeout, is RECOMMENDED.
   </t>
 
   <t>
-  The assumption of this specification is that the separate device the
-  user is authorizing the request on does not have a way to communicate back
+  The assumption of this specification is that the separate device on which the
+  user is authorizing the request does not have a way to communicate back
   to the device with the OAuth client. This protocol only requires a one-way
-  channel in order to maximise the viability of the protocol in restricted
+  channel in order to maximize the viability of the protocol in restricted
   environments, like an application running on a TV that is only capable of
-  outbound requests. If a return channel were to exist for the chosen user
-  interaction interface, then the device MAY wait until notified on that channel
+  outbound requests. If a return channel were to exist for the chosen user-interaction interface, then the device MAY wait until notified on that channel
   that the user has completed the action before initiating the token request
   (as an alternative to polling).
   Such behavior is, however, outside the scope of this specification.
@@ -690,19 +690,18 @@
 
     <section anchor="Discovery" title="Discovery Metadata">
       <t>
-        Support for this specification MAY be declared in the OAuth 2.0
-        Authorization Server Metadata <xref target="RFC8414"/> by
-        including the value <spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx> in the
-        <spanx style="verb">grant_types_supported</spanx> parameter, and by adding the following
-        new parameter:
+	When implementing "OAuth 2.0 Authorization Server Metadata Metadata" <xref target="RFC8414"/>,
+	the value <spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx> in
+	the <spanx style="verb">grant_types_supported</spanx> value and the addition of the following
+	new parameter indicate support for this specificaion:
       </t>
       <t>
       <list style="hanging"> 
         <t hangText="device_authorization_endpoint">
           <vspace/>
           OPTIONAL.
-          URL of the authorization server's device authorization endpoint 
-          defined in <xref target="AuthorizationRequest"/>.
+          URL of the authorization server's device authorization endpoint,
+          as defined in <xref target="AuthorizationRequest"/>.
         </t>
       </list>
       </t>
@@ -715,42 +714,42 @@
           desirable for usability reasons. This means the entropy is typically
           less than would be used for the device code or other OAuth bearer
           token types where the code length does not impact usability.
-          It is therefore recommended that the server rate-limit
+          Therefore, it is recommended that the server rate-limit
           user code attempts.
           </t>
           <t>
-          The user code SHOULD have enough entropy that when
-          combined with rate limiting and other mitigations makes
-          a brute-force attack infeasible. For example, it's generally held that
+          The user code SHOULD have enough entropy that, when
+          combined with rate-limiting and other mitigations, a brute-force
+	  attack becomes infeasible. For example, it's generally held that
           128-bit symmetric keys for encryption are seen as good enough today
           because an attacker has to put in 2^96 work to have a 2^-32 chance
-          of guessing correctly via brute force. The rate limiting and finite
-          lifetime on the user code places an artificial limit on the amount
-          of work an attacker can "do", so if, for instance, one uses a 8-character base-20
+          of guessing correctly via brute force. The rate-limiting and finite
+          lifetime on the user code place an artificial limit on the amount
+          of work an attacker can "do". If, for instance, one uses an 8-character base 20
           user code (with roughly 34.5 bits of entropy), the rate-limiting
-          interval and validity period would need to only allow 5
+          interval and validity period would need to only allow five
           attempts in order to get the same 2^-32 probability of success
           by random guessing.
           </t>
           <t>
           A successful brute forcing of the user code would enable the attacker
-          to authenticate with their own credentials and make an authorization
+          to authenticate with their own credentials and obtain an authorization
           grant to the device. This is the opposite scenario to an OAuth bearer
           token being brute forced, whereby the attacker gains control of the
           victim's authorization grant. Such attacks may not always make
-          economic sense, for example for a video app the device owner may
+          economic sense. For example, for a video app, the device owner may
           then be able to purchase movies using the attacker's account, though
           a privacy risk would still remain and thus is important to protect
           against. Furthermore, some uses of the device flow give
-          the granting account the ability to perform actions such as controlling
-          the device, which needs to be protected.
+          the granting account the ability to perform actions that need to be protected,
+	  such as controlling the device.
           </t>
           <t>
           The precise length of the user code and the entropy contained within
           is at the discretion of the authorization server, which needs to
           consider the sensitivity of their specific protected resources,
           the practicality of the code length from a usability standpoint, and
-          any mitigations that are in place such as rate-limiting, when
+          any mitigations that are in place, such as rate-limiting, when
           determining the user code format.
           </t>
         </section>
@@ -758,7 +757,7 @@
           <t>
           An attacker who guesses the device code would be able to potentially
           obtain the authorization code once the user completes the flow.
-          As the device code is not displayed to the user and thus there
+          As the device code is not displayed to the user, and, thus, there
           are no usability considerations on the length, a very high entropy
           code SHOULD be used.
           </t>
@@ -767,18 +766,17 @@
         <section title="Device Trustworthiness" anchor="DeviceTrustworthiness">
           <t>
           Unlike other native application OAuth 2.0 flows, the device requesting the
-          authorization is not the same as the device that the user grants access
-          from. Thus, signals from the approving user's session and device are
+          authorization is not the same as the device from which the user grants access. Thus, signals from the approving user's session and device are
           not relevant to the trustworthiness of the client device.
           </t>
 	  <t>
 	    Note that if an authorization server used with this flow is malicious,
-	    then it could man-in-the-middle the backchannel flow to another authorization server.
+	    then it could perform a man-in-the-middle attack on the backchannel flow to another authorization server.
 	    In this scenario, the man-in-the-middle is not completely hidden from sight,
 	    as the end user would end up on the authorization page of the wrong service,
 	    giving them an opportunity to notice that the URL in the browser's address bar is wrong.
-	    For this to be possible, the device manufacturer must either directly be the attacker,
-	    shipping a device intended to perform the man-in-the-middle attack,
+	    For this to be possible, the device manufacturer must either be the attacker,
+	    be shipping a device intended to perform the man-in-the-middle attack,
 	    or be using an authorization server that is controlled by an attacker,
 	    possibly because the attacker compromised the authorization server used by the device.
 	    In part,
@@ -791,8 +789,7 @@
           an attacker's possession. For example, an attacker might send an email
           instructing the target user to visit the verification URL and
           enter the user code. To mitigate such an attack, it is RECOMMENDED to
-          inform the user that they are authorizing a device during the user
-          interaction step (see <xref target="UserInteraction"/>), and to
+          inform the user that they are authorizing a device during the user-interaction step (see <xref target="UserInteraction"/>) and to
           confirm that the device is in their possession.
 	  The authorization server SHOULD display information about the device
 	  so that the person can notice if a software client
@@ -803,17 +800,18 @@
           <xref target="verification-optimizations" /> for the client to
           append the user code to the authorization URI, it is particularly
           important to confirm that the device is in the user's possession,
-          as the user no longer has to type the code manually.
+          as the user no longer has to type in the code manually.
           One possibility is to display the code during the authorization flow
-          and asking the user to verify that the same code is being displayed on
+          and ask the user to verify that the same code is being displayed on
           the device they are setting up. 
           </t>
           <t>
           The user code needs to have a long enough lifetime to be useable (allowing
-          the user to retrieve their secondary device, navigate to the verification URI, login, etc.),
+          the user to retrieve their secondary device, navigate to the
+	  verification URI, log in, etc.)
           but should be sufficiently short to limit the
           usability of a code obtained for phishing. This doesn't prevent a
-          phisher presenting a fresh token, particularly in the case they
+          phisher from presenting a fresh token, particularly if they
           are interacting with the user in real time, 
           but it does limit the viability of codes sent over email or SMS.
           </t> 
@@ -829,14 +827,14 @@
             to reduce the chances it will be observed by a malicious user.
           </t>
         </section>
-        <section title="Non-confidential Clients" anchor="NonConfidentialClient">
+        <section title="Nonconfidential Clients" anchor="NonConfidentialClient">
           <t>
           Device clients are generally incapable of maintaining the confidentiality
-          of their credentials, as users in possession of the device can reverse
-          engineer it and extract the credentials. Therefore, unless additional
+          of their credentials, as users in possession of the device can reverse-engineer it and extract the credentials.
+	  Therefore, unless additional
           measures are taken, they should be treated as public clients
-          (as defined by Section 2.1 of OAuth 2.0)
-          susceptible to impersonation. The security considerations of
+          (as defined by Section 2.1 of <xref target="RFC6749"/>),
+          which are susceptible to impersonation. The security considerations of
           Section 5.3.1 of <xref target="RFC6819" /> and
           Sections 8.5 and 8.6 of <xref target="RFC8252"/> apply to such clients.
           </t>
@@ -851,15 +849,15 @@
           </t>
         </section>
 
-        <section title="Non-Visual Code Transmission" anchor="NonVisualCodeTransmission">
+        <section title="Nonvisual Code Transmission" anchor="NonVisualCodeTransmission">
           <t>
           There is no requirement that the user code be displayed by the
           device visually. Other methods of one-way communication can potentially be
-          used, such as text-to-speech audio, or Bluetooth Low Energy. To mitigate an attack
+          used, such as text-to-speech audio or Bluetooth Low Energy. To mitigate an attack
           in which a malicious user can bootstrap their credentials on a device
           not in their control, it is RECOMMENDED that any chosen communication 
-          channel only be accessible by people in close proximity. E.g., users
-          who can see, or hear the device.
+          channel only be accessible by people in close proximity, for example, users
+          who can see or hear the device.
           </t>
         </section>
 
@@ -873,75 +871,72 @@
       <section anchor="UserCodeRecommendations" title="User Code Recommendations">
         <t>
           For many users, their nearest Internet-connected device will be their
-          mobile phone, and typically these devices offer input methods that are
-          more time consuming than a computer keyboard to change the case or
-          input numbers. To improve usability (improving entry speed, and
+          mobile phone; typically, these devices offer input methods that are
+          more time-consuming than a computer keyboard to change the case or
+          input numbers. To improve usability (improving entry speed and
           reducing retries), these limitations should be taken into account
-          when selecting the user-code character set.
+          when selecting the user code character set.
         </t>
         <t>
           One way to improve input speed is to restrict the character set to
           case-insensitive A-Z characters, with no digits. These characters can
           typically be entered on a mobile keyboard without using modifier keys.
           Further removing vowels to avoid randomly creating words
-          results in the base-20 character set:
+          results in the base 20 character set
           <spanx style="verb">BCDFGHJKLMNPQRSTVWXZ</spanx>. Dashes or other
           punctuation may be included for readability.
         </t>
         <t>
-          An example user code following this guideline containing 8 significant
-          characters and dashes added for end-user readability, with a
-          resulting entropy of 20^8:
-          <spanx style="verb">WDJB-MJHT</spanx>.
+          An example user code following this guideline, <spanx style="verb">WDJB-MJHT</spanx>, contains eight significant
+          characters and has dashes added for end-user readability. The resulting entropy is 20^8.
         </t>
         <t>
           Pure numeric codes are also a good choice for usability, especially
           for clients targeting locales where A-Z character keyboards are not
-          used, though their length needs to be longer to maintain a high
-          entropy.
+          used, though the length of such a code needs to be longer to maintain high entropy.
         </t>
         <t>
-          An example numeric user code
-          containing 9 significant digits and dashes added for end-user readability,
+          An example numeric user code that
+          contains nine significant digits and dashes added for end-user readability
           with an entropy of
-          10^9: <spanx style="verb">019-450-730</spanx>.
+          10^9 is <spanx style="verb">019-450-730</spanx>.
         </t>
         <t>
           When processing the inputted user code, the server should strip dashes and
-          other punctuation it added for readability (making the inclusion
-          of that punctuation by the user optional).
-          For codes using only characters in the A-Z range as
-          with the base-20 charset defined above, the user's input
-          should be upper-cased before comparison to account for the fact
-          that the user may input the equivalent lower-case characters.
+          other punctuation that it added for readability (making the inclusion
+          of such punctuation by the user optional).
+          For codes using only characters in the A-Z range, as
+          with the base 20 charset defined above, the user's input
+          should be uppercased before a comparison to account for the fact
+          that the user may input the equivalent lowercase characters.
           Further stripping of all characters outside the user_code charset
-          is recommended to reduce instances where an errantly typed
+          is recommended to reduce instances where an erroneously typed
           character (like a space character) invalidates otherwise valid
           input.
         </t>
         <t>
           It is RECOMMENDED to avoid character sets that contain two
-          or more characters that can easily be confused with each other
-           like "0" and "O", or "1", "l" and "I".
-          Furthermore, the extent practical, where a character set contains one
-          character that may be confused with characters outside the character set
-          the character outside the set MAY be substituted with the one
-          in the character set that it is commonly confused with
-          (for example, "O" for "0" when using a numerical 0-9 character set).
-                  </t>
+          or more characters that can easily be confused with each other, like
+	  "0" and "O" or "1", "l" and "I".
+          Furthermore, to the extent practical, when a character set contains a
+          character that may be confused with characters outside the character set,
+          a character outside the set MAY be substituted with the one
+          in the character set with which it is commonly confused;
+          for example, "O" may be substituted for "0" when using the numerical 0-9 character set.
+	</t>
       </section>
 
       <section anchor="AdvancedCommunication"
-        title="Non-Browser User Interaction">
+        title="Non-browser User Interaction">
         <t>
           Devices and authorization servers MAY negotiate an alternative code
-          transmission and user interaction method in addition to the one described
-          in <xref target="UserInteraction" />. Such an alternative user interaction flow could obviate the need for a
+          transmission and user-interaction method in addition to the one described
+          in <xref target="UserInteraction" />. Such an alternative user-interaction flow could obviate the need for a
           browser and manual input of the code, for example, by using Bluetooth to
           transmit the code to the authorization server's companion app. Such
-          interaction methods can utilize this protocol, as ultimately, the user just
+          interaction methods can utilize this protocol as, ultimately, the user just
           needs to identify the authorization session to the authorization server;
-          however, user interaction other than via the
+          however, user interaction other than through the
           verification URI is outside the scope of this
           specification.
         </t>
@@ -951,7 +946,7 @@
 
     <section anchor="IANA" title="IANA Considerations">
 
-      <section anchor="ParameterReg" title="OAuth Parameters Registration">
+      <section anchor="ParameterReg" title="OAuth Parameter Registration">
 
         <t>
           This specification registers the following values in the
@@ -960,21 +955,17 @@
           established by <xref target="RFC6749"/>.
         </t>
 
-        <section title="Registry Contents" anchor="ParameterContents">
-
-          <t>
+	          <t>
             <?rfc subcompact="yes"?>
-            <list style="symbols">
-              <t>Parameter name: device_code</t>
-              <t>Parameter usage location: token request</t>
-              <t>Change controller: IESG</t>
-              <t>Specification Document: <xref target="AuthorizationRequest"/> of [[ this specification ]]</t>
+            <list style="empty">
+              <t>Name: device_code</t>
+              <t>Parameter Usage Location: token request</t>
+              <t>Change Controller: IESG</t>
+              <t>Reference: <xref target="AuthorizationRequest"/> of this document.</t>
             </list>
-          </t>
+		  </t>
+		   <?rfc subcompact="no"?>
 
-          <?rfc subcompact="no"?>
-
-        </section>
       </section>
 
       <section anchor="URIReg" title="OAuth URI Registration">
@@ -986,21 +977,18 @@
           established by <xref target="RFC6755"/>.
         </t>
 
-        <section title="Registry Contents" anchor="URIContents">
-
-          <t>
+	          <t>
             <?rfc subcompact="yes"?>
-            <list style="symbols">
+            <list style="empty">
               <t>URN: urn:ietf:params:oauth:grant-type:device_code</t>
               <t>Common Name: Device flow grant type for OAuth 2.0</t>
-              <t>Change controller: IESG</t>
-              <t>Specification Document: <xref target="AuthorizationRequest"/> of [[ this specification ]]</t>
+              <t>Change Controller: IESG</t>
+              <t>Specification Document: <xref target="AuthorizationRequest"/> of this document.</t>
             </list>
           </t>
 
           <?rfc subcompact="no"?>
 
-        </section>
       </section>
 
       <section anchor="ErrorReg" title="OAuth Extensions Error Registration">
@@ -1012,76 +1000,75 @@
           established by <xref target="RFC6749"/>.
         </t>
 
-        <section title="Registry Contents" anchor="ErrorContents">
-          <t>
+	  <t>
             <?rfc subcompact="yes"?>
-            <list style="symbols">
-              <t>Error name: authorization_pending</t>
-              <t>Error usage location: Token endpoint response</t>
-              <t>Related protocol extension: [[ this specification ]]</t>
-              <t>Change controller: IETF</t>
-              <t>Specification Document: <xref target="TokenResponse"/> of [[ this specification ]]</t>
+            <list style="empty">
+              <t>Name: authorization_pending</t>
+              <t>Usage Location: Token endpoint response</t>
+              <t>Protocol Extension: This document.</t>
+              <t>Change Controller: IETF</t>
+              <t>Reference: <xref target="TokenResponse"/> of this document.</t>
             </list>
           </t>
           <t>
             <?rfc subcompact="yes"?>
-            <list style="symbols">
-              <t>Error name: access_denied</t>
-              <t>Error usage location: Token endpoint response</t>
-              <t>Related protocol extension: [[ this specification ]]</t>
-              <t>Change controller: IETF</t>
-              <t>Specification Document: <xref target="TokenResponse"/> of [[ this specification ]]</t>
+            <list style="empty">
+              <t>Name: access_denied</t>
+              <t>Usage Location: Token endpoint response</t>
+              <t>Protocol Extension: This document.</t>
+              <t>Change Controller: IETF</t>
+              <t>Reference: <xref target="TokenResponse"/> of this document.</t>
             </list>
           </t>
           <t>
             <?rfc subcompact="yes"?>
-            <list style="symbols">
-              <t>Error name: slow_down</t>
-              <t>Error usage location: Token endpoint response </t>
-              <t>Related protocol extension: [[ this specification ]]</t>
-              <t>Change controller: IETF</t>
-              <t>Specification Document: <xref target="TokenResponse"/> of [[ this specification ]]</t>
+            <list style="empty">
+              <t>Name: slow_down</t>
+              <t>Usage Location: Token endpoint response </t>
+              <t>Protocol Extension: This document.</t>
+              <t>Change Controller: IETF</t>
+              <t>Reference: <xref target="TokenResponse"/> of this document.</t>
             </list>
           </t>
           <t>
             <?rfc subcompact="yes"?>
-            <list style="symbols">
-              <t>Error name: expired_token</t>
-              <t>Error usage location: Token endpoint response </t>
-              <t>Related protocol extension: [[ this specification ]]</t>
-              <t>Change controller: IETF</t>
-              <t>Specification Document: <xref target="TokenResponse"/> of [[ this specification ]]</t>
+            <list style="empty">
+              <t>Name: expired_token</t>
+              <t>Usage Location: Token endpoint response </t>
+              <t>Protocol Extension: This document.</t>
+              <t>Change Controller: IETF</t>
+              <t>Reference: <xref target="TokenResponse"/> of this document.</t>
             </list>
           </t>
 
           <?rfc subcompact="no"?>
+	  
 
-        </section>
+    
       </section>
 
       <section title="OAuth 2.0 Authorization Server Metadata" anchor="MetadataReg">
 
         <t>
           This specification registers the following values in the
-          IANA "OAuth 2.0 Authorization Server Metadata" registry
+          IANA "OAuth Authorization Server Metadata" registry
           <xref target="IANA.OAuth.Parameters"/>
           established by <xref target="RFC8414"/>.
         </t>
 
-        <section title="Registry Contents" anchor="MetadataContents">
-          <t>
+
+	<t>
             <?rfc subcompact="yes"?>
-            <list style="symbols">
+            <list style="empty">
               <t>Metadata name: device_authorization_endpoint</t>
-              <t>Metadata Description: The Device Authorization Endpoint.</t>
-              <t>Change controller: IESG</t>
-              <t>Specification Document: <xref target="Discovery"/> of [[ this specification ]]</t>
+              <t>Metadata Description: URL of the authorization server's device authorization endpoint</t>
+              <t>Change Controller: IESG</t>
+              <t>Reference: <xref target="Discovery"/> of this document.</t>
             </list>
           </t>
 
           <?rfc subcompact="no"?>
 
-        </section>
       </section>
 
     </section>
@@ -1092,6 +1079,7 @@
 
     <references title='Normative References'>
 
+      <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.8446"?>
       <?rfc include="reference.RFC.6749"?>
       <?rfc include="reference.RFC.6755"?>
@@ -1112,31 +1100,65 @@
         </front>
       </reference>
 
-      <reference anchor="HTML5" target="https://www.w3.org/TR/2014/REC-html5-20141028/">
+      <reference anchor="HTML5" target="https://www.w3.org/TR/2017/REC-html52-20171214/">
         <front>
-          <title>HTML5</title>
-          <author>
-            <organization>IANA</organization>
+          <title>HTML 5.2</title>
+
+          <author initials="S." surname="Faulkner" fullname="Steve Faulkner">
+            <organization>The Paciello Group</organization>
+            <address>
+              <email>sfaulkner@paciellogroup.com</email>
+            </address>
           </author>
-          <date/>
+
+          <author initials="A." surname="Eicholz" fullname="Arron Eicholz">
+            <organization>Microsoft</organization>
+            <address>
+              <email>arronei@microsoft.com</email>
+            </address>
+          </author>
+
+          <author initials="T." surname="Leithead" fullname="Travis Leithead">
+            <organization>Microsoft</organization>
+            <address>
+              <email>travil@microsoft.com</email>
+            </address>
+          </author>
+
+          <author initials="A." surname="Danilo" fullname="Alex Danilo">
+            <organization>Google</organization>
+            <address>
+              <email>adanilo@google.com</email>
+            </address>
+          </author>
+
+          <author initials="S." surname="Moon" fullname="Sangwhan Moon">
+            <organization>Invited Expert</organization>
+            <address>
+              <email>sangwhan@iki.fi</email>
+            </address>
+          </author>
+
+          <date year="2017" month="December" />
         </front>
+        <seriesInfo name="World Wide Web Consortium (W3C)" value="Recommendation REC-html52-20171214," />
       </reference>
 
     </references>
 
-    <section anchor="Acknowledgements" title="Acknowledgements">
+    <section numbered="no" anchor="Acknowledgements" title="Acknowledgements">
 
       <t>
 	The starting point for this document was the Internet-Draft
   draft-recordon-oauth-v2-device, authored by David Recordon and Brent Goldman,
   which itself was based on content in draft versions of the OAuth 2.0 protocol specification
-  removed prior to publication due to a then lack of sufficient deployment expertise.
-  Thank you to the OAuth working group members who contributed to those earlier drafts.
+  removed prior to publication due to a then-lack of sufficient deployment expertise.
+  Thank you to the OAuth Working Group members who contributed to those earlier drafts.
       </t>
 
       <t>
-      This document was produced in the OAuth working group under the
-      chairpersonship of Rifaat Shekh-Yusef and Hannes Tschofenig with
+      This document was produced in the OAuth Working Group under the
+      chairpersonship of Rifaat Shekh-Yusef and Hannes Tschofenig, with
       Benjamin Kaduk, Kathleen Moriarty, and Eric Rescorla serving as Security
       Area Directors.
       </t>
@@ -1145,10 +1167,11 @@
         that shaped and formed the final specification:
       </t>
       <t>
-        Alissa Cooper,
+      
         Ben Campbell,
         Brian Campbell, 
         Roshni Chandrashekhar, 
+        Alissa Cooper,
         Eric Fazendin,        
         Benjamin Kaduk,
         Jamshid Khosravian, 
@@ -1170,233 +1193,7 @@
       </t>
     </section>
 
-    <section anchor="History" title="Document History">
-      <?rfc subcompact="yes"?>
-      <t>
-	[[ to be removed by the RFC Editor before publication as an RFC ]]
-      </t>
 
-      <t>
-	-15
-	<list style="symbols">
-	  <t>
-      Renamed and dropped most usage of the term "flow"
-	  </t>
-    <t>
-      Documented error responses on the authorization endpoint
-    </t>
-    <t>
-      Documented client authentication for the authorization endpoint
-    </t>
-	</list>
-      </t>
-
-
-      <t>
-	-14
-	<list style="symbols">
-	  <t>
-      Added more normative text on polling behavior.
-	  </t>
-    <t>
-    Added discussion on risk of user retrieving their own device_code.
-    </t>
-    <t>
-    Editorial improvements.
-    </t>
-	</list>
-      </t>
-
-
-      <t>
-	-13
-	<list style="symbols">
-	  <t>
-      Added a longer discussion about entropy, proposed by Benjamin Kaduk.
-	  </t>
-	  <t>
-    Added device_code to OAuth IANA registry.
-	  </t>
-	  <t>
-    Expanded explanation of "case insensitive".
-	  </t>
-	  <t>
-    Added security section on Device Code Brute Forcing.
-	  </t>
-    <t>
-    application/x-www-form-urlencoded normativly referenced.
-    </t>
-    <t>
-    Editorial improvements.
-    </t>
-	</list>
-      </t>
-
-      <t>
-	-12
-	<list style="symbols">
-	  <t>
-      Set a default polling interval to 5s explicitly.
-	  </t>
-	  <t>
-      Defined the slow_down behavior that it should
-      increase the current interval by 5s.
-	  </t>
-	  <t>
-      expires_in now REQUIRED
-	  </t>
-	  <t>
-      Other changes in response to review feedback.
-	  </t>
-	</list>
-      </t>
-
-      <t>
-	-11
-	<list style="symbols">
-	  <t>
-	    Updated reference to OAuth 2.0 Authorization Server Metadata.
-	  </t>
-	</list>
-      </t>
-
-      <t>
-	-10
-	<list style="symbols">
-	  <t>
-      Added a missing definition of access_denied for use on the token endpoint.
-    </t>
-    <t>
-      Corrected text documenting which error code should be returned for expired tokens
-      (it's "expired_token", not "invalid_grant"). 
-    </t>
-    <t>
-       Corrected section reference to RFC 8252 (the section numbers had changed after the initial reference was made).
-	  </t>
-	  <t>
-      Fixed line length of one diagram (was causing xml2rfc warnings).
-	  </t>
-	  <t>
-      Added line breaks so the URN grant_type is presented on an unbroken line.
-	  </t>
-	  <t>
-      Typos fixed and other stylistic improvements.
-	  </t>
-	</list>
-  </t>
-
-      <t>
-	-09
-	<list style="symbols">
-	  <t>
-	    Addressed review comments by Security Area Director Eric Rescorla
-	    about the potential of a confused deputy attack.
-	  </t>
-	</list>
-      </t>
-
-      <t>
-	-08
-	<list style="symbols">
-	  <t>
-	    Expanded the User Code Brute Forcing section to include more detail on this attack.
-	  </t>
-	</list>
-      </t>
-
-      <t>
-        -07
-        <list style='symbols'>
-          <t>
-            Replaced the "user_code" URI parameter optimization with
-            verification_uri_complete following
-            the IETF99 working group discussion.
-          </t>
-          <t>
-            Added security consideration about spying.
-          </t>
-          <t>
-            Required that device_code not be shown.
-          </t>
-          <t>
-            Added text regarding a minimum polling interval.
-          </t>
-        </list>
-      </t>
-
-      <t>
-        -06
-        <list style='symbols'>
-          <t>
-            Clarified usage of the "user_code" URI parameter optimization following
-            the IETF98 working group discussion.
-          </t>
-        </list>
-      </t>
-
-      <t>
-        -05
-        <list style='symbols'>
-          <t>
-            response_type parameter removed from authorization request.
-          </t>
-          <t>
-            Added option for clients to include the user_code on the
-            verification URI.
-          </t>
-          <t>
-            Clarified token expiry, and other nits.
-          </t>
-        </list>
-      </t>
-
-      <t>
-        -04
-        <list style='symbols'>
-          <t>
-            Security &amp; Usability sections. OAuth Discovery Metadata.
-          </t>
-        </list>
-      </t>
-
-      <t>
-        -03
-        <list style='symbols'>
-          <t>
-            device_code is now a URN.
-            Added IANA Considerations
-          </t>
-        </list>
-      </t>
-
-      <t>
-        -02
-        <list style='symbols'>
-          <t>
-            Added token request &amp; response specification. 
-          </t>
-        </list>
-      </t>
-
-      <t>
-        -01
-        <list style='symbols'>
-          <t>
-            Applied spelling and grammar corrections and added the Document History appendix.
-          </t>
-        </list>
-      </t>
-
-      <t>
-        -00
-        <list style='symbols'>
-          <t>
-            Initial working group draft based on draft-recordon-oauth-v2-device.
-	  </t>
-        </list>
-      </t>
-      <?rfc subcompact="no"?>
-    </section>     
 
   </back>
 </rfc>
