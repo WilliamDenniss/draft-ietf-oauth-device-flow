@@ -34,7 +34,7 @@
         </postal>
         <facsimile/>
         <email>wdenniss@google.com</email>
-        <uri>http://wdenniss.com/device-flow</uri>
+        <uri>https://wdenniss.com/device-flow</uri>
       </address>
     </author>
 
@@ -105,12 +105,12 @@
     <section anchor="Introduction" title="Introduction">
 
       <t>
-        This <xref target="RFC6749">OAuth 2.0 protocol
-        extension</xref>, sometimes referred to as "device flow",
+        The device authorization grant <xref target="RFC6749">OAuth 2.0</xref> protocol
+        extension, sometimes referred to as the "device flow",
         enables OAuth clients to request user authorization from
         applications on devices that have limited input capabilities
         or lack a suitable browser. Such devices include smart TVs,
-        media consoles, picture frames, and printers that lack an easy
+        media consoles, picture frames, and printers, that lack an easy
         input method or a suitable browser required for traditional
         OAuth interactions. The authorization flow defined by this
         specification instructs the user to review the authorization
@@ -146,14 +146,14 @@
         </t>
       <t>
         As the device authorization grant does not require two-way communication
-        between the OAuth client and the user agent (unlike other
+        between the OAuth client on the device and the user agent (unlike other
         OAuth 2 grant types, such as the authorization code and implicit grant types),
         it supports several use cases that cannot be
         served by those other approaches.
       </t>
 
       <t>
-        Instead of interacting with the end user's user agent, the client
+        Instead of interacting directly with the end user's user agent (i.e., browser), the device client
         instructs the end user to use another computer or device and connect
         to the authorization server to approve the access request.  Since the
         protocol supports clients that can't receive incoming requests,
@@ -245,25 +245,6 @@
     when, and only when, they appear in all capitals, as shown here.
         </t>
 
-      <t>
-	<list style="hanging"> 
-
-	  <t hangText="Device Authorization Endpoint:"><vspace/>
-	  The authorization server's endpoint capable of issuing device
-	  verification codes, user codes, and verification URLs.
-	  </t> 
-
-	  <t hangText="Device Verification Code:"><vspace/>
-	  A short-lived token representing an authorization session.</t>
-
-	  <t hangText="End-User Verification Code:"><vspace/>
-	  A short-lived token that the device displays to the end user,
-	  is entered by the user on the authorization server, and is
-	  thus used to bind the device to the user.
-	  </t> 
-	</list> 
-      </t> 
-
     </section>
 
     <section anchor="Protocol" title="Protocol"> 
@@ -285,8 +266,8 @@
   </t>
 
   <t>
-  The client constructs the request with the following parameters; it is sent
-  as the body of the request and encoded with the
+  The client constructs the request with the following parameters in the
+  body of the request encoded with the
   <spanx style="verb">application/x-www-form-urlencoded</spanx> 
   encoding algorithm defined by Section 4.10.22.6 of <xref target="HTML5"/>:</t>
 
@@ -313,7 +294,7 @@
    Host: server.example.com
    Content-Type: application/x-www-form-urlencoded
 
-   client_id=459691054427
+   client_id=1406020730
 ]]></artwork></figure>
 	</t>
  
@@ -452,7 +433,7 @@
    <xref target="RFC8446"/> session.
     The authorization server prompts the end user to identify the device authorization session by
     entering the <spanx style="verb">user_code</spanx> provided by the client.
-    The authorization server should then inform the user about the action they
+    The authorization server SHOULD then inform the user about the action they
     are undertaking and ask them to approve or deny the request. Once the user
     interaction is complete, the server MAY instruct the user to return to their
     device.
@@ -507,7 +488,8 @@
     textual verification URI (<spanx style="verb">verification_uri</spanx>) for
     users who are not able to use such a shortcut. Clients MUST
     still display the <spanx style="verb">user_code</spanx>, as the authorization
-    server will require the user to confirm it to disambiguate devices or as remote phishing mitigation (see <xref target="RemotePhishing"/>).
+    server will require the user to confirm it to disambiguate devices or as
+    remote phishing mitigation (see <xref target="RemotePhishing"/>).
   </t>
   <t>
     If the user starts the user interaction by navigating to <spanx style="verb">verification_uri_complete</spanx>,
@@ -526,7 +508,7 @@
                <artwork><![CDATA[
                +-------------------------------------------------+
                |                                                 |
-               |  Scan the QR code  or, using    +------------+  |
+               |  Scan the QR code or, using     +------------+  |
                |  a browser on another device,   |[_]..  . [_]|  |
                |  visit:                         | .  ..   . .|  |
                |  https://example.com/device     | . .  . ....|  |
@@ -587,7 +569,7 @@
 
    grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Adevice_code
    &device_code=GmRhmhcxhwAzkoEqiMEg_DnyEysNkuNhszIySk9eS
-   &client_id=459691054427
+   &client_id=1406020730
 
 ]]></artwork></figure>
   </t> 
@@ -642,7 +624,7 @@
            for this and all subsequent requests.</t>
            
   <t hangText="access_denied"> <vspace/>
-           The end user is denied the authorization request.</t>
+           The authorization request was denied.</t>
 
   <t hangText="expired_token"> <vspace/>
            The <spanx style="verb">device_code</spanx> has expired, and
@@ -690,10 +672,11 @@
 
     <section anchor="Discovery" title="Discovery Metadata">
       <t>
-	When implementing "OAuth 2.0 Authorization Server Metadata Metadata" <xref target="RFC8414"/>,
-	the value <spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx> in
-	the <spanx style="verb">grant_types_supported</spanx> value and the addition of the following
-	new parameter indicate support for this specificaion:
+  Support for this protocol is declared in 
+  <xref target="RFC6749">OAuth 2.0 Authorization Server Metadata Metadata</xref> as follows.
+  The value <spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx> is
+  included in values of the <spanx style="verb">grant_types_supported</spanx> key, and the following
+  new key value pair is added:
       </t>
       <t>
       <list style="hanging"> 
@@ -732,15 +715,25 @@
           by random guessing.
           </t>
           <t>
-          A successful brute forcing of the user code would enable the attacker
+          <!--
+          "A successful brute forcing of the user code would enable the attacker
           to authenticate with their own credentials and obtain an authorization
-          grant to the device. This is the opposite scenario to an OAuth bearer
+          grant to the device."
+          
+          WD: The attacker here doesn't actually "obtain" an authorization
+              rant, rather the device does.
+          
+          -->
+          A successful brute forcing of the user code would enable the attacker
+          to approve the authorization grant with their own credentials, after
+          which the device would receive a device authorization grant linked to the attacker's account.
+          This is the opposite scenario to an OAuth bearer
           token being brute forced, whereby the attacker gains control of the
           victim's authorization grant. Such attacks may not always make
           economic sense. For example, for a video app, the device owner may
-          then be able to purchase movies using the attacker's account, though
+          then be able to purchase movies using the attacker's account (though
           a privacy risk would still remain and thus is important to protect
-          against. Furthermore, some uses of the device flow give
+          against). Furthermore, some uses of the device flow give
           the granting account the ability to perform actions that need to be protected,
 	  such as controlling the device.
           </t>
@@ -757,6 +750,7 @@
           <t>
           An attacker who guesses the device code would be able to potentially
           obtain the authorization code once the user completes the flow.
+          <!-- wd: is "user, and, thus," good grammar? I don't normally see 3 words with commas in succession"-->
           As the device code is not displayed to the user, and, thus, there
           are no usability considerations on the length, a very high entropy
           code SHOULD be used.
@@ -767,7 +761,7 @@
           <t>
           Unlike other native application OAuth 2.0 flows, the device requesting the
           authorization is not the same as the device from which the user grants access. Thus, signals from the approving user's session and device are
-          not relevant to the trustworthiness of the client device.
+          not always relevant to the trustworthiness of the client device.
           </t>
 	  <t>
 	    Note that if an authorization server used with this flow is malicious,
@@ -775,8 +769,8 @@
 	    In this scenario, the man-in-the-middle is not completely hidden from sight,
 	    as the end user would end up on the authorization page of the wrong service,
 	    giving them an opportunity to notice that the URL in the browser's address bar is wrong.
-	    For this to be possible, the device manufacturer must either be the attacker,
-	    be shipping a device intended to perform the man-in-the-middle attack,
+	    For this to be possible, the device manufacturer must either be the attacker
+      and shipping a device intended to perform the man-in-the-middle attack,
 	    or be using an authorization server that is controlled by an attacker,
 	    possibly because the attacker compromised the authorization server used by the device.
 	    In part,
@@ -792,17 +786,16 @@
           inform the user that they are authorizing a device during the user-interaction step (see <xref target="UserInteraction"/>) and to
           confirm that the device is in their possession.
 	  The authorization server SHOULD display information about the device
-	  so that the person can notice if a software client
-	  was attempting to impersonating a hardware device.
+	  so that the user could notice if a software client
+	  was attempting to impersonate a hardware device.
           </t>
           <t>
-          For authorization servers that support the option specified in
-          <xref target="verification-optimizations" /> for the client to
-          append the user code to the authorization URI, it is particularly
+          For authorization servers that support the <spanx style="verb">verification_uri_complete</spanx> optimization discussed in
+          <xref target="verification-optimizations" />, it is particularly
           important to confirm that the device is in the user's possession,
-          as the user no longer has to type in the code manually.
-          One possibility is to display the code during the authorization flow
-          and ask the user to verify that the same code is being displayed on
+          as the user no longer has to type in the code being displayed on the device manually.
+          One suggestion is to display the code during the authorization flow
+          and ask the user to verify that the same code is currently being displayed on
           the device they are setting up. 
           </t>
           <t>
@@ -813,7 +806,7 @@
           usability of a code obtained for phishing. This doesn't prevent a
           phisher from presenting a fresh token, particularly if they
           are interacting with the user in real time, 
-          but it does limit the viability of codes sent over email or SMS.
+          but it does limit the viability of codes sent over email or text message.
           </t> 
         </section>
         <section title="Session Spying" anchor="Spying">
@@ -827,7 +820,10 @@
             to reduce the chances it will be observed by a malicious user.
           </t>
         </section>
-        <section title="Nonconfidential Clients" anchor="NonConfidentialClient">
+        <!-- wd: reverted this change 
+        https://books.google.com/ngrams/graph?content=Nonconfidential%2Cnon-confidential&year_start=1974&year_end=2000&corpus=15&smoothing=3&share=&direct_url=t1%3B%2CNonconfidential%3B%2Cc0%3B.t1%3B%2Cnon%20-%20confidential%3B%2Cc0#t1%3B%2CNonconfidential%3B%2Cc0%3B.t1%3B%2Cnon%20-%20confidential%3B%2Cc0
+        -->
+        <section title="Non-confidential Clients" anchor="NonConfidentialClient">
           <t>
           Device clients are generally incapable of maintaining the confidentiality
           of their credentials, as users in possession of the device can reverse-engineer it and extract the credentials.
@@ -839,17 +835,17 @@
           Sections 8.5 and 8.6 of <xref target="RFC8252"/> apply to such clients.
           </t>
           <t>
-          The user may also be able to obtain the device_code and/or other OAuth
+          The user may also be able to obtain the <spanx style="verb">device_code</spanx> and/or other OAuth
           bearer tokens issued to their client, which would allow them to use their
           own authorization grant directly by impersonating the client. Given
           that the user in possession of the client credentials can already
           impersonate the client and create a new authorization grant (with
-          a new device_code), this doesn't represent a separate impersonation
+          a new <spanx style="verb">device_code</spanx>), this doesn't represent a separate impersonation
           vector.
           </t>
         </section>
 
-        <section title="Nonvisual Code Transmission" anchor="NonVisualCodeTransmission">
+        <section title="Non-visual Code Transmission" anchor="NonVisualCodeTransmission">
           <t>
           There is no requirement that the user code be displayed by the
           device visually. Other methods of one-way communication can potentially be
@@ -874,8 +870,8 @@
           mobile phone; typically, these devices offer input methods that are
           more time-consuming than a computer keyboard to change the case or
           input numbers. To improve usability (improving entry speed and
-          reducing retries), these limitations should be taken into account
-          when selecting the user code character set.
+          reducing retries), the limitations of such devices should be taken
+          into account when selecting the user code character set.
         </t>
         <t>
           One way to improve input speed is to restrict the character set to
@@ -887,7 +883,7 @@
           punctuation may be included for readability.
         </t>
         <t>
-          An example user code following this guideline, <spanx style="verb">WDJB-MJHT</spanx>, contains eight significant
+          An example user code following this guideline, <spanx style="verb">WDJB-MJHT</spanx>, contains 8 significant
           characters and has dashes added for end-user readability. The resulting entropy is 20^8.
         </t>
         <t>
@@ -897,7 +893,7 @@
         </t>
         <t>
           An example numeric user code that
-          contains nine significant digits and dashes added for end-user readability
+          contains 9 significant digits and dashes added for end-user readability
           with an entropy of
           10^9 is <spanx style="verb">019-450-730</spanx>.
         </t>
@@ -909,8 +905,10 @@
           with the base 20 charset defined above, the user's input
           should be uppercased before a comparison to account for the fact
           that the user may input the equivalent lowercase characters.
-          Further stripping of all characters outside the user_code charset
-          is recommended to reduce instances where an erroneously typed
+          Further stripping of all characters outside the chosen character set
+          <!-- wd: I reverted this change, in this case the additional characters I believe are in fact errant entries rather than eronous ones
+          i.e. the user did correctly input the code without error, but then tapped an additional key or puncutation -->
+          is recommended to reduce instances where an errantly typed
           character (like a space character) invalidates otherwise valid
           input.
         </t>
@@ -1047,7 +1045,7 @@
     
       </section>
 
-      <section title="OAuth 2.0 Authorization Server Metadata" anchor="MetadataReg">
+      <section title="OAuth Authorization Server Metadata" anchor="MetadataReg">
 
         <t>
           This specification registers the following values in the
@@ -1100,9 +1098,20 @@
         </front>
       </reference>
 
-      <reference anchor="HTML5" target="https://www.w3.org/TR/2017/REC-html52-20171214/">
+      <reference anchor="HTML5" target="https://www.w3.org/TR/2014/REC-html5-20141028/">
         <front>
-          <title>HTML 5.2</title>
+          <title>HTML5</title>
+
+          <author initials="I." surname="Hickson" fullname="Ian Hickson">
+            <organization>Google, Inc.</organization>
+            <address>
+              <email>ian@hixie.ch</email>
+            </address>
+          </author>
+
+          <author initials="R." surname="Berjon" fullname="Robin Berjon">
+            <organization>W3C</organization>
+          </author>
 
           <author initials="S." surname="Faulkner" fullname="Steve Faulkner">
             <organization>The Paciello Group</organization>
@@ -1111,37 +1120,36 @@
             </address>
           </author>
 
-          <author initials="A." surname="Eicholz" fullname="Arron Eicholz">
-            <organization>Microsoft</organization>
-            <address>
-              <email>arronei@microsoft.com</email>
-            </address>
-          </author>
-
           <author initials="T." surname="Leithead" fullname="Travis Leithead">
-            <organization>Microsoft</organization>
+            <organization> Microsoft Corporation</organization>
             <address>
               <email>travil@microsoft.com</email>
             </address>
           </author>
 
-          <author initials="A." surname="Danilo" fullname="Alex Danilo">
-            <organization>Google</organization>
+          <author initials="E." surname="Navara" fullname="Erika Doyle Navara">
+            <organization>Microsoft Corporation</organization>
             <address>
-              <email>adanilo@google.com</email>
+              <email>Erika.Doyle@microsoft.com</email>
             </address>
           </author>
 
-          <author initials="S." surname="Moon" fullname="Sangwhan Moon">
-            <organization>Invited Expert</organization>
+          <author initials="T." surname="O'Connor" fullname="Theresa O'Connor">
+            <organization>Apple Inc.</organization>
             <address>
-              <email>sangwhan@iki.fi</email>
+              <email>eoconnor@apple.com</email>
             </address>
           </author>
 
-          <date year="2017" month="December" />
+          <author initials="S." surname="Pfeiffer" fullname="Silvia Pfeiffer">
+            <address>
+              <email>silviapfeiffer1@gmail.com</email>
+            </address>
+          </author>
+
+          <date year="2014" month="October" day="28" />
         </front>
-        <seriesInfo name="World Wide Web Consortium (W3C)" value="Recommendation REC-html52-20171214," />
+        <seriesInfo name="World Wide Web Consortium (W3C)" value="Recommendation REC-html5-20141028" />
       </reference>
 
     </references>
@@ -1167,18 +1175,19 @@
         that shaped and formed the final specification:
       </t>
       <t>
-      
         Ben Campbell,
         Brian Campbell, 
         Roshni Chandrashekhar, 
         Alissa Cooper,
         Eric Fazendin,        
         Benjamin Kaduk,
+        Mirja Kuhlewind,
         Jamshid Khosravian, 
         Torsten Lodderstedt, 
         James Manger,
         Dan McNulty, 
         Breno de Medeiros,
+        Alexey Melnikov,
         Simon Moffatt, 
         Stein Myrseth, 
         Emond Papegaaij, 
@@ -1188,12 +1197,13 @@
         Andrew Sciberras,
         Marius Scurtescu,
         Filip Skokan,  
-        Ken Wang, and
-        Steven E.&nbsp;Wright.
+        Robert Sparks,
+        Ken Wang,
+        Christopher Wood,
+        Steven E.&nbsp;Wright, and
+        Qin Wu.
       </t>
     </section>
-
-
 
   </back>
 </rfc>
