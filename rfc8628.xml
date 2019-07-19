@@ -294,7 +294,7 @@
    Host: server.example.com
    Content-Type: application/x-www-form-urlencoded
 
-   client_id=1406020830&scope=example_scope
+   client_id=1406020730&scope=example_scope
 ]]></artwork></figure>
 	</t>
  
@@ -571,7 +571,7 @@
 
    grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Adevice_code
    &device_code=GmRhmhcxhwAzkoEqiMEg_DnyEysNkuNhszIySk9eS
-   &client_id=1406020830
+   &client_id=1406020730
 
 ]]></artwork></figure>
   </t> 
@@ -752,8 +752,7 @@
           <t>
           An attacker who guesses the device code would be able to potentially
           obtain the authorization code once the user completes the flow.
-          <!-- wd: is "user, and, thus," good grammar? I don't normally see 3 words with commas in succession"-->
-          As the device code is not displayed to the user, and, thus, there
+          As the device code is not displayed to the user, and thus there
           are no usability considerations on the length, a very high entropy
           code SHOULD be used.
           </t>
