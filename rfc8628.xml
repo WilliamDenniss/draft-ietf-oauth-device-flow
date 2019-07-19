@@ -34,7 +34,7 @@
         </postal>
         <facsimile/>
         <email>wdenniss@google.com</email>
-        <uri>https://wdenniss.com/device-flow</uri>
+        <uri>https://wdenniss.com/deviceflow</uri>
       </address>
     </author>
 
@@ -162,10 +162,10 @@
       </t>
 
       <t>
-        The device typically chooses the set of authorization servers to
+        The device application typically chooses the set of authorization servers to
         support (i.e., its own authorization server or those of providers with
-	which it has relationships). It is not uncommon for the device application to support
-        only one authorization server, for example, a TV application for
+	which it has relationships). It is common for the device application to support
+        only one authorization server, such as in the case of a TV application for
         a specific media provider that supports only that media provider's
         authorization server. The user may not yet have an established
 	relationship with that authorization provider, though one can
@@ -209,17 +209,16 @@
 	  <t>The authorization server issues a device code and an end-user
 	  code and provides the end-user verification URI.</t>
 
-	  <t>The client instructs the end user to use its user agent
-	  (on another device) and visit the provided end-user verification URI.
+	  <t>The client instructs the end user to use a user agent
+	  on another device and visit the provided end-user verification URI.
 	  The client provides the user with the end-user code to enter
 	  in order to review the authorization request.</t>
 
 	  <t>The authorization server authenticates the end user (via the
-	  user agent) and prompts the user to grant the client's
-	  access request.  If the user agrees to the client's access
-	  request, the user enters the user code provided by the
-	  client.  The authorization server validates the user code
-	  provided by the user.</t>
+	  user agent), and prompts the user to input the user code provided
+    by the device client. The authorization server validates the user code
+	  provided by the user, and prompts the user to accept or decline the
+    request.</t>
 
 	  <t>While the end user reviews the client's request
 	  (step D), the client repeatedly polls the authorization server to
@@ -267,7 +266,7 @@
 
   <t>
   The client makes a device authorization request to the device authorization endpoint
-  by adding the following parameters using the <spanx style="verb">application/x-www-form-urlencoded</spanx>
+  by including the following parameters using the <spanx style="verb">application/x-www-form-urlencoded</spanx>
    format per Appendix B of <xref target="RFC6749"/> with a character encoding of UTF-8 in the HTTP
    request entity-body:
   </t>
@@ -434,9 +433,9 @@
    <xref target="RFC8446"/> session.
     The authorization server prompts the end user to identify the device authorization session by
     entering the <spanx style="verb">user_code</spanx> provided by the client.
-    The authorization server SHOULD then inform the user about the action they
+    The authorization server should then inform the user about the action they
     are undertaking and ask them to approve or deny the request. Once the user
-    interaction is complete, the server MAY instruct the user to return to their
+    interaction is complete, the server instructs the user to return to their
     device.
 	</t>
 
@@ -462,7 +461,8 @@
   </t>
 
   <t>
-      It is NOT RECOMMENDED for authorization servers to include the user code in
+      It is NOT RECOMMENDED for authorization servers to include the user code 
+      (<spanx style="verb">user_code</spanx>) in
       the verification URI (<spanx style="verb">verification_uri</spanx>), 
       as this increases the length and complexity of the URI that the user must type.
       While the user must still type the same number of characters with
@@ -712,7 +712,7 @@
           lifetime on the user code place an artificial limit on the amount
           of work an attacker can "do". If, for instance, one uses an 8-character base 20
           user code (with roughly 34.5 bits of entropy), the rate-limiting
-          interval and validity period would need to only allow five
+          interval and validity period would need to only allow 5
           attempts in order to get the same 2^-32 probability of success
           by random guessing.
           </t>
