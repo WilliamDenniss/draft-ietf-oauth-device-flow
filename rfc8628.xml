@@ -162,9 +162,9 @@
       </t>
 
       <t>
-        The device application typically chooses the set of authorization servers to
+        The device client typically chooses the set of authorization servers to
         support (i.e., its own authorization server or those of providers with
-	which it has relationships). It is common for the device application to support
+	which it has relationships). It is common for the device client to support
         only one authorization server, such as in the case of a TV application for
         a specific media provider that supports only that media provider's
         authorization server. The user may not yet have an established
