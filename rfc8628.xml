@@ -791,7 +791,8 @@
 	  was attempting to impersonate a hardware device.
           </t>
           <t>
-          For authorization servers that support the <spanx style="verb">verification_uri_complete</spanx> optimization discussed in
+          For authorization servers that support the 
+          <spanx style="verb">verification_uri_complete</spanx> optimization discussed in
           <xref target="verification-optimizations" />, it is particularly
           important to confirm that the device is in the user's possession,
           as the user no longer has to type in the code being displayed on the device manually.
@@ -1184,8 +1185,8 @@
         Alissa Cooper,
         Eric Fazendin,        
         Benjamin Kaduk,
-        Mirja Kuhlewind,
         Jamshid Khosravian, 
+        Mirja Kuhlewind,
         Torsten Lodderstedt, 
         James Manger,
         Dan McNulty, 
