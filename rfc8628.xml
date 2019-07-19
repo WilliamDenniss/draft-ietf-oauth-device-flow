@@ -105,15 +105,15 @@
     <section anchor="Introduction" title="Introduction">
 
       <t>
-        The device authorization grant <xref target="RFC6749">OAuth 2.0</xref> protocol
-        extension, sometimes referred to as the "device flow",
+        This <xref target="RFC6749">OAuth 2.0</xref> protocol extension
         enables OAuth clients to request user authorization from
         applications on devices that have limited input capabilities
         or lack a suitable browser. Such devices include smart TVs,
         media consoles, picture frames, and printers, that lack an easy
         input method or a suitable browser required for traditional
         OAuth interactions. The authorization flow defined by this
-        specification instructs the user to review the authorization
+        specification, sometimes referred to as the "device flow",
+        instructs the user to review the authorization
         request on a secondary device, such as a smartphone, which
         does have the requisite input and browser capabilities to
         complete the user interaction.
@@ -266,10 +266,11 @@
   </t>
 
   <t>
-  The client constructs the request with the following parameters in the
-  body of the request encoded with the
-  <spanx style="verb">application/x-www-form-urlencoded</spanx> 
-  encoding algorithm defined by Section 4.10.22.6 of <xref target="HTML5"/>:</t>
+  The client makes a device authorization request to the device authorization endpoint
+  by adding the following parameters using the <spanx style="verb">application/x-www-form-urlencoded</spanx>
+   format per Appendix B of <xref target="RFC6749"/> with a character encoding of UTF-8 in the HTTP
+   request entity-body:
+  </t>
 
 	<t>
 	  <list style="hanging"> 
@@ -294,7 +295,7 @@
    Host: server.example.com
    Content-Type: application/x-www-form-urlencoded
 
-   client_id=1406020730
+   client_id=1406020830&scope=example_scope
 ]]></artwork></figure>
 	</t>
  
@@ -450,7 +451,8 @@
   </t>
 
   <t>
-    Authorization servers supporting this specification MUST implement a user-interaction sequence that starts with the user navigating to
+    Authorization servers supporting this specification MUST implement a
+    user-interaction sequence that starts with the user navigating to
     <spanx style="verb">verification_uri</spanx> and continues with them
     supplying the <spanx style="verb">user_code</spanx> at some stage during
     the interaction. Other than that, the exact sequence and implementation of
@@ -569,7 +571,7 @@
 
    grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Adevice_code
    &device_code=GmRhmhcxhwAzkoEqiMEg_DnyEysNkuNhszIySk9eS
-   &client_id=1406020730
+   &client_id=1406020830
 
 ]]></artwork></figure>
   </t> 
@@ -732,7 +734,7 @@
           victim's authorization grant. Such attacks may not always make
           economic sense. For example, for a video app, the device owner may
           then be able to purchase movies using the attacker's account (though
-          a privacy risk would still remain and thus is important to protect
+          even in this case a privacy risk would still remain and thus is important to protect
           against). Furthermore, some uses of the device flow give
           the granting account the ability to perform actions that need to be protected,
 	  such as controlling the device.
@@ -1098,6 +1100,7 @@
         </front>
       </reference>
 
+<!-->
       <reference anchor="HTML5" target="https://www.w3.org/TR/2014/REC-html5-20141028/">
         <front>
           <title>HTML5</title>
@@ -1151,6 +1154,7 @@
         </front>
         <seriesInfo name="World Wide Web Consortium (W3C)" value="Recommendation REC-html5-20141028" />
       </reference>
+-->
 
     </references>
 
