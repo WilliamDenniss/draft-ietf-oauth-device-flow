@@ -267,7 +267,7 @@
   <t>
   The client makes a device authorization request to the device authorization endpoint
   by including the following parameters using the <spanx style="verb">application/x-www-form-urlencoded</spanx>
-   format per Appendix B of <xref target="RFC6749"/> with a character encoding of UTF-8 in the HTTP
+   format, per Appendix B of <xref target="RFC6749"/>, with a character encoding of UTF-8 in the HTTP
    request entity-body:
   </t>
 
@@ -475,7 +475,7 @@
       which is designed to carry both pieces of information. 
   </t>
 
-  <section title="Non-textual Verification URI Optimization" anchor="verification-optimizations">
+  <section title="Non-Textual Verification URI Optimization" anchor="verification-optimizations">
   <t>
     When <spanx style="verb">verification_uri_complete</spanx> is included
     in the authorization response (<xref target="AuthorizationResponse"/>),
@@ -717,15 +717,6 @@
           by random guessing.
           </t>
           <t>
-          <!--
-          "A successful brute forcing of the user code would enable the attacker
-          to authenticate with their own credentials and obtain an authorization
-          grant to the device."
-          
-          WD: The attacker here doesn't actually "obtain" an authorization
-              rant, rather the device does.
-          
-          -->
           A successful brute forcing of the user code would enable the attacker
           to approve the authorization grant with their own credentials, after
           which the device would receive a device authorization grant linked to the attacker's account.
@@ -822,10 +813,7 @@
             to reduce the chances it will be observed by a malicious user.
           </t>
         </section>
-        <!-- wd: reverted this change 
-        https://books.google.com/ngrams/graph?content=Nonconfidential%2Cnon-confidential&year_start=1974&year_end=2000&corpus=15&smoothing=3&share=&direct_url=t1%3B%2CNonconfidential%3B%2Cc0%3B.t1%3B%2Cnon%20-%20confidential%3B%2Cc0#t1%3B%2CNonconfidential%3B%2Cc0%3B.t1%3B%2Cnon%20-%20confidential%3B%2Cc0
-        -->
-        <section title="Non-confidential Clients" anchor="NonConfidentialClient">
+        <section title="Non-Confidential Clients" anchor="NonConfidentialClient">
           <t>
           Device clients are generally incapable of maintaining the confidentiality
           of their credentials, as users in possession of the device can reverse-engineer it and extract the credentials.
@@ -847,7 +835,7 @@
           </t>
         </section>
 
-        <section title="Non-visual Code Transmission" anchor="NonVisualCodeTransmission">
+        <section title="Non-Visual Code Transmission" anchor="NonVisualCodeTransmission">
           <t>
           There is no requirement that the user code be displayed by the
           device visually. Other methods of one-way communication can potentially be
@@ -908,8 +896,6 @@
           should be uppercased before a comparison to account for the fact
           that the user may input the equivalent lowercase characters.
           Further stripping of all characters outside the chosen character set
-          <!-- wd: I reverted this change, in this case the additional characters I believe are in fact errant entries rather than eronous ones
-          i.e. the user did correctly input the code without error, but then tapped an additional key or puncutation -->
           is recommended to reduce instances where an errantly typed
           character (like a space character) invalidates otherwise valid
           input.
@@ -927,7 +913,7 @@
       </section>
 
       <section anchor="AdvancedCommunication"
-        title="Non-browser User Interaction">
+        title="Non-Browser User Interaction">
         <t>
           Devices and authorization servers MAY negotiate an alternative code
           transmission and user-interaction method in addition to the one described
@@ -1099,62 +1085,6 @@
           <date/>
         </front>
       </reference>
-
-<!-->
-      <reference anchor="HTML5" target="https://www.w3.org/TR/2014/REC-html5-20141028/">
-        <front>
-          <title>HTML5</title>
-
-          <author initials="I." surname="Hickson" fullname="Ian Hickson">
-            <organization>Google, Inc.</organization>
-            <address>
-              <email>ian@hixie.ch</email>
-            </address>
-          </author>
-
-          <author initials="R." surname="Berjon" fullname="Robin Berjon">
-            <organization>W3C</organization>
-          </author>
-
-          <author initials="S." surname="Faulkner" fullname="Steve Faulkner">
-            <organization>The Paciello Group</organization>
-            <address>
-              <email>sfaulkner@paciellogroup.com</email>
-            </address>
-          </author>
-
-          <author initials="T." surname="Leithead" fullname="Travis Leithead">
-            <organization> Microsoft Corporation</organization>
-            <address>
-              <email>travil@microsoft.com</email>
-            </address>
-          </author>
-
-          <author initials="E." surname="Navara" fullname="Erika Doyle Navara">
-            <organization>Microsoft Corporation</organization>
-            <address>
-              <email>Erika.Doyle@microsoft.com</email>
-            </address>
-          </author>
-
-          <author initials="T." surname="O'Connor" fullname="Theresa O'Connor">
-            <organization>Apple Inc.</organization>
-            <address>
-              <email>eoconnor@apple.com</email>
-            </address>
-          </author>
-
-          <author initials="S." surname="Pfeiffer" fullname="Silvia Pfeiffer">
-            <address>
-              <email>silviapfeiffer1@gmail.com</email>
-            </address>
-          </author>
-
-          <date year="2014" month="October" day="28" />
-        </front>
-        <seriesInfo name="World Wide Web Consortium (W3C)" value="Recommendation REC-html5-20141028" />
-      </reference>
--->
 
     </references>
 
