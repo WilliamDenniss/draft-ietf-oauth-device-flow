@@ -465,7 +465,7 @@
       (<spanx style="verb">user_code</spanx>) in
       the verification URI (<spanx style="verb">verification_uri</spanx>), 
       as this increases the length and complexity of the URI that the user must type.
-      While the user must still type the same number of characters with
+      While the user must still type a similar number of characters with
       the <spanx style="verb">user_code</spanx> separated, once they successfully navigate to the
       <spanx style="verb">verification_uri</spanx>, any errors in entering
       the code can be highlighted by the authorization server to improve the
