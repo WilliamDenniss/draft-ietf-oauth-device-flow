@@ -947,7 +947,7 @@
               <t>Name: device_code</t>
               <t>Parameter Usage Location: token request</t>
               <t>Change Controller: IESG</t>
-              <t>Reference: <xref target="TokenRequest"/> of this document.</t>
+              <t>Reference: <xref target="TokenRequest"/> of RFC 8628</t>
             </list>
 		  </t>
 		   <?rfc subcompact="no"?>
@@ -969,7 +969,7 @@
               <t>URN: urn:ietf:params:oauth:grant-type:device_code</t>
               <t>Common Name: Device flow grant type for OAuth 2.0</t>
               <t>Change Controller: IESG</t>
-              <t>Specification Document: <xref target="TokenRequest"/> of this document.</t>
+              <t>Specification Document: <xref target="TokenRequest"/> of RFC 8628</t>
             </list>
           </t>
 
@@ -991,9 +991,9 @@
             <list style="empty">
               <t>Name: authorization_pending</t>
               <t>Usage Location: Token endpoint response</t>
-              <t>Protocol Extension: This document.</t>
+              <t>Protocol Extension: RFC 8628</t>
               <t>Change Controller: IETF</t>
-              <t>Reference: <xref target="TokenResponse"/> of this document.</t>
+              <t>Reference: <xref target="TokenResponse"/> of RFC 8628</t>
             </list>
           </t>
           <t>
@@ -1001,9 +1001,9 @@
             <list style="empty">
               <t>Name: access_denied</t>
               <t>Usage Location: Token endpoint response</t>
-              <t>Protocol Extension: This document.</t>
+              <t>Protocol Extension: RFC 8628</t>
               <t>Change Controller: IETF</t>
-              <t>Reference: <xref target="TokenResponse"/> of this document.</t>
+              <t>Reference: <xref target="TokenResponse"/> of RFC 8628</t>
             </list>
           </t>
           <t>
@@ -1011,9 +1011,9 @@
             <list style="empty">
               <t>Name: slow_down</t>
               <t>Usage Location: Token endpoint response </t>
-              <t>Protocol Extension: This document.</t>
+              <t>Protocol Extension: RFC 8628</t>
               <t>Change Controller: IETF</t>
-              <t>Reference: <xref target="TokenResponse"/> of this document.</t>
+              <t>Reference: <xref target="TokenResponse"/> of RFC 8628</t>
             </list>
           </t>
           <t>
@@ -1021,9 +1021,9 @@
             <list style="empty">
               <t>Name: expired_token</t>
               <t>Usage Location: Token endpoint response </t>
-              <t>Protocol Extension: This document.</t>
+              <t>Protocol Extension: RFC 8628</t>
               <t>Change Controller: IETF</t>
-              <t>Reference: <xref target="TokenResponse"/> of this document.</t>
+              <t>Reference: <xref target="TokenResponse"/> of RFC 8628</t>
             </list>
           </t>
 
@@ -1049,7 +1049,7 @@
               <t>Metadata name: device_authorization_endpoint</t>
               <t>Metadata Description: URL of the authorization server's device authorization endpoint</t>
               <t>Change Controller: IESG</t>
-              <t>Reference: <xref target="Discovery"/> of this document.</t>
+              <t>Reference: <xref target="Discovery"/> of RFC 8628</t>
             </list>
           </t>
 
