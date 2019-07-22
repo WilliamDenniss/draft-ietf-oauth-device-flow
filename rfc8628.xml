@@ -967,7 +967,7 @@
             <?rfc subcompact="yes"?>
             <list style="empty">
               <t>URN: urn:ietf:params:oauth:grant-type:device_code</t>
-              <t>Common Name: Device flow grant type for OAuth 2.0</t>
+              <t>Common Name: Device Authorization Grant Type for OAuth 2.0</t>
               <t>Change Controller: IESG</t>
               <t>Specification Document: <xref target="TokenRequest"/> of RFC 8628</t>
             </list>
