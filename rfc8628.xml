@@ -675,7 +675,7 @@
     <section anchor="Discovery" title="Discovery Metadata">
       <t>
   Support for this protocol is declared in 
-  <xref target="RFC6749">OAuth 2.0 Authorization Server Metadata Metadata</xref> as follows.
+  <xref target="RFC8414">OAuth 2.0 Authorization Server Metadata</xref> as follows.
   The value <spanx style="verb">urn:ietf:params:oauth:grant-type:device_code</spanx> is
   included in values of the <spanx style="verb">grant_types_supported</spanx> key, and the following
   new key value pair is added:
@@ -947,7 +947,7 @@
               <t>Name: device_code</t>
               <t>Parameter Usage Location: token request</t>
               <t>Change Controller: IESG</t>
-              <t>Reference: <xref target="AuthorizationRequest"/> of this document.</t>
+              <t>Reference: <xref target="TokenRequest"/> of this document.</t>
             </list>
 		  </t>
 		   <?rfc subcompact="no"?>
@@ -969,7 +969,7 @@
               <t>URN: urn:ietf:params:oauth:grant-type:device_code</t>
               <t>Common Name: Device flow grant type for OAuth 2.0</t>
               <t>Change Controller: IESG</t>
-              <t>Specification Document: <xref target="AuthorizationRequest"/> of this document.</t>
+              <t>Specification Document: <xref target="TokenRequest"/> of this document.</t>
             </list>
           </t>
 
