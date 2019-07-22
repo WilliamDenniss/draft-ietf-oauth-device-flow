@@ -766,7 +766,7 @@
 	    or be using an authorization server that is controlled by an attacker,
 	    possibly because the attacker compromised the authorization server used by the device.
 	    In part,
-	    the person purchasing the device is counting on it and its business partners to be trustworthy.
+	    the person purchasing the device is counting on the manufacturer and its business partners to be trustworthy.
 	  </t>
         </section>
         <section title="Remote Phishing" anchor="RemotePhishing">
