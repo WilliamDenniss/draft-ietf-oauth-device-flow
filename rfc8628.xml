@@ -223,12 +223,12 @@
 	  <t>While the end user reviews the client's request
 	  (step D), the client repeatedly polls the authorization server to
 	  find out if the user completed the user authorization
-	  step.  The client includes the verification code and its client
+	  step.  The client includes the device code and its client
 	  identifier.</t>
 
 	  <t>The authorization server
-	  validates the verification code provided by the client and
-	  responds with the access token if the user is granted access,
+	  validates the device code provided by the client and
+	  responds with the access token if the client is granted access,
     an error if they are denied access, or an indication that the client should continue to poll.</t>
 	</list> 
       </t> 
@@ -280,7 +280,7 @@
            described in Section 2.2 of <xref target="RFC6749"/>.</t>
 
 	    <t hangText="scope"> <vspace/>
-	    OPTIONAL.  The scope of the access request as described by
+	    OPTIONAL.  The scope of the access request as defined by
 	    Section 3.3 of <xref target="RFC6749"/>.</t> 
 	  </list> 
 	</t> 
