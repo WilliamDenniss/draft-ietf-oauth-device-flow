@@ -1091,7 +1091,7 @@
 
       <t>
 	The starting point for this document was the Internet-Draft
-  draft-recordon-oauth-v2-device, authored by David Recordon and Brent Goldman,
+  draft&#8209;recordon&#8209;oauth&#8209;v2&#8209;device, authored by David Recordon and Brent Goldman,
   which itself was based on content in draft versions of the OAuth 2.0 protocol specification
   removed prior to publication due to a then-lack of sufficient deployment expertise.
   Thank you to the OAuth Working Group members who contributed to those earlier drafts.
